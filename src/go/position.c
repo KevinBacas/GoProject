@@ -2,16 +2,16 @@
 #include <stdio.h>
 #include "position.h"
 
-Position* creer_Position(int x, int y)
+SPosition* creer_Position(int x, int y)
 {
-	Position* pos = malloc(sizeof(Position));
+	SPosition* pos = malloc(sizeof(SPosition));
 	pos->x=x ;
 	pos->y=y ;
 	return pos;
 }
 
 
-void detruire_Position(Position* pos)
+void detruire_Position(SPosition* pos)
 {
 	free(pos);
 }

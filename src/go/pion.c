@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include "pion.h"
 
-Pion* creer_Pion(Position pos, couleur couleur)
+SPion* creer_Pion(SPosition pos, ECouleur couleur)
 {
-	Pion* pion = malloc(sizeof(pion));
-	pion.pos = pos;
-	pion.couleur = couleur;
+	SPion* pion = malloc(sizeof(pion));
+	pion->pos = pos;
+	pion->couleur = couleur;
 	return pion;
 }
 
-void detruire_Pion(Pion pion)
+void detruire_Pion(SPion pion)
 {
 	detruire_Position(pion.pos);
 	free(pion);
