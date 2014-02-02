@@ -5,6 +5,8 @@ all : compile
 compile : $(BIN_FOLDER)/GoProject.out
 	echo "Compilation des éxécutables terminée"
 	
-$(BIN_FOLDER)/GoProject.out : main.c
-	$(CC) $< -L $(LIB_FOLDER) -l Matrice -I $(INCLUDE_FOLDER) -o $@
+$(BIN_FOLDER)/GoProject.out : main.c $(DIST_FOLDER)/liste.o
+	$(CC) $< -L $(LIB_FOLDER) -l Matrice -o $@
 	
+$(DIST_FOLDER)/liste.o : $(INCLUDE_FOLDER)/liste.h
+	$(CC) $< -o $@

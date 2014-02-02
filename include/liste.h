@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #define DECL_NODE(type)\
 	typedef struct node_##type{\
 		type* data;\
@@ -11,63 +14,70 @@
 	} list_##type;
 
 #define DECL_INIT_LIST(type)\
-	void init_list(list_##type* _list)\
+	void listInit(list_##type* _list)\
 	{\
 		_list->head = NULL;\
 		_list->curr = NULL;\
 	}
 
 #define DECL_EMPTY(type)\
-	int list_empty(list_##type* _list)\
+	int listEmpty(list_##type* _list)\
 	{\
 		return _list->head ? 0 : 1;\
 	}
 
 #define DECL_ADD_ELEM(type)\
-	void list_add(list_##type* _list, type* _elem)\
+	void listAdd(list_##type* _list, type* _elem)\
 	{\
 		node_##type* elem = malloc(sizeof(node_##type));\
 		elem->data = _elem;\
 		elem->next = NULL;\
 \
-		if(list_empty(_list))\
+		if(listEmpty(_list))\
 		{\
 			_list->head = elem;\
 			_list->curr = elem;\
 		}\
 		else\
 		{\
-			while(_list->curr != NULL)\
+			while(_list->curr->next != NULL)\
 			{\
-				list_next(_list);\
+				listNext(_list);\
 			}\
 			_list->curr->next = elem;\
 		}\
+		printf("added %X\n", (unsigned int)_elem);\
 	}
 
 #define DECL_NEXT_ELEM(type)\
-	node_##type* list_next(list_##type* _list)\
+	node_##type* listNext(list_##type* _list)\
 	{\
 		node_##type* res = NULL;\
 		if(_list->curr->next)\
 		{\
-			_list->curr = _list->curr->next;\
 			res = _list->curr->next;\
+			_list->curr = _list->curr->next;\
 		}\
 		return res;\
 	}
 
 #define DECL_LIST_HEAD(type)\
-	node_##type* list_head(list_##type* _list)\
+	node_##type* listHead(list_##type* _list)\
 	{\
 		_list->curr = _list->head;\
 		return _list->curr;\
 	}
 
 #define DECL_LIST_DISPLAY(type)\
-	void displayList(list_##type* _list)\
+	void listDisplay(list_##type* _list)\
 	{\
-		\
+		listHead(_list);\
+		printf("%X", (unsigned int)(_list->curr->data));\
+		while(listNext(_list))\
+		{\
+			printf(" -> %X", (unsigned int)(_list->curr->data));\
+		}\
+		printf("\n");\
 	}
 
 #define DECL_LIST(type)\
@@ -77,4 +87,7 @@
 	DECL_EMPTY(type)\
 	DECL_NEXT_ELEM(type)\
 	DECL_ADD_ELEM(type)\
-	DECL_LIST_HEAD(type)
+	DECL_LIST_HEAD(type)\
+	DECL_LIST_DISPLAY(type)
+
+DECL_LIST(int)

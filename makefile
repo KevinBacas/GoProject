@@ -12,7 +12,7 @@ export BIN_FOLDER = $(TOP_FOLDER)/bin
 export DIST_FOLDER = $(BIN_FOLDER)/dist
 
 #Commande GCC Générique
-export GCC = gcc -I $(INCLUDE_FOLDER) $(CFLAGS)
+export CC = gcc $(CFLAGS) -I $(INCLUDE_FOLDER)
 
 # règle pour la build eclipse
 all : compile

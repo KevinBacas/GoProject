@@ -8,8 +8,6 @@
 #include "pion.h"
 #include "position.h"
 
-DECL_LIST(int);
-
 int main()
 {
 	printf("Hello world !");
@@ -18,10 +16,12 @@ int main()
 	int b = 10;
 	int c = 15;
 	list_int* l = malloc(sizeof(list_int));
-	init_list(l);
-	list_add(l, &a);
-	list_add(l, &b);
-	list_add(l, &c);
+	listInit(l);
+	listAdd(l, &a);
+	listAdd(l, &b);
+	listAdd(l, &c);
+
+	listDisplay(l);
 
 	return EXIT_SUCCESS;
 }

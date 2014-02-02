@@ -1,6 +1,6 @@
 # Point d'entré pour la génération des bibliothèques
 matrice_libs : $(LIB_FOLDER)/Matrice.dll
-	@echo "Compilation des bibliotÃ¨ques terminÃ©e"
+	@echo "Compilation des bibliotèques terminé"
 
 # .o de la matrice dynamique
 $(DIST_FOLDER)/matriceShared.o : matrice.c $(INCLUDE_FOLDER)/matrice.h
