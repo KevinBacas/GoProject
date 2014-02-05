@@ -8,6 +8,8 @@ typedef struct node SNode;
 
 typedef struct list SList;
 
+void* getListNodeData(SNode* _node);
+
 SList* listInit();
 
 int listEmpty(SList* _list);

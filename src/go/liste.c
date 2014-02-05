@@ -3,12 +3,17 @@
 typedef struct node{
 	void* data;
 	struct node* next;
-} SNode;
+} SListNode;
 
 typedef struct list{
 	struct node* head;
 	struct node* curr;
 } SList;
+
+void* getListNodeData(SListNode* _node)
+{
+	return _node->data;
+}
 
 SList* listInit()
 {
@@ -25,7 +30,7 @@ int listEmpty(SList* _list)
 
 void listAdd(SList* _list, void* _elem)
 {
-	SNode* elem = malloc(sizeof(SNode));
+	SListNode* elem = malloc(sizeof(SListNode));
 	elem->data = _elem;
 	elem->next = NULL;
 
@@ -45,9 +50,9 @@ void listAdd(SList* _list, void* _elem)
 	printf("added %X\n", (unsigned int)_elem);
 }
 
-SNode* listNext(SList* _list)
+SListNode* listNext(SList* _list)
 {
-	SNode* res = NULL;
+	SListNode* res = NULL;
 	if(_list->curr->next)
 	{
 		res = _list->curr->next;
@@ -56,7 +61,7 @@ SNode* listNext(SList* _list)
 	return res;
 }
 
-SNode* listHead(SList* _list)
+SListNode* listHead(SList* _list)
 {
 	_list->curr = _list->head;
 	return _list->curr;
@@ -66,9 +71,9 @@ void* listRemove(SList* _list, int _index)
 {
 	listHead(_list);
 	void* res = NULL;
-	if(_index = 0)
+	if(_index == 0)
 	{
-		SNode* to_delete = _list->head;
+		SListNode* to_delete = _list->head;
 		_list->head = _list->head->next;
 		res = to_delete->data;
 		free(to_delete);
@@ -80,7 +85,7 @@ void* listRemove(SList* _list, int _index)
 	if( i == _index-1)
 	{
 		// l'élément existe
-		SNode* to_delete = _list->curr->next;
+		SListNode* to_delete = _list->curr->next;
 		_list->curr->next = _list->curr->next->next;
 		res = to_delete->data;
 		free(to_delete);
