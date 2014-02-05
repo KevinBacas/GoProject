@@ -4,7 +4,7 @@
 
 SPion* creer_Pion(SPosition pos, ECouleur couleur)
 {
-	SPion* pion = malloc(sizeof(pion));
+	SPion* pion = malloc(sizeof(SPion));
 	pion->pos = pos;
 	pion->couleur = couleur;
 	return pion;
