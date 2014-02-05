@@ -1,12 +1,12 @@
 
-# règle pour Eclipse
+# rï¿½gle pour Eclipse
 all : compile
 
 compile : $(BIN_FOLDER)/GoProject.out
-	echo "Compilation des éxécutables terminée"
+	echo "Compilation des ï¿½xï¿½cutables terminï¿½e"
 	
 $(BIN_FOLDER)/GoProject.out : main.c $(DIST_FOLDER)/liste.o
-	$(CC) $< -L $(LIB_FOLDER) -l Matrice -o $@
+	$(CC) $^ -L $(LIB_FOLDER) -l Matrice -o $@
 	
-$(DIST_FOLDER)/liste.o : $(INCLUDE_FOLDER)/liste.h
-	$(CC) $< -o $@
+$(DIST_FOLDER)/liste.o : liste.c $(INCLUDE_FOLDER)/liste.h
+	$(CC) -c $< -o $@

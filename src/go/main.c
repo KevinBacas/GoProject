@@ -15,8 +15,7 @@ int main()
 	int a = 5;
 	int b = 10;
 	int c = 15;
-	list_int* l = malloc(sizeof(list_int));
-	listInit(l);
+	SList* l = listInit();
 	listAdd(l, &a);
 	listAdd(l, &b);
 	listAdd(l, &c);
