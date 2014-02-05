@@ -11,11 +11,16 @@
 typedef struct
 {
 	int taille;
-	list_SPion* liste;
+	ECouleur** grille;
 } SPlateau;
 
-SPlateau* creer_plateau (int taille, SPion** grille);
+SPlateau* creer_plateau (int taille, ECouleur** grille);
 
 void detruire_plateau(SPlateau plateau);
+
+int taille_plateau(SPlateau* plateau);
+
+ECouleur couleur_position(SPlateau* plateau, int x, int y);
+
 
 #endif /* PLATEAU_H_ */
