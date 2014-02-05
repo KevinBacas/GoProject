@@ -103,3 +103,20 @@ void listDisplay(SList* _list)
 	}
 	printf("\n");
 }
+
+//TENTION J'AI AJOUTER CES FONCTION !!!
+SList* concatenList(SList* _list1, SList* _list2)
+{
+	while(_list1->curr->next == NULL) listNext(_list1);
+	_list1->curr->next = _list2->head;
+	return _list1;
+}
+
+void deleteList(SList* _list)
+{
+	while(_list->curr != NULL)
+	{
+		listRemove(_list,1);
+	}
+	free(_list);
+}
