@@ -15,3 +15,13 @@ void detruire_Position(SPosition* pos)
 {
 	free(pos);
 }
+
+int abscisse_position(SPosition* position)
+{
+	return position->x;
+}
+
+int ordonnee_position(SPosition* position)
+{
+	return position->y;
+}

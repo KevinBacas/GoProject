@@ -5,59 +5,62 @@
 int compter_contact(SPlateau* plateau,SPion* pion, ECouleur couleur)
 {
 	int contact = 0;
+	int x = abscisse_pion(pion);
+	int y = ordonnee_pion(pion);
+	int taille = taille_plateau(plateau);
 
-	if(pion->position->x = taille)
+	if(x==taille)
 	{
-		if(pion->position->y = taille)
+		if(y==taille)
 		{
-			if(couleur = plateau->grille[x-1][y]->couleur ) contact+=1;
-			if(couleur = plateau->grille[x][y-1]->couleur ) contact+=1;
+			if(couleur == couleur_position(plateau, x-1, y)) contact+=1;
+			if(couleur == couleur_position(plateau, x, y-1)) contact+=1;
 		}
 		else
 		{
-			if(pion->position->y = 0)
+			if(x==0)
 			{
-				if(couleur = plateau->grille[x-1][y]->couleur ) contact+=1;
-				if(couleur = plateau->grille[x][y+1]->couleur ) contact+=1;
+				if(couleur == couleur_position(plateau, x-1, y)) contact+=1;
+				if(couleur == couleur_position(plateau, x, y+1)) contact+=1;
 			}
 			else
 			{
-				if(couleur = plateau->grille[x-1][y]->couleur ) contact+=1;
-				if(couleur = plateau->grille[x][y+1]->couleur ) contact+=1;
-				if(couleur = plateau->grille[x][y-1]->couleur ) contact+=1;
+				if(couleur == couleur_position(plateau, x-1, y)) contact+=1;
+				if(couleur == couleur_position(plateau, x, y+1)) contact+=1;
+				if(couleur == couleur_position(plateau, x, y-1)) contact+=1;
 			}
 		}
 	}
 	else
 		{
-			if(position->x = 0)
+			if(x==0)
 			{
-				if(position->y = taille)
+				if(y==taille)
 				{
-					if(couleur = plateau->grille[x+1][y]->couleur ) contact+=1;
-					if(couleur = plateau->grille[x][y-1]->couleur ) contact+=1;
+					if(couleur == couleur_position(plateau, x+1, y)) contact+=1;
+					if(couleur == couleur_position(plateau, x, y-1)) contact+=1;
 				}
 				else
 				{
-					if(pion->position->y = 0)
+					if(y==0)
 					{
-						if(couleur = plateau->grille[x+1][y]->couleur ) contact+=1;
-						if(couleur = plateau->grille[x][y+1]->couleur ) contact+=1;
+						if(couleur == couleur_position(plateau, x+1, y)) contact+=1;
+						if(couleur == couleur_position(plateau, x, y+1)) contact+=1;
 					}
 					else
 					{
-						if(couleur = plateau->grille[x+1][y]->couleur ) contact+=1;
-						if(couleur = plateau->grille[x][y+1]->couleur ) contact+=1;
-						if(couleur = plateau->grille[x][y-1]->couleur ) contact+=1;
+						if(couleur == couleur_position(plateau, x+1, y)) contact+=1;
+						if(couleur == couleur_position(plateau, x, y+1)) contact+=1;
+						if(couleur == couleur_position(plateau, x, y-1)) contact+=1;
 					}
 				}
 			}
 			else
 			{
-				if(couleur = plateau->grille[x+1][y]->couleur ) contact+=1;
-				if(couleur = plateau->grille[x][y+1]->couleur ) contact+=1;
-				if(couleur = plateau->grille[x-1][y]->couleur ) contact+=1;
-				if(couleur = plateau->grille[x-1][y-1]->couleur ) contact+=1;
+				if(couleur == couleur_position(plateau, x+1, y)) contact+=1;
+				if(couleur == couleur_position(plateau, x, y+1)) contact+=1;
+				if(couleur == couleur_position(plateau, x-1, y)) contact+=1;
+				if(couleur == couleur_position(plateau, x, y-1)) contact+=1;
 			}
 		}
 	return contact;

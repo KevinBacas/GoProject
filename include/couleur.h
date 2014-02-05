@@ -1,6 +1,6 @@
 #ifndef __COULEUR__
 #define __COULEUR__
 
-typedef enum Couleur {NOIR, BLANC, VIDE} ECouleur;
+typedef enum Couleur {NOIR, BLANC, KO, VIDE} ECouleur;
 
 #endif
