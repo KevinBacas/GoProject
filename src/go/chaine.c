@@ -26,5 +26,5 @@ SChaine* ajouterPion(SChaine* chaine, SPion* pion)
 
 SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2)
 {
-	return concatenList(chaine1, chaine2);
+	return listConcat(chaine1, chaine2);
 }

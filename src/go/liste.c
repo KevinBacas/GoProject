@@ -109,7 +109,7 @@ void listDisplay(SList* _list)
 	printf("\n");
 }
 
-SList* concatenList(SList* _list1, SList* _list2)
+SList* listConcat(SList* _list1, SList* _list2)
 {
 	if(listEmpty(_list1))
 	{
@@ -124,7 +124,7 @@ SList* concatenList(SList* _list1, SList* _list2)
 	return _list1;
 }
 
-void deleteList(SList* _list)
+void listDelete(SList* _list)
 {
 	while(_list->curr != NULL)
 	{
