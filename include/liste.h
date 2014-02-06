@@ -30,6 +30,10 @@ int listFind(SList* list, void* elem);
 
 SList* listConcat(SList* list1, SList* list2);
 
+int listMeme(SList* list, void* elem);
+
+SList* listConcatUnique(SList* list1, SList* list2);
+
 void listDelete(SList* list);
 
 #endif // __FILE_H__

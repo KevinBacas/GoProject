@@ -15,11 +15,13 @@
 #include "chaines.h"
 #include "positions.h"
 
+SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion);
+
 // TODO : TOUT
 /**
  * @brief determine l'ensemble des libertes d'une chaine donnee en fonction de la position des pions sur le plateau
  */
-SLibertes determineLiberte(SPlateau plateau,SChaine chaine);
+SLibertes determineLiberte(SPlateau* plateau,SChaine* chaine);
 
 /** @brief retourne un ensemble d'intersections inoccupees voisines de proche en
  * proche delimitees par des pierres de meme couleur en commencant par l'intersection vide a la position pos.
