@@ -15,7 +15,9 @@ void detruire_chaine(SChaine* chaine)
 
 ECouleur couleur_chaine(SChaine* chaine)
 {
-	return ((SPion*)listCurrent(chaine))->couleur;
+	SPion* pion = ((SPion*)listCurrent(chaine));
+	if(pion) return pion->couleur;
+	return VIDE;
 }
 
 SChaine* ajouter_chaine(SChaine* chaine, SPion* pion)
