@@ -3,6 +3,14 @@
 
 #include "chaine.h"
 
+//on doit faire un ensemble qui contient toutes les chaines, je ne sais pas comment l'initialiser !
+SEnsembleChaine* creer_ensembleC_vide()
+{
+	SEnsembleChaine* ensembleC = malloc(sizeof(SEnsembleChaine*));
+
+	return ensembleC;
+}
+
 SChaine* creer_chaine()
 {
 	return listInit();
@@ -20,7 +28,7 @@ ECouleur couleur_chaine(SChaine* chaine)
 	return VIDE;
 }
 
-SChaine* ajouter_chaine(SChaine* chaine, SPion* pion)
+SChaine* ajouter_pion(SChaine* chaine, SPion* pion)
 {
 	listAdd(chaine, (void*)pion);
 	return chaine;

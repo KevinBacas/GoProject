@@ -89,7 +89,7 @@ void* listRemove(SList* _list, int _index)
 
 	if( i == _index-1)
 	{
-		// l'élément existe
+		// l'element existe
 		SListNode* to_delete = _list->curr->next;
 		_list->curr->next = _list->curr->next->next;
 		res = to_delete->data;

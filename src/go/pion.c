@@ -29,3 +29,8 @@ int ordonnee_pion(SPion* pion)
 {
 	return ordonnee_position(pion->pos);
 }
+
+SPosition position_pion(SPion* pion)
+{
+	return pion->pos;
+}

@@ -13,4 +13,6 @@ int abscisse_position(SPosition position);
 
 int ordonnee_position(SPosition position);
 
+SPosition* saisir_position(SPlateau* plateau);
+
 #endif
