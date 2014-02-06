@@ -4,7 +4,7 @@
 #include "plateau.h"
 #include "pion.h"
 
-// TODO : Allocation desalocation de la grille a  la main.
+// TODO : Allocation desalocation de la grille aï¿½ la main.
 
 SPlateau* init_plateau(int taille)
 {
@@ -49,12 +49,7 @@ ECouleur plateau_get(SPlateau* plateau, int x, int y)
 	return plateau->grille[x][y];
 }
 
-ECouleur plateau_get(SPlateau* plateau, int x, int y)
-{
-	return plateau->grille[x][y];
-}
-
-void plateau_set(SPlateau plateau, int i, int j, ECouleur couleur)
+void plateau_set(SPlateau* plateau, int i, int j, ECouleur couleur)
 {
 	plateau->grille[i][j] = couleur;
 }
