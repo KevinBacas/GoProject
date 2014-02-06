@@ -13,16 +13,16 @@ typedef struct
 
 typedef SList listePion;
 
-SPion* creer_Pion(SPosition pos, ECouleur couleur);
+SPion* creerPion(SPosition pos, ECouleur couleur);
 
-void detruire_Pion(SPion* pion);
+void detruirePion(SPion* pion);
 
-ECouleur couleur_pion(SPion* pion);
+ECouleur couleurPion(SPion* pion);
 
-int abscisse_pion(SPion* pion);
+int abscissePion(SPion* pion);
 
-int ordonnee_pion(SPion* pion);
+int ordonneePion(SPion* pion);
 
-SPosition position_pion(SPion* pion);
+SPosition positionPion(SPion* pion);
 
 #endif

@@ -1,18 +1,20 @@
 #ifndef __POSITION__
 #define __POSITION__
 
+#include "plateau.h"
+
 typedef struct
 {
 	int x;
 	int y;
 } SPosition;
 
-SPosition* creer_Position(int x, int y);
+SPosition creerPosition(int x, int y);
 
-int abscisse_position(SPosition position);
+int abscissePosition(SPosition position);
 
-int ordonnee_position(SPosition position);
+int ordonneePosition(SPosition position);
 
-SPosition* saisir_position(SPlateau* plateau);
+SPosition transformerPosition(SPlateau* plateau, char* saisie);
 
 #endif
