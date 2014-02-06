@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "utilsGo.h"
+#include "chaines.h"
 
 
 

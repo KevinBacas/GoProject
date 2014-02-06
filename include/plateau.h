@@ -21,7 +21,7 @@ int taille_plateau(SPlateau* plateau);
 
 ECouleur plateau_get(SPlateau* plateau, int x, int y);
 
-void plateau_set(SPlateau plateau, int i, int j, ECouleur couleur);
+void plateau_set(SPlateau* plateau, int i, int j, ECouleur couleur);
 
 /**
  * @brief Sauvegarde le plateau dans sa position actuelle.
