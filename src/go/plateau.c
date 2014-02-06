@@ -4,7 +4,7 @@
 #include "plateau.h"
 #include "pion.h"
 
-// TODO : Allocation desalocation de la grille a  la main.
+// TODO : Allocation desalocation de la grille aï¿½ la main.
 
 SPlateau* init_plateau(int taille)
 {
