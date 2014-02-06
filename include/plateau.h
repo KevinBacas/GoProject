@@ -16,6 +16,8 @@ typedef struct
 	ECouleur** grille;
 } SPlateau;
 
+SPlateau* init_plateau(int taille);
+
 SPlateau* creer_plateau (int taille, ECouleur** grille);
 
 void detruire_plateau(SPlateau* plateau);

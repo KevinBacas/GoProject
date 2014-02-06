@@ -4,7 +4,18 @@
 #include "plateau.h"
 #include "pion.h"
 
-// TODO : Allocation désallocation de la grille à la main.
+// TODO : Allocation desalocation de la grille a� la main.
+
+SPlateau* init_plateau(int taille)
+{
+	int i;
+	ECouleur** grille = malloc(sizeof(ECouleur*));
+	for(i=0; i<taille; i++)
+	{
+		*(grille+i)=malloc(sizeof(ECouleur));
+	}
+	return creer_plateau(taille,grille);
+}
 
 SPlateau* creer_plateau(int taille, ECouleur** grille)
 {
@@ -17,8 +28,14 @@ SPlateau* creer_plateau(int taille, ECouleur** grille)
 
 void detruire_plateau(SPlateau* plateau)
 {
+	int i;
 	plateau->taille = 0;
-	//detruireGrille(plateau->grille);
+	for(i=0; i<taille_plateau(plateau); i++)
+	{
+		free(*((plateau->grille)+i));
+
+	}
+	free(plateau->grille);
 	free(plateau);
 }
 
