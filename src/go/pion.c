@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "pion.h"
 
-SPion* creer_Pion(SPosition pos, ECouleur couleur)
+SPion* creerPion(SPosition pos, ECouleur couleur)
 {
 	SPion* pion = malloc(sizeof(SPion));
 	pion->pos = pos;
@@ -10,27 +10,27 @@ SPion* creer_Pion(SPosition pos, ECouleur couleur)
 	return pion;
 }
 
-void detruire_Pion(SPion* pion)
+void detruirePion(SPion* pion)
 {
 	free(pion);
 }
 
-ECouleur couleur_pion(SPion* pion)
+ECouleur couleurPion(SPion* pion)
 {
 	return pion->couleur;
 }
 
-int abscisse_pion(SPion* pion)
+int abscissePion(SPion* pion)
 {
-	return abscisse_position(pion->pos);
+	return abscissePosition(pion->pos);
 }
 
-int ordonnee_pion(SPion* pion)
+int ordonneePion(SPion* pion)
 {
-	return ordonnee_position(pion->pos);
+	return ordonneePosition(pion->pos);
 }
 
-SPosition position_pion(SPion* pion)
+SPosition positionPion(SPion* pion)
 {
 	return pion->pos;
 }

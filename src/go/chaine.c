@@ -3,38 +3,28 @@
 
 #include "chaine.h"
 
-//on doit faire un ensemble qui contient toutes les chaines, je ne sais pas comment l'initialiser !
-SEnsembleChaine* creer_ensembleC_vide()
+SChaine* creerChaine()
 {
-	SEnsembleChaine* ensembleC = malloc(sizeof(SEnsembleChaine*));
-
-	return ensembleC;
+	return creerEnsembleColore();
 }
 
-SChaine* creer_chaine()
+void detruireChaine(SChaine* chaine)
 {
-	return listInit();
+	detruireEnsembleColore(chaine);
 }
 
-void detruire_chaine(SChaine* chaine)
+ECouleur couleurChaine(SChaine* chaine)
 {
-	deleteList(chaine);
+	return couleurEnsembleColore(chaine);
 }
 
-ECouleur couleur_chaine(SChaine* chaine)
-{
-	SPion* pion = ((SPion*)listCurrent(chaine));
-	if(pion) return pion->couleur;
-	return VIDE;
-}
-
-SChaine* ajouter_pion(SChaine* chaine, SPion* pion)
+SChaine* ajouterPion(SChaine* chaine, SPion* pion)
 {
 	listAdd(chaine, (void*)pion);
 	return chaine;
 }
 
-SChaine* concatener_chaine(SChaine* chaine1, SChaine* chaine2)
+SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2)
 {
 	return concatenList(chaine1, chaine2);
 }

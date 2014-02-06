@@ -12,6 +12,8 @@
 #include "plateau.h"
 #include "libertes.h"
 #include "chaine.h"
+#include "chaines.h"
+#include "positions.h"
 
 /**
  * @brief determine l’ensemble des libertés d’une chaine donnée en fonction de la position des pions sur le plateau

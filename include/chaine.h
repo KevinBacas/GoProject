@@ -2,28 +2,18 @@
 #define __CHAINE__
 
 #include "pion.h"
-#include "liste.h"
 #include "ensembleColore.h"
 
 typedef SEnsembleColore SChaine;
 
-typedef struct
-{
-	SChaine* listeDeChaine;
-}SEnsembleChaine;
+SChaine* creerChaine();
 
-SEnsembleChaine* creer_ensembleC_vide();
+void detruireChaine(SChaine* chaine);
 
-SChaine* creer_chaine_vide();
+ECouleur couleurChaine(SChaine* chaine);
 
-void detruire_chaine(SChaine* chaine);
+SChaine* ajouterPion(SChaine* chaine, SPion* pion);
 
-ECouleur couleur_chaine(SChaine* chaine);
-
-SList* liste_chaine(SChaine* chaine);
-
-SChaine* ajouter_pion(SChaine* chaine, SPion* pion);
-
-SChaine* concatener_chaine(SChaine* chaine1, SChaine* chaine2);
+SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2);
 
 #endif // __CHAINE__

@@ -8,6 +8,8 @@
 #ifndef PARTIE_H_
 #define PARTIE_H_
 
+#include <stdio.h>
+
 typedef struct partie SPartie;
 
 /**
