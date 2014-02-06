@@ -20,11 +20,23 @@ ECouleur couleurChaine(SChaine* chaine)
 
 SChaine* ajouterPion(SChaine* chaine, SPion* pion)
 {
-	listAdd(chaine, (void*)pion);
+	listAdd((SList*)listEnsembleColore(chaine), (void*)pion);
 	return chaine;
 }
 
 SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2)
 {
-	return listConcat(chaine1, chaine2);
+	return (SChaine*)listConcat((void*)chaine1, (void*)chaine2);
+}
+
+int positionDansChaine(SChaine* chaine, SPosition* pos)
+{
+	listHead((SList*)listEnsembleColore(chaine));
+	while(listCurrent((SList*)listEnsembleColore(chaine))
+			&& positionsEguale(listCurrent((SList*)listEnsembleColore(chaine)), pos)
+			)
+	{
+		listNext((SList*)listEnsembleColore(chaine));
+	}
+	return positionsEguale(listCurrent((SList*)listEnsembleColore(chaine)), pos);
 }

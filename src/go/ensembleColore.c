@@ -34,3 +34,8 @@ ECouleur couleurEnsembleColore(SEnsembleColore* e_colore)
 {
 	return e_colore->couleur;
 }
+
+SEnsemblePosition* listEnsembleColore(SEnsembleColore* e_colore)
+{
+	return e_colore->e_position;
+}

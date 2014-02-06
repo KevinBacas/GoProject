@@ -9,12 +9,18 @@ typedef struct
 	int y;
 } SPosition;
 
-SPosition creerPosition(int x, int y);
+SPosition* creerPosition(int x, int y);
 
-int abscissePosition(SPosition position);
+int abscissePosition(SPosition* position);
 
-int ordonneePosition(SPosition position);
+int ordonneePosition(SPosition* position);
 
-SPosition transformerPosition(SPlateau* plateau, char* saisie);
+SPosition* transformerPosition(SPlateau* plateau, char* saisie);
+
+/**
+ * @brief Test si les positions sont eguales.
+ * @return 1 si vrai sinon 0.
+ */
+int positionsEguale(SPosition* pos1, SPosition* pos2);
 
 #endif

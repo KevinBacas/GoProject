@@ -12,4 +12,6 @@ void detruireEnsembleColore(SEnsembleColore* e_colore);
 
 ECouleur couleurEnsembleColore(SEnsembleColore* e_colore);
 
+SEnsemblePosition* listEnsembleColore(SEnsembleColore* e_colore);
+
 #endif // __ENSEMBLE_COLORE_H__

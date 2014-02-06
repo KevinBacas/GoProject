@@ -112,7 +112,7 @@ void listDisplay(SList* list)
 int listMeme(SList* list, void* elem)
 {
 	listHead(list);
-	while(listNext(list) != NULL && listCurrent(list) != elem);
+	while(listcurrent(list) != NULL && listCurrent(list) != elem) listNext(list);
 	return (listCurrent(list) == elem) ? 1 : 0;
 }
 

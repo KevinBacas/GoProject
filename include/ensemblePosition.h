@@ -3,6 +3,6 @@
 
 #include "liste.h"
 
-typedef struct SList SEnsemblePosition;
+typedef SList SEnsemblePosition;
 
 #endif // __ENSEMBLE_POSITION_H__

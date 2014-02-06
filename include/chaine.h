@@ -16,4 +16,10 @@ SChaine* ajouterPion(SChaine* chaine, SPion* pion);
 
 SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2);
 
+/**
+ * @brief Verifie si une position correspond a une des positions de la chaine.
+ * @return 1 si vrai sinon 0.
+ */
+int positionDansChaine(SChaine* chaine, SPosition* pos);
+
 #endif // __CHAINE__
