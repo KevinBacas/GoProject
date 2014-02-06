@@ -4,7 +4,7 @@
 typedef struct StackNode SStackNode;
 typedef struct Stack SStack;
 
-getStackNodeData(SStackNode* _node);
+void* getStackNodeData(SStackNode* _node);
 
 SStack* initStack();
 

@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "chaine.h"
 
-SChaine* creer_chaine_vide()
+SChaine* creer_chaine()
 {
-	SChaine* chaine = malloc(sizeof(SChaine));
-	chaine->couleur = VIDE;
-	chaine->liste = listInit;
-	return chaine;
+	return listInit();
 }
 
 void detruire_chaine(SChaine* chaine)
@@ -17,25 +15,16 @@ void detruire_chaine(SChaine* chaine)
 
 ECouleur couleur_chaine(SChaine* chaine)
 {
-	return chaine->couleur;
-}
-
-SList* liste_chaine(SChaine* chaine)
-{
-	return chaine->liste;
+	return ((SPion*)listCurrent(chaine))->couleur;
 }
 
 SChaine* ajouter_chaine(SChaine* chaine, SPion* pion)
 {
-	listAdd(chaine->liste, (void*)pion);
+	listAdd(chaine, (void*)pion);
 	return chaine;
 }
 
 SChaine* concatener_chaine(SChaine* chaine1, SChaine* chaine2)
 {
-	chaine1->liste = concatenList(liste_chaine(chaine1), liste_chaine(chaine2));
-	detruire_chaine(chaine2);
-	return chaine1;
+	return concatenList(chaine1, chaine2);
 }
-
-

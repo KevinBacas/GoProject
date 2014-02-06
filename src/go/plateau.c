@@ -1,9 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+
 #include "plateau.h"
 #include "pion.h"
 
-SPlateau* creer_plateau (int taille, ECouleur** grille)
+// TODO : Allocation désallocation de la grille à la main.
+
+SPlateau* creer_plateau(int taille, ECouleur** grille)
 {
 	SPlateau* plateau = malloc(sizeof(SPlateau));
 	plateau->taille = taille;
@@ -15,7 +18,7 @@ SPlateau* creer_plateau (int taille, ECouleur** grille)
 void detruire_plateau(SPlateau* plateau)
 {
 	plateau->taille = 0;
-	detruireGrille(plateau->grille);
+	//detruireGrille(plateau->grille);
 	free(plateau);
 }
 

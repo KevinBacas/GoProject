@@ -1,12 +1,14 @@
 /*
- * plateau.h
+ * plateau.hdetruire_chaine
  *
- *  Created on: 2 févr. 2014
+ *  Created on: 2 fï¿½vr. 2014
  *      Author: Jacky
  */
 
 #ifndef PLATEAU_H_
 #define PLATEAU_H_
+
+#include "couleur.h"
 
 typedef struct
 {
@@ -16,7 +18,7 @@ typedef struct
 
 SPlateau* creer_plateau (int taille, ECouleur** grille);
 
-void detruire_plateau(SPlateau plateau);
+void detruire_plateau(SPlateau* plateau);
 
 int taille_plateau(SPlateau* plateau);
 

@@ -10,18 +10,12 @@ SPosition* creer_Position(int x, int y)
 	return pos;
 }
 
-
-void detruire_Position(SPosition* pos)
+int abscisse_position(SPosition position)
 {
-	free(pos);
+	return position.x;
 }
 
-int abscisse_position(SPosition* position)
+int ordonnee_position(SPosition position)
 {
-	return position->x;
-}
-
-int ordonnee_position(SPosition* position)
-{
-	return position->y;
+	return position.y;
 }

@@ -23,6 +23,11 @@ SList* listInit()
 	return res;
 }
 
+void* listCurrent(SList* _list)
+{
+	return _list->curr;
+}
+
 int listEmpty(SList* _list)
 {
 	return _list->head ? 0 : 1;
@@ -104,11 +109,18 @@ void listDisplay(SList* _list)
 	printf("\n");
 }
 
-//TENTION J'AI AJOUTER CES FONCTION !!!
 SList* concatenList(SList* _list1, SList* _list2)
 {
-	while(_list1->curr->next == NULL) listNext(_list1);
-	_list1->curr->next = _list2->head;
+	if(listEmpty(_list1))
+	{
+		_list1->head = _list2->head;
+		_list1->curr = _list2->curr;
+	}
+	else
+	{
+		while(_list1->curr->next == NULL) listNext(_list1);
+		_list1->curr->next = _list2->head;
+	}
 	return _list1;
 }
 

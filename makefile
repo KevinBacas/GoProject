@@ -1,7 +1,7 @@
 # Flags de compilation pour le C
 CFLAGS = -Wall
 
-# Récupération du dossier courant, on admet que l'utilisateur fait un make à partir de la racine du projet.
+# Rï¿½cupï¿½ration du dossier courant, on admet que l'utilisateur fait un make ï¿½ partir de la racine du projet.
 TOP_FOLDER = $(shell pwd)
 
 # Construction des variables contenant les chemins des dossiers
@@ -11,13 +11,13 @@ export SRC_FOLDER = $(TOP_FOLDER)/src
 export BIN_FOLDER = $(TOP_FOLDER)/bin
 export DIST_FOLDER = $(BIN_FOLDER)/dist
 
-#Commande GCC Générique
+#Commande GCC Gï¿½nï¿½rique
 export CC = gcc $(CFLAGS) -I $(INCLUDE_FOLDER)
 
-# règle pour la build eclipse
+# rï¿½gle pour la build eclipse
 all : compile
 
-# Compilation de tout le projet (Génération des bibliothèque et des executables)
+# Compilation de tout le projet (Gï¿½nï¿½ration des bibliothï¿½que et des executables)
 compile : 
 	@cd $(SRC_FOLDER)/matrice && make --no-print-directory
 	@cd $(SRC_FOLDER)/go && make --no-print-directory
@@ -25,3 +25,4 @@ compile :
 # Clean de tout les fichiers .o dans le dossier dist
 clean : 
 	@rm -rvf $(DIST_FOLDER)/*.o
+	@rm -rvf $(BIN_FOLDER)/*.out

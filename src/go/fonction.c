@@ -1,8 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "fonction.h"
 
-int compter_contact(SPlateau* plateau,SPion* pion, ECouleur couleur)
+#include "fonction.h"
+#include "liste.h"
+#include "couleur.h"
+#include "pion.h"
+#include "plateau.h"
+
+typedef SList listePion;
+
+int compter_contact(SPlateau* plateau, SPion* pion, ECouleur couleur)
 {
 	int contact = 0;
 	int x = abscisse_pion(pion);
@@ -69,8 +76,11 @@ int compter_contact(SPlateau* plateau,SPion* pion, ECouleur couleur)
 
 int compter_liberte(SPlateau* plateau, listePion* chaine)
 {
-	compter_liberte(plateau,NULL)=0;
-	return compter_contact(plateau,chaine->tete, VIDE)-1 + compter_liberte( plateau, chaine->queue);
+	//TODO : pas compris.
+	//compter_liberte(plateau,NULL)=0;
+	//TODO : chaine->queue !
+	//return compter_contact(plateau, listHead(chaine), VIDE)-1 + compter_liberte( plateau, chaine->queue);
+	return 0;
 }
 
 void capture_chaine(SPlateau* plateau, listePion* chaine)

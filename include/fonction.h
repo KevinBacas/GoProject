@@ -1,12 +1,15 @@
 /*
  * fonction.h
  *
- *  Created on: 2 févr. 2014
+ *  Created on: 2 fï¿½vr. 2014
  *      Author: Jacky
  */
 
 #ifndef FONCTION_H_
 #define FONCTION_H_
+
+#include "plateau.h"
+#include "pion.h"
 
 int compter_contact(SPlateau* plateau,SPion* pion, ECouleur couleur);
 

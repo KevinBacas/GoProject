@@ -9,10 +9,8 @@ typedef struct
 
 SPosition* creer_Position(int x, int y);
 
-void detruire_Position(SPosition* pos);
+int abscisse_position(SPosition position);
 
-int abscisse_position(SPosition* position);
-
-int ordonnee_position(SPosition* position);
+int ordonnee_position(SPosition position);
 
 #endif

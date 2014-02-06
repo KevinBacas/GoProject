@@ -10,9 +10,8 @@ SPion* creer_Pion(SPosition pos, ECouleur couleur)
 	return pion;
 }
 
-void detruire_Pion(SPion pion)
+void detruire_Pion(SPion* pion)
 {
-	detruire_Position(pion.pos);
 	free(pion);
 }
 

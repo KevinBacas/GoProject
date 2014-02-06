@@ -1,5 +1,7 @@
 #include "pile.h"
 
+#include <stdlib.h>
+
 typedef struct StackNode {
 	void* data;
 	struct StackNode* prev;
@@ -9,7 +11,7 @@ typedef struct Stack{
 	SStackNode* head;
 } SStack;
 
-getStackNodeData(SStackNode* _node)
+void* getStackNodeData(SStackNode* _node)
 {
 	return _node->data;
 }

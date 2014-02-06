@@ -2,13 +2,9 @@
 #define __CHAINE__
 
 #include "pion.h"
+#include "liste.h"
 
-typedef struct
-{
-	ECouleur couleur;
-	SList* liste;
-
-}SChaine;
+typedef SList SChaine;
 
 SChaine* creer_chaine_vide();
 
@@ -20,7 +16,6 @@ SList* liste_chaine(SChaine* chaine);
 
 SChaine* ajouter_chaine(SChaine* chaine, SPion* pion);
 
-SChaine* concatener_chaine(SChaine* chaine1, SChaine chaine2);
+SChaine* concatener_chaine(SChaine* chaine1, SChaine* chaine2);
 
-
-#endif
+#endif // __CHAINE__

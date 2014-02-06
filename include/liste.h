@@ -12,6 +12,8 @@ void* getListNodeData(SNode* _node);
 
 SList* listInit();
 
+void* listCurrent(SList* _list);
+
 int listEmpty(SList* _list);
 
 void listAdd(SList* _list, void* _elem);
@@ -24,7 +26,6 @@ void* listRemove(SList* _list, int _index);
 
 void listDisplay(SList* _list);
 
-//TENTION J'AI AJOUTER CES FONCTION !!
 SList* concatenList(SList* _list1, SList* _list2);
 
 void deleteList(SList* _list);
