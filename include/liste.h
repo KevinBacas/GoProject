@@ -26,6 +26,9 @@ void* listRemove(SList* _list, int _index);
 
 void listDisplay(SList* _list);
 
+//TODO : Implementation
+int listFind(SList* _list);
+
 SList* concatenList(SList* _list1, SList* _list2);
 
 void deleteList(SList* _list);

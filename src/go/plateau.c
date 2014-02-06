@@ -44,7 +44,7 @@ int taille_plateau(SPlateau* plateau)
 	return plateau->taille;
 }
 
-ECouleur couleur_position(SPlateau* plateau, int x, int y)
+ECouleur plateau_get(SPlateau* plateau, int x, int y)
 {
 	return plateau->grille[x][y];
 }
