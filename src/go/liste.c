@@ -109,11 +109,17 @@ void listDisplay(SList* list)
 	printf("\n");
 }
 
-int listMeme(SList* list, void* elem)
+int listFind(SList* list, void* elem)
 {
 	listHead(list);
-	while(listcurrent(list) != NULL && listCurrent(list) != elem) listNext(list);
-	return (listCurrent(list) == elem) ? 1 : 0;
+	while(listCurrent(list) != elem)
+	{
+		if(!listNext(list))
+		{
+			return 0;
+		}
+	}
+	return 1;
 }
 
 SList* listConcat(SList* list1, SList* list2)
@@ -129,6 +135,40 @@ SList* listConcat(SList* list1, SList* list2)
 		list1->curr->next = list2->head;
 	}
 	return list1;
+}
+
+// TODO : deplacer sur ensemble position
+SList* listConcatUnique(SList* list1, SList* list2)
+{
+	while(listNext(list2) != NULL)
+	{
+		if(listMeme(list1 , listCurrent(list2)))
+		{
+			listRemove(list2,1);
+		}
+		else
+		{
+			listAdd(list1,listCurrent(list2));
+			listRemove(list2,1);
+			listConcatUnique(list1,list2);
+		}
+
+	}
+	free(list2);
+	return list1;
+}
+
+// TODO : deplacer sur ensemble position / include position.h
+int listMeme(SList* list, void* elem)
+{
+	/*
+	listHead(list);
+	while( positionEgale(listCurrent(list),(SPosition*)elem)==1
+			&& listCurrent(list) != NULL) listNext(list);
+	if(listCurrent(list)==NULL) return 0;
+	else return 1;
+	*/
+	return -1;
 }
 
 void listDelete(SList* list)

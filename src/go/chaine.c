@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "chaine.h"
+#include "position.h"
 
 SChaine* creerChaine()
 {
@@ -33,10 +34,10 @@ int positionDansChaine(SChaine* chaine, SPosition* pos)
 {
 	listHead((SList*)listEnsembleColore(chaine));
 	while(listCurrent((SList*)listEnsembleColore(chaine))
-			&& positionsEguale(listCurrent((SList*)listEnsembleColore(chaine)), pos)
+			&& positionsEgale(listCurrent((SList*)listEnsembleColore(chaine)), pos)
 			)
 	{
 		listNext((SList*)listEnsembleColore(chaine));
 	}
-	return positionsEguale(listCurrent((SList*)listEnsembleColore(chaine)), pos);
+	return positionsEgale(listCurrent((SList*)listEnsembleColore(chaine)), pos);
 }

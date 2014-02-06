@@ -43,7 +43,7 @@ SPosition* transformerPosition(SPlateau* plateau, char* saisie)
 	return creerPosition(x,y);
 }
 
-int positionsEguale(SPosition* pos1, SPosition* pos2)
+int positionsEgale(SPosition* pos1, SPosition* pos2)
 {
 	return (pos1->x == pos2->x && pos1->y == pos2->x) ? 1 : 0;
 }

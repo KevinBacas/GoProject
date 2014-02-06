@@ -15,6 +15,8 @@
 #include "chaines.h"
 #include "positions.h"
 
+SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion);
+
 // TODO : TOUT
 /**
  * @brief determine l'ensemble des libertes d'une chaine donnee en fonction de la position des pions sur le plateau
@@ -81,7 +83,5 @@ int plateau_copie(SPlateau* from, SPlateau* to);
  */
 // TODO : PAS UNE PRIO
 SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* plateau);
-
-int
 
 #endif // UTILSGO_H_

@@ -1,11 +1,90 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "utilsGo.h"
+#include "chaines.h"
 
 #include "utilsGo.h"
 
 SLibertes* determineLiberte(SPlateau* plateau,SChaine* chaine);
 
 STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos);
+
+//TODO : recheck Chaine => liste de positions
+SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
+{
+	SLibertes* liberte = listInit();
+	int x = abscissePion(pion);
+	int y = ordonneePion(pion);
+	int taille = taille_plateau(plateau) - 1; //pour comptabilit� avec le tableau 2 dimension
+
+	if(x>taille || x < 0 || y > taille || y < 0) return NULL;
+
+	if(x == taille)
+	{
+		if(y == taille) //le pion est dans le coin en haut a droite
+		{
+			listAdd(liberte, (void*)creerPosition(x,y-1));
+			listAdd(liberte, (void*)creerPosition(x-1,y));
+		}
+		else
+		{
+			if(y==0)// coin inf�rieur droit
+			{
+				listAdd(liberte, (void*)creerPosition(x,y+1));
+				listAdd(liberte, (void*)creerPosition(x-1,y));
+			}
+			else //pion sur le bord droit
+			{
+				listAdd(liberte, (void*)creerPosition(x,y-1));
+				listAdd(liberte, (void*)creerPosition(x,y+1));
+				listAdd(liberte, (void*)creerPosition(x-1,y));
+			}
+		}
+	}
+	else
+	{
+		if(x==0)
+		{
+			if(y == taille) //le pion est dans le coin en haut a gauche
+			{
+				listAdd(liberte, (void*)creerPosition(x,y-1));
+				listAdd(liberte, (void*)creerPosition(x+1,y));
+			}
+			else
+			{
+				if(y==0)// coin inf�rieur gauche
+				{
+					listAdd(liberte, (void*)creerPosition(x,y+1));
+					listAdd(liberte, (void*)creerPosition(x+1,y));
+				}
+				else //pion sur le bord gauche
+				{
+					listAdd(liberte, (void*)creerPosition(x,y-1));
+					listAdd(liberte, (void*)creerPosition(x,y+1));
+					listAdd(liberte, (void*)creerPosition(x+1,y));
+				}
+			}
+		}
+		else // tout est au milieu
+		{
+			listAdd(liberte, (void*)creerPosition(x,y-1));
+			listAdd(liberte, (void*)creerPosition(x,y+1));
+			listAdd(liberte, (void*)creerPosition(x+1,y));
+			listAdd(liberte, (void*)creerPosition(x-1,y));
+		}
+	}
+	return liberte;
+}
+
+// TODO : faire passer la chaine a l etat suivant ?
+SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
+{
+	if(listEnsembleColore(chaine)==NULL) return NULL;
+
+	SLibertes* liberte = listConcatUnique(libertesAdjacente(plateau,listCurrent(listEnsembleColore(chaine))), determineLiberte(plateau,(SChaine*)listNext(chaine)) );
+
+	return liberte;
+}
 
 int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau);
 

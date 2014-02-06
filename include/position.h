@@ -21,6 +21,6 @@ SPosition* transformerPosition(SPlateau* plateau, char* saisie);
  * @brief Test si les positions sont eguales.
  * @return 1 si vrai sinon 0.
  */
-int positionsEguale(SPosition* pos1, SPosition* pos2);
+int positionsEgale(SPosition* pos1, SPosition* pos2);
 
 #endif

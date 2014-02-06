@@ -22,12 +22,12 @@ ECouleur couleurPion(SPion* pion)
 
 int abscissePion(SPion* pion)
 {
-	return abscissePosition(pion->pos);
+	return abscissePosition(&pion->pos);
 }
 
 int ordonneePion(SPion* pion)
 {
-	return ordonneePosition(pion->pos);
+	return ordonneePosition(&pion->pos);
 }
 
 SPosition positionPion(SPion* pion)
