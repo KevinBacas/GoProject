@@ -23,112 +23,119 @@ SList* listInit()
 	return res;
 }
 
-void* listCurrent(SList* _list)
+void* listCurrent(SList* list)
 {
-	return _list->curr;
+	return list->curr;
 }
 
-int listEmpty(SList* _list)
+int listEmpty(SList* list)
 {
-	return _list->head ? 0 : 1;
+	return list->head ? 0 : 1;
 }
 
-void listAdd(SList* _list, void* _elem)
+void listAdd(SList* list, void* elem)
 {
-	SListNode* elem = malloc(sizeof(SListNode));
-	elem->data = _elem;
-	elem->next = NULL;
+	SListNode* node = malloc(sizeof(SListNode));
+	node->data = elem;
+	node->next = NULL;
 
-	if(listEmpty(_list))
+	if(listEmpty(list))
 	{
-		_list->head = elem;
-		_list->curr = elem;
+		list->head = node;
+		list->curr = node;
 	}
 	else
 	{
-		while(_list->curr->next != NULL)
+		while(list->curr->next != NULL)
 		{
-			listNext(_list);
+			listNext(list);
 		}
-		_list->curr->next = elem;
+		list->curr->next = node;
 	}
-	printf("added %X\n", (unsigned int)_elem);
+	printf("added %X\n", (unsigned int)elem);
 }
 
-SListNode* listNext(SList* _list)
+SListNode* listNext(SList* list)
 {
 	SListNode* res = NULL;
-	if(_list->curr->next)
+	if(list->curr->next)
 	{
-		res = _list->curr->next;
-		_list->curr = _list->curr->next;
+		res = list->curr->next;
+		list->curr = list->curr->next;
 	}
 	return res;
 }
 
-SListNode* listHead(SList* _list)
+SListNode* listHead(SList* list)
 {
-	_list->curr = _list->head;
-	return _list->curr;
+	list->curr = list->head;
+	return list->curr;
 }
 
-void* listRemove(SList* _list, int _index)
+void* listRemove(SList* list, int index)
 {
-	listHead(_list);
+	listHead(list);
 	void* res = NULL;
-	if(_index == 0)
+	if(index == 0)
 	{
-		SListNode* to_delete = _list->head;
-		_list->head = _list->head->next;
+		SListNode* to_delete = list->head;
+		list->head = list->head->next;
 		res = to_delete->data;
 		free(to_delete);
 	}
 
 	int i = 0;
-	while(listNext(_list) && i != _index-1);
+	while(listNext(list) && i != index-1);
 
-	if( i == _index-1)
+	if( i == index-1)
 	{
 		// l'element existe
-		SListNode* to_delete = _list->curr->next;
-		_list->curr->next = _list->curr->next->next;
+		SListNode* to_delete = list->curr->next;
+		list->curr->next = list->curr->next->next;
 		res = to_delete->data;
 		free(to_delete);
 	}
 	return res;
 }
 
-void listDisplay(SList* _list)
+void listDisplay(SList* list)
 {
-	listHead(_list);
-	printf("%X", (unsigned int)(_list->curr->data));
-	while(listNext(_list))
+	listHead(list);
+	printf("%X", (unsigned int)(list->curr->data));
+	while(listNext(list))
 	{
-		printf(" -> %X", (unsigned int)(_list->curr->data));
+		printf(" -> %X", (unsigned int)(list->curr->data));
 	}
 	printf("\n");
 }
 
-SList* listConcat(SList* _list1, SList* _list2)
+int listMeme(SList* list, void* elem)
 {
-	if(listEmpty(_list1))
+	listHead(list);
+	while(listNext(list) != NULL && listCurrent(list) != elem);
+	return (listCurrent(list) == elem) ? 1 : 0;
+}
+
+SList* listConcat(SList* list1, SList* list2)
+{
+	if(listEmpty(list1))
 	{
-		_list1->head = _list2->head;
-		_list1->curr = _list2->curr;
+		list1->head = list2->head;
+		list1->curr = list2->curr;
 	}
 	else
 	{
-		while(_list1->curr->next == NULL) listNext(_list1);
-		_list1->curr->next = _list2->head;
+		while(list1->curr->next == NULL) listNext(list1);
+		list1->curr->next = list2->head;
 	}
-	return _list1;
+	return list1;
 }
 
-void listDelete(SList* _list)
+void listDelete(SList* list)
 {
-	while(_list->curr != NULL)
+	while(list->curr != NULL)
 	{
-		listRemove(_list,1);
+		listRemove(list,1);
 	}
-	free(_list);
+	free(list);
 }
