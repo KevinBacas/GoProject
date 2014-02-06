@@ -1,9 +1,4 @@
-/*
- * plateau.hdetruire_chaine
- *
- *  Created on: 2 f�vr. 2014
- *      Author: Jacky
- */
+
 
 #ifndef PLATEAU_H_
 #define PLATEAU_H_
@@ -19,25 +14,27 @@ typedef struct
 SPlateau* init_plateau(int taille);
 
 SPlateau* creer_plateau (int taille, ECouleur** grille);
-
+//TODO :
 void detruire_plateau(SPlateau* plateau);
-
+//TODO :
 int taille_plateau(SPlateau* plateau);
-
+//TODO :
 ECouleur plateau_get(SPlateau* plateau, int x, int y);
-
+//TODO :
 void plateau_set(SPlateau plateau, int i, int j, ECouleur couleur);
 
 /**
  * @brief Sauvegarde le plateau dans sa position actuelle.
- * Si la sauvegarde se passe sans probl`me, la fonction retourne 1, sinon 0
+ * Si la sauvegarde se passe sans probleme, la fonction retourne 1, sinon 0
  */
+// TODO :
 int plateau_sauvegarde(SPlateau plateau, FILE* fichier);
 
 /**
- * @brief Charge un plateau précedement sauvegardé.
- * Si le chargement n’est pas possible, retourne un Pointeur NULL
+ * @brief Charge un plateau precedement sauvegarde
+ * Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
+// TODO :
 SPlateau plateau_chargement(FILE* fichier);
 
 
