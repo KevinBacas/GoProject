@@ -14,13 +14,13 @@ typedef struct
 SPlateau* init_plateau(int taille);
 
 SPlateau* creer_plateau (int taille, ECouleur** grille);
-//TODO :
+
 void detruire_plateau(SPlateau* plateau);
-//TODO :
+
 int taille_plateau(SPlateau* plateau);
-//TODO :
+
 ECouleur plateau_get(SPlateau* plateau, int x, int y);
-//TODO :
+
 void plateau_set(SPlateau plateau, int i, int j, ECouleur couleur);
 
 /**

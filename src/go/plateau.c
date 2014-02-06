@@ -49,3 +49,12 @@ ECouleur plateau_get(SPlateau* plateau, int x, int y)
 	return plateau->grille[x][y];
 }
 
+ECouleur plateau_get(SPlateau* plateau, int x, int y)
+{
+	return plateau->grille[x][y];
+}
+
+void plateau_set(SPlateau plateau, int i, int j, ECouleur couleur)
+{
+	plateau->grille[i][j] = couleur;
+}
