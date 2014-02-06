@@ -3,8 +3,9 @@
 
 #include "pion.h"
 #include "liste.h"
+#include "ensembleColore.h"
 
-typedef SList SChaine;
+typedef SEnsembleColore SChaine;
 
 SChaine* creer_chaine_vide();
 
