@@ -23,4 +23,6 @@ int abscisse_pion(SPion* pion);
 
 int ordonnee_pion(SPion* pion);
 
+SPosition* position_pion(SPion* pion);
+
 #endif
