@@ -25,6 +25,8 @@ SListNode* listHead(SList* list);
 
 void* listRemove(SList* list, int index);
 
+void* listRemoveElement(SList* list, void* elem);
+
 void listDisplay(SList* list);
 
 int listFind(SList* list, void* elem);

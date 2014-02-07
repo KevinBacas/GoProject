@@ -3,6 +3,7 @@
 #include "utilsGo.h"
 #include "chaines.h"
 #include "utilsGo.h"
+#include "territoire.h"
 
 
 STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
@@ -140,24 +141,72 @@ SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau);
 SChaine* positionDansChaines(SChaines* chaines, SPosition* pos)
 {
 	listHead(chaines);
-	while(listCurrent(chaines) && positionDansChaine(listCurrent(chaines), pos)) listNext(chaines);
-	return (positionDansChaine(listCurrent(chaines), pos)) ? listCurrent(chaines) : NULL;
+	while(listCurrent(chaines) && positionDansChaine(listCurrent(chaines), pos))
+	{
+		if(!listNext(chaines))
+		{
+			return NULL;
+		}
+	}
+	return listCurrent(chaines);
 }
 
-SChaine* plateau_determiner_chaine(SPlateau* plateau,SChaines* chaines, SPosition* pos)
+SChaine* plateau_determiner_chaine(SPlateau* plateau, SChaines* chaines, SPosition* pos)
 {
 	SChaine* res = NULL;
+	listAdd(listEnsembleColore(res), pos);
 	ECouleur couleur_chaine = plateau_get(plateau, abscissePosition(pos), ordonneePosition(pos));
 	if(couleur_chaine != VIDE && couleur_chaine != KO)
 	{
-		SPosition* pos = creerPosition(abscissePosition(pos)+1, ordonneePosition(pos));
-		SChaine* chaine = positionDansChaines(chaines, pos);
-		//if()
-		//TODO : Regarder N/S/E/W et concat si il y a une chaine
+		//Position N
+		SPosition* pos = NULL;
+		SChaine* chaine = NULL;
+		pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)+1);
+		chaine = positionDansChaines(chaines, pos);
+		if(chaine)
+		{
+			concatenerChaine(res, chaine);
+			listRemoveElement(chaines, chaine);
+		}
+		free(pos);
+
+		//Position S
+		pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)-1);
+		chaine = positionDansChaines(chaines, pos);
+		if(chaine)
+		{
+			concatenerChaine(res, chaine);
+			listRemoveElement(chaines, chaine);
+		}
+		free(pos);
+
+		//Position W
+		pos = creerPosition(abscissePosition(pos)-1, ordonneePosition(pos));
+		chaine = positionDansChaines(chaines, pos);
+		if(chaine)
+		{
+			concatenerChaine(res, chaine);
+			listRemoveElement(chaines, chaine);
+		}
+		free(pos);
+
+		//Position E
+		pos = creerPosition(abscissePosition(pos)+1, ordonneePosition(pos));
+		chaine = positionDansChaines(chaines, pos);
+		if(chaine)
+		{
+			concatenerChaine(res, chaine);
+			listRemoveElement(chaines, chaine);
+		}
+		free(pos);
 	}
+	return res;
 }
 
-void plateau_realiser_capture(SPlateau* plateau, SChaine* chaine);
+void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine)
+{
+
+}
 
 int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau)
 {

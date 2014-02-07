@@ -4,15 +4,12 @@
 #define PLATEAU_H_
 
 #include "couleur.h"
+#include "matrice.h"
 
 /**
  * @struct SPlateau
  */
-typedef struct
-{
-	int taille;
-	ECouleur** grille;
-} SPlateau;
+typedef struct plateau SPlateau;
 
 /**
  * @fn SPlateau* init_plateau(int taille)
@@ -29,7 +26,7 @@ SPlateau* init_plateau(int taille);
  * @param grille grille a affecter
  * @return Pointeur vers le plateau
  */
-SPlateau* creer_plateau (int taille, ECouleur** grille);
+SPlateau* creer_plateau (int taille, Matrice* grille);
 
 /**
  * @fn void detruire_plateau(SPlateau* plateau)
@@ -67,17 +64,31 @@ ECouleur plateau_get(SPlateau* plateau, int x, int y);
 void plateau_set(SPlateau* plateau, int x, int y, ECouleur couleur);
 
 /**
+ * @fn ECouleur char_to_couleur(char c)
+ * @brief converti un caractere en couleur
+ * @param c Le caractere a transformer
+ * @return la couleur correspondante
+ */
+ECouleur char_to_couleur(char c);
+
+/**
+ * @fn char couleur_to_char(ECouleur c)
+ * @brief converti une couleur en caractere
+ * @param c La couleur a transformer
+ * @return le caractere correspondant
+ */
+char couleur_to_char(ECouleur c);
+
+/**
  * @brief Sauvegarde le plateau dans sa position actuelle.
  * Si la sauvegarde se passe sans probleme, la fonction retourne 1, sinon 0
  */
-// TODO :
-int plateau_sauvegarde(SPlateau plateau, FILE* fichier);
+int plateau_sauvegarde(SPlateau* plateau, FILE* fichier);
 
 /**
  * @brief Charge un plateau precedement sauvegarde
  * Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
-// TODO :
-SPlateau plateau_chargement(FILE* fichier);
+SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier);
 
 #endif /* PLATEAU_H_ */
