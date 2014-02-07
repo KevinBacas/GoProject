@@ -9,6 +9,7 @@
 #define TERRITOIRE_H_
 
 #include "ensembleColore.h"
+#include "plateau.h"
 
 /**
  * @typedef SEnsembleColore STerritoire

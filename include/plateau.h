@@ -94,4 +94,6 @@ SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier);
 
 SPosition* transformerPosition(SPlateau* plateau, char* saisie);
 
+int positionValide(SPlateau* plateau,SPosition* position);
+
 #endif /* PLATEAU_H_ */

@@ -117,3 +117,12 @@ SPosition* transformerPosition(SPlateau* plateau, char* saisie)
 	}
 	return creerPosition(x,y);
 }
+
+int positionValide(SPlateau* plateau,SPosition* position)
+{
+	int x = abscissePosition(position);
+	int y = ordonneePosition(position);
+	int taille=taille_plateau(plateau);
+	if(x >= taille || x < 0 || y >= taille || y<0) return 0;
+	else return 1;
+}

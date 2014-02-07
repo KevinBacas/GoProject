@@ -24,9 +24,6 @@ SPosition* positionBas(SPosition* position);
 
 SPosition* positionHaut(SPosition* position);
 
-int positionValide(SPlateau* plateau,SPosition* position);
-
-
 /**
  * @brief Test si les positions sont eguales.
  * @return 1 si vrai sinon 0.
