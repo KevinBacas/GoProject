@@ -56,9 +56,9 @@ ECouleur compareCouleur(ECouleur couleur1, ECouleur couleur2)
 ECouleur determineCouleurTerritoire(SPlateau* plateau, STerritoire* territoire, ECouleur couleur)
 {
 	ECouleur couleur_de_comparaison = couleur;
-	SPosition* position_territoire = listCurrent(listEnsembleColore(territoire));
-	if(listEmpty(listCurrent(listEnsembleColore(territoire)))) return BORD;
+	SPosition* position_territoire = getListNodeData(listCurrent(listEnsembleColore(territoire)));
+	if(listEmpty(listEnsembleColore(territoire))) return BORD;
 
-	return compareCouleur(couleur_de_comparaison, determineCouleurTerritoire(plateau, listNext(listEnsembleColore(territoire), couleurVoisin(plateau,position_territoire))));
+	return compareCouleur(couleur_de_comparaison, determineCouleurTerritoire(plateau, getListNodeData(listNext(listEnsembleColore(territoire)), couleurVoisin(plateau,position_territoire))));
 }
 

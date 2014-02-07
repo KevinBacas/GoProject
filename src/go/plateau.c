@@ -40,6 +40,7 @@ int taille_plateau(SPlateau* plateau)
 
 ECouleur plateau_get(SPlateau* plateau, SPosition* pos)
 {
+	//if(!pos) return BORD;
 	int x = abscissePosition(pos);
 	int y = ordonneePosition(pos);
 	if(x < 0 || x >= taille_plateau(plateau) || y < 0 || y >= taille_plateau(plateau)) return BORD;
@@ -73,7 +74,7 @@ char couleur_to_char(ECouleur c)
 	case VIDE : return 'V';
 	case BLANC : return 'B';
 	case BORD : return '-';
-	default : return 'V';
+	default : return 'D';
 	}
 }
 

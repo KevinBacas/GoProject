@@ -34,3 +34,6 @@ $(DIST_FOLDER)/position.o : position.c $(INCLUDE_FOLDER)/position.h
 	
 $(DIST_FOLDER)/utilsGo.o : utilsGo.c $(INCLUDE_FOLDER)/utilsGo.h
 	$(CC) -c $< -o $@
+	
+$(DIST_FOLDER)/territoire.o : territoire.c $(INCLUDE_FOLDER)/territoire.h
+	$(CC) -c $< -o $@

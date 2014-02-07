@@ -9,6 +9,7 @@
 #define PARTIE_H_
 
 #include <stdio.h>
+#include "position.h"
 
 typedef struct partie SPartie;
 
@@ -31,19 +32,13 @@ SPartie* initialisationPartie(FonctionQuestions fonctionQuestions);
 void detruirePartie(SPartie* partie);
 
 /**
- * @brief Sauvegarde la partie dans sa position actuelle
- * Si la sauvegarde se passe sans probleme la fonction retourne 1, sinon 0
- * */
-// TODO :
-int partie_sauvegarde(SPartie partie, FILE* fichier);
-
-/**
  * @brief Charge une partie precedement sauvegarde Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
 // TODO :
-SPartie partie_charge(FILE* fichier);
+SPartie* partie_charge(FILE* fichier);
+
 //TODO :
-void jouer_coup(SPartie partie, SPosition position);
+void jouer_coup(SPartie* partie, SPosition position);
 
 /**
  * @brief Sauvegarde la partie dans sa position actuelle
@@ -52,6 +47,6 @@ void jouer_coup(SPartie partie, SPosition position);
 // TODO :
 void partie_sauvegarde(SPartie* partie, FILE* fichier);
 
-void jouerPartie(SPartie* partie);
+int jouerPartie(SPartie* partie);
 
 #endif /* PARTIE_H_ */
