@@ -9,16 +9,16 @@
 STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 {
 	STerritoire* territoire = creerEnsembleColore();
-	listAdd(territoire,(void*)pos);
+	listAdd(listEnsembleColore(territoire),(void*)pos);
 	if((positionValide(plateau,pos))==0) return NULL;
 	SPosition* posG = positionGauche(pos);
 	SPosition* posD = positionDroite(pos);
 	SPosition* posB = positionBas(pos);
 	SPosition* posH = positionHaut(pos);
-	SList* l1=listConcatUnique(listEnsembleColore(territoire),determineTerritoire(plateau, posG));
-	SList* l2=listConcatUnique(l1, determineTerritoire(plateau,posD));
-	SList* l3=listConcatUnique(l2, determineTerritoire(plateau, posB));
-	SList* l4=listConcatUnique(l4, determineTerritoire(plateau, posH));
+	SList* l1=listConcatUnique(listEnsembleColore(territoire), listEnsembleColore(determineTerritoire(plateau, posG)));
+	SList* l2=listConcatUnique(l1, listEnsembleColore(determineTerritoire(plateau, posD)));
+	SList* l3=listConcatUnique(l2, listEnsembleColore(determineTerritoire(plateau, posB)));
+	SList* l4=listConcatUnique(l4, listEnsembleColore(determineTerritoire(plateau, posH)));
 
 	detruirePosition(posG);
 	detruirePosition(posD);
@@ -32,10 +32,10 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 {
 	SLibertes* liberte = listInit();
 	SPosition pos = positionPion(pion);
-	SPosition posG = positionGauche(pos);
-	SPosition posD = positionDroite(pos);
-	SPosition posB = positionBas(pos);
-	SPosition posH = positionHaut(pos);
+	SPosition* posG = positionGauche(&pos);
+	SPosition* posD = positionDroite(&pos);
+	SPosition* posB = positionBas(&pos);
+	SPosition* posH = positionHaut(&pos);
 	int taille = taille_plateau(plateau) - 1; //pour comptabilite avec le tableau 2 dimension
 
 	int x = abscissePion(pion);
@@ -43,15 +43,15 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 
 
 
-	if(positionValide(&pos)==0) return NULL;
+	if(positionValide(plateau, &pos)==0) return NULL;
 
 	if(x == taille)
 	{
 		if(y == taille) //le pion est dans le coin en haut a droite
 		{
-			if(plateau_get(plateau,&posB)==VIDE)
+			if(plateau_get(plateau,posB)==VIDE)
 				listAdd(liberte, (void*)posB);
-			if(plateau_get(plateau,&posG)==VIDE)
+			if(plateau_get(plateau,posG)==VIDE)
 				listAdd(liberte, (void*)posG);
 		}
 		else
@@ -121,7 +121,7 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 	detruirePosition(posD);
 	detruirePosition(posB);
 	detruirePosition(posH);
-	detruirePosition(pos);
+
 	return liberte;
 }
 

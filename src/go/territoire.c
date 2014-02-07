@@ -5,29 +5,36 @@
 
 ECouleur couleurVoisin(SPlateau* plateau, SPosition* position)
 {
-	int x = abscissePosition(position);
-	int y = ordonneePosition(position);
-	SPosition* haut = creerPosition(x+1,y);
-	SPosition* bas = creerPosition(x-1,y);
-	SPosition* gauche = creerPosition(x,y-1);
-	SPosition* droite = creerPosition(x,y+1);
+	SPosition* haut = positionHaut(position);
+	SPosition* bas = positionBas(position);
+	SPosition* gauche = positionGauche(position);
+	SPosition* droite = positionDroite(position);
 
 	ECouleur c1 = plateau_get(plateau, haut);
 	ECouleur c2 = plateau_get(plateau, bas);
 	ECouleur c3 = plateau_get(plateau, gauche);
 	ECouleur c4 = plateau_get(plateau, droite);
 
-	if(c1==NOIR && c2!=BLANC && c3!=BLANC && c4!=BLANC) return NOIR;
-	if(c1==BLANC && c2!=NOIR && c3!=NOIR && c4!=NOIR) return BLANC;
-	if(c1!=BLANC && c2==NOIR && c3!=BLANC && c4!=BLANC)return NOIR;
-	if(c1!=NOIR && c2==BLANC && c3!=NOIR && c4!=NOIR) return BLANC;
-	if(c1!=BLANC && c2!=BLANC && c3==NOIR && c4!=BLANC)return NOIR;
-	if(c1!=NOIR && c2!=NOIR && c3==BLANC && c4!=NOIR) return BLANC;
-	if(c1!=BLANC && c2!=BLANC && c3!=BLANC && c4!=NOIR)return NOIR;
-	if(c1!=NOIR && c2!=NOIR && c3!=NOIR && c4!=BLANC) return BLANC;
+	ECouleur retourner = KO;
 
-	if(c1==VIDE && c2==VIDE && c3 == VIDE && c4==VIDE) return BORD;
-	else return VIDE;
+	if(c1==NOIR && c2!=BLANC && c3!=BLANC && c4!=BLANC) retourner = NOIR;
+	if(c1==BLANC && c2!=NOIR && c3!=NOIR && c4!=NOIR) retourner = BLANC;
+	if(c1!=BLANC && c2==NOIR && c3!=BLANC && c4!=BLANC)retourner = NOIR;
+	if(c1!=NOIR && c2==BLANC && c3!=NOIR && c4!=NOIR) retourner = BLANC;
+	if(c1!=BLANC && c2!=BLANC && c3==NOIR && c4!=BLANC)retourner = NOIR;
+	if(c1!=NOIR && c2!=NOIR && c3==BLANC && c4!=NOIR) retourner = BLANC;
+	if(c1!=BLANC && c2!=BLANC && c3!=BLANC && c4!=NOIR)retourner = NOIR;
+	if(c1!=NOIR && c2!=NOIR && c3!=NOIR && c4!=BLANC) retourner = BLANC;
+
+	if(c1==VIDE && c2==VIDE && c3 == VIDE && c4==VIDE) retourner = BORD;
+	if(retourner==KO) retourner = VIDE;
+
+	detruirePosition(haut);
+	detruirePosition(bas);
+	detruirePosition(gauche);
+	detruirePosition(droite);
+
+	return retourner;
 }
 
 ECouleur compareCouleur(ECouleur couleur1, ECouleur couleur2)

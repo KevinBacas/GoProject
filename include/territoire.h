@@ -16,7 +16,7 @@
  */
 typedef SEnsembleColore STerritoire;
 
-ECouleur couleurVoisin(SPlateau* plateau, int x, int y);
+ECouleur couleurVoisin(SPlateau* plateau, SPosition* position);
 
 ECouleur compareCouleur(ECouleur couleur1, ECouleur couleur2);
 
