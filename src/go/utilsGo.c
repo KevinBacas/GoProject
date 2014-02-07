@@ -31,42 +31,45 @@ STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 {
 	SLibertes* liberte = listInit();
-	SPosition* pos = positionPion(pion);
-	SPosition* posG = positionGauche(pos);
-	SPosition* posD = positionDroite(pos);
-	SPosition* posB = positionBas(pos);
-	SPosition* posH = positionHaut(pos);
+	SPosition pos = positionPion(pion);
+	SPosition posG = positionGauche(pos);
+	SPosition posD = positionDroite(pos);
+	SPosition posB = positionBas(pos);
+	SPosition posH = positionHaut(pos);
 	int taille = taille_plateau(plateau) - 1; //pour comptabilite avec le tableau 2 dimension
 
+	int x = abscissePion(pion);
+	int y = ordonneePion(pion);
 
 
-	if(x>taille || x < 0 || y > taille || y < 0) return NULL;
+
+	if(positionValide(&pos)==0) return NULL;
 
 	if(x == taille)
 	{
 		if(y == taille) //le pion est dans le coin en haut a droite
 		{
-			if(plateau_get(x,y-1)==VIDE)
+			if(plateau_get(plateau,&posB)==VIDE)
 				listAdd(liberte, (void*)posB);
-			if(plateau_get(x-1,y)==VIDE)
+			if(plateau_get(plateau,&posG)==VIDE)
 				listAdd(liberte, (void*)posG);
 		}
 		else
 		{
 			if(y==0)// coin inf�rieur droit
 			{
-				if(plateau_get(x,y+1)==VIDE)
+				if(plateau_get(plateau,posH)==VIDE)
 					listAdd(liberte, (void*)posH);
-				if(plateau_get(x-1,y)==VIDE)
+				if(plateau_get(plateau,posG)==VIDE)
 					listAdd(liberte, (void*)posG);
 			}
 			else //pion sur le bord droit
 			{
-				if(plateau_get(x,y-1)==VIDE)
+				if(plateau_get(plateau,posB)==VIDE)
 					listAdd(liberte, (void*)posB);
-				if(plateau_get(x,y+1)==VIDE)
+				if(plateau_get(plateau,posH)==VIDE)
 					listAdd(liberte, (void*)posH);
-				if(plateau_get(x-1,y)==VIDE)
+				if(plateau_get(plateau,posG)==VIDE)
 					listAdd(liberte, (void*)posG);
 			}
 		}
@@ -77,40 +80,40 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 		{
 			if(y == taille) //le pion est dans le coin en haut a gauche
 			{
-				if(plateau_get(x,y-1)==VIDE)
+				if(plateau_get(plateau,posB)==VIDE)
 					listAdd(liberte, (void*)posB);
-				if(plateau_get(x+1,y)==VIDE)
+				if(plateau_get(plateau,posD)==VIDE)
 					listAdd(liberte, (void*)posD);
 			}
 			else
 			{
 				if(y==0)// coin inf�rieur gauche
 				{
-					if(plateau_get(x,y+1)==VIDE)
+					if(plateau_get(plateau,posH)==VIDE)
 						listAdd(liberte, (void*)posH);
-					if(plateau_get(x+1,y)==VIDE)
+					if(plateau_get(plateau,posD)==VIDE)
 						listAdd(liberte, (void*)posD);
 				}
 				else //pion sur le bord gauche
 				{
-					if(plateau_get(x,y-1)==VIDE)
+					if(plateau_get(plateau,posB)==VIDE)
 						listAdd(liberte, (void*)posB);
-					if(plateau_get(x,y+1)==VIDE)
+					if(plateau_get(plateau,posH)==VIDE)
 						listAdd(liberte, (void*)posH);
-					if(plateau_get(x+1,y)==VIDE)
+					if(plateau_get(plateau,posD)==VIDE)
 						listAdd(liberte, (void*)posD);
 				}
 			}
 		}
 		else // tout est au milieu
 		{
-			if(plateau_get(x,y-1)==VIDE)
+			if(plateau_get(plateau,posB)==VIDE)
 				listAdd(liberte, (void*)posB);
-			if(plateau_get(x,y+1)==VIDE)
+			if(plateau_get(plateau,posH)==VIDE)
 				listAdd(liberte, (void*)posH);
-			if(plateau_get(x+1,y)==VIDE)
+			if(plateau_get(plateau,posD)==VIDE)
 				listAdd(liberte, (void*)posD);
-			if(plateau_get(x-1,y)==VIDE)
+			if(plateau_get(plateau,posG)==VIDE)
 				listAdd(liberte, (void*)posG);
 		}
 	}
@@ -237,7 +240,7 @@ int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau)
 	return res;
 }
 
-int plateau_copie(SPlateau* from, SPlateau* to)
+void plateau_copie(SPlateau* from, SPlateau* to)
 {
 	int taille = taille_plateau(from);
 	int i,j;
