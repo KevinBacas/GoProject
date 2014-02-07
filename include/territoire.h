@@ -15,4 +15,10 @@
  */
 typedef SEnsembleColore STerritoire;
 
+ECouleur couleurVoisin(SPlateau* plateau, int x, int y);
+
+ECouleur compareCouleur(ECouleur couleur1, ECouleur couleur2);
+
+ECouleur determineCouleurTerritoire(SPlateau* plateau, STerritoire* territoire, ECouleur couleur);
+
 #endif /* TERRITOIRE_H_ */

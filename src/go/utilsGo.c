@@ -2,18 +2,42 @@
 #include <stdio.h>
 #include "utilsGo.h"
 #include "chaines.h"
-
 #include "utilsGo.h"
 
-// TODO : Via strat op
-STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos);
+
+STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
+{
+	STerritoire* territoire = creerEnsembleColore();
+	listAdd(territoire,(void*)pos);
+	if((positionValide(plateau,pos))==0) return NULL;
+	SPosition* posG = positionGauche(pos);
+	SPosition* posD = positionDroite(pos);
+	SPosition* posB = positionBas(pos);
+	SPosition* posH = positionHaut(pos);
+	SList* l1=listConcatUnique(listEnsembleColore(territoire),determineTerritoire(plateau, posG));
+	SList* l2=listConcatUnique(l1, determineTerritoire(plateau,posD));
+	SList* l3=listConcatUnique(l2, determineTerritoire(plateau, posB));
+	SList* l4=listConcatUnique(l4, determineTerritoire(plateau, posH));
+
+	detruirePosition(posG);
+	detruirePosition(posD);
+	detruirePosition(posB);
+	detruirePosition(posH);
+
+	return l4;
+}
 
 SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 {
 	SLibertes* liberte = listInit();
-	int x = abscissePion(pion);
-	int y = ordonneePion(pion);
-	int taille = taille_plateau(plateau) - 1; //pour comptabilit� avec le tableau 2 dimension
+	SPosition* pos = positionPion(pion);
+	SPosition* posG = positionGauche(pos);
+	SPosition* posD = positionDroite(pos);
+	SPosition* posB = positionBas(pos);
+	SPosition* posH = positionHaut(pos);
+	int taille = taille_plateau(plateau) - 1; //pour comptabilite avec le tableau 2 dimension
+
+
 
 	if(x>taille || x < 0 || y > taille || y < 0) return NULL;
 
@@ -21,21 +45,28 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 	{
 		if(y == taille) //le pion est dans le coin en haut a droite
 		{
-			listAdd(liberte, (void*)creerPosition(x,y-1));
-			listAdd(liberte, (void*)creerPosition(x-1,y));
+			if(plateau_get(x,y-1)==VIDE)
+				listAdd(liberte, (void*)posB);
+			if(plateau_get(x-1,y)==VIDE)
+				listAdd(liberte, (void*)posG);
 		}
 		else
 		{
 			if(y==0)// coin inf�rieur droit
 			{
-				listAdd(liberte, (void*)creerPosition(x,y+1));
-				listAdd(liberte, (void*)creerPosition(x-1,y));
+				if(plateau_get(x,y+1)==VIDE)
+					listAdd(liberte, (void*)posH);
+				if(plateau_get(x-1,y)==VIDE)
+					listAdd(liberte, (void*)posG);
 			}
 			else //pion sur le bord droit
 			{
-				listAdd(liberte, (void*)creerPosition(x,y-1));
-				listAdd(liberte, (void*)creerPosition(x,y+1));
-				listAdd(liberte, (void*)creerPosition(x-1,y));
+				if(plateau_get(x,y-1)==VIDE)
+					listAdd(liberte, (void*)posB);
+				if(plateau_get(x,y+1)==VIDE)
+					listAdd(liberte, (void*)posH);
+				if(plateau_get(x-1,y)==VIDE)
+					listAdd(liberte, (void*)posG);
 			}
 		}
 	}
@@ -45,32 +76,48 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 		{
 			if(y == taille) //le pion est dans le coin en haut a gauche
 			{
-				listAdd(liberte, (void*)creerPosition(x,y-1));
-				listAdd(liberte, (void*)creerPosition(x+1,y));
+				if(plateau_get(x,y-1)==VIDE)
+					listAdd(liberte, (void*)posB);
+				if(plateau_get(x+1,y)==VIDE)
+					listAdd(liberte, (void*)posD);
 			}
 			else
 			{
 				if(y==0)// coin inf�rieur gauche
 				{
-					listAdd(liberte, (void*)creerPosition(x,y+1));
-					listAdd(liberte, (void*)creerPosition(x+1,y));
+					if(plateau_get(x,y+1)==VIDE)
+						listAdd(liberte, (void*)posH);
+					if(plateau_get(x+1,y)==VIDE)
+						listAdd(liberte, (void*)posD);
 				}
 				else //pion sur le bord gauche
 				{
-					listAdd(liberte, (void*)creerPosition(x,y-1));
-					listAdd(liberte, (void*)creerPosition(x,y+1));
-					listAdd(liberte, (void*)creerPosition(x+1,y));
+					if(plateau_get(x,y-1)==VIDE)
+						listAdd(liberte, (void*)posB);
+					if(plateau_get(x,y+1)==VIDE)
+						listAdd(liberte, (void*)posH);
+					if(plateau_get(x+1,y)==VIDE)
+						listAdd(liberte, (void*)posD);
 				}
 			}
 		}
 		else // tout est au milieu
 		{
-			listAdd(liberte, (void*)creerPosition(x,y-1));
-			listAdd(liberte, (void*)creerPosition(x,y+1));
-			listAdd(liberte, (void*)creerPosition(x+1,y));
-			listAdd(liberte, (void*)creerPosition(x-1,y));
+			if(plateau_get(x,y-1)==VIDE)
+				listAdd(liberte, (void*)posB);
+			if(plateau_get(x,y+1)==VIDE)
+				listAdd(liberte, (void*)posH);
+			if(plateau_get(x+1,y)==VIDE)
+				listAdd(liberte, (void*)posD);
+			if(plateau_get(x-1,y)==VIDE)
+				listAdd(liberte, (void*)posG);
 		}
 	}
+	detruirePosition(posG);
+	detruirePosition(posD);
+	detruirePosition(posB);
+	detruirePosition(posH);
+	detruirePosition(pos);
 	return liberte;
 }
 

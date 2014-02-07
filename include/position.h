@@ -12,9 +12,21 @@ typedef struct
 
 SPosition* creerPosition(int x, int y);
 
+void detruirePosition(SPosition* position);
+
 int abscissePosition(SPosition* position);
 
 int ordonneePosition(SPosition* position);
+
+SPosition* positionGauche(SPosition* position);
+
+SPosition* positionDroite(SPosition* position);
+
+SPosition* positionBas(SPosition* position);
+
+SPosition* positionHaut(SPosition* position);
+
+int positionValide(SPlateau* plateau,SPosition* position);
 
 SPosition* transformerPosition(SPlateau* plateau, char* saisie);
 

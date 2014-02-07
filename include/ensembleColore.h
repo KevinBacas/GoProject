@@ -24,6 +24,15 @@ SEnsembleColore* creerEnsembleColore();
 void detruireEnsembleColore(SEnsembleColore* e_colore);
 
 /**
+ * @fn void setCouleurEnsembleColore(SEnsembleColore* e_colore, ECouleur couleur)
+ * @brief change la couleur l'EnsembleColore
+ * @param e_colore Ensemble alloue qui contient la couleur
+ * @param couleur Couleur voulu
+ * @return Couleur de l'ensemble
+ */
+void setCouleurEnsembleColore(SEnsembleColore* e_colore, ECouleur couleur);
+
+/**
  * @fn ECouleur couleurEnsembleColore(SEnsembleColore* e_colore)
  * @brief renvoi la couleur de l'EnsembleColore
  * @param e_colore Ensemble alloue qui contient la couleur

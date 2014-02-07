@@ -24,6 +24,11 @@ SEnsembleColore* creerEnsembleColore()
 	return EnsembleColore;
 }
 
+void setCouleurEnsembleColore(SEnsembleColore* e_colore, ECouleur couleur)
+{
+	e_colore->couleur = couleur;
+}
+
 void detruireEnsembleColore(SEnsembleColore* e_colore)
 {
 	listDelete(e_colore->e_position);
