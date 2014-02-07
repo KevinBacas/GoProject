@@ -43,4 +43,6 @@ SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2);
  */
 int positionDansChaine(SChaine* chaine, SPosition* pos);
 
+void actualiseChaines(SChaines chaines);
+
 #endif // __CHAINE__

@@ -205,14 +205,8 @@ void jouer_coup(SPartie* partie, SPosition position)
 	SPlateau* plateau = partie->p_courant;
 	SChaines* chaines = partie->chaines;
 
-	int compteurBizarre=0;
-
 	SList* list = listInit();
 	listAdd(list, &position);
-	SList* l1 = listInit();
-	SList* l2 = listInit();
-	SList* l3 = listInit();
-	SList* l4 = listInit();
 
 	SPion* pion = creerPion(position, couleur_joueur);
 	SPosition* v_droit = voisinDroit(plateau, &position);
@@ -227,46 +221,13 @@ void jouer_coup(SPartie* partie, SPosition position)
 
 	plateau_set(plateau, &position,couleur_joueur);
 
-	if(v_haut && couleur_joueur==plateau_get(plateau,v_haut))
-	{
-		l1 = listConcatUnique(chaine_haut,list);
-		compteurBizarre += 1;
-	}
+	if(v_droit && plateau_get(plateau,v_droit)==couleur_joueur) listConcatUnique(list, chaine_droit);
+	if(v_bas && plateau_get(plateau,v_bas)==couleur_joueur) listConcatUnique(list,chaine_bas);
+	if(v_gauche && plateau_get(plateau,v_gauche)==couleur_joueur) listConcatUnique(list,chaine_gauche);
+	if(v_haut && plateau_get(plateau,v_haut)==couleur_joueur) listConcatUnique(list, chaine_haut);
 
-	if(v_gauche && couleur_joueur==plateau_get(plateau,v_gauche))
-	{
-		if(compteurBizarre==1) l2 = listConcatUnique(chaine_gauche,l1);
-		else
-		{
-			l2 = listConcatUnique(chaine_gauche,list);
-		}
-		compteurBizarre += 2;
-	}
-	if(v_bas && couleur_joueur==plateau_get(plateau,v_bas))
-	{
-		if(compteurBizarre>=2) l3 = listConcatUnique(chaine_bas,l2);
-		else
-		{
-			if(compteurBizarre==1) l3 = listConcatUnique(chaine_bas,l1);
-			else l3 = listConcatUnique(chaine_bas,list);
-		}
-		compteurBizarre+=4;
-	}
-	if(v_droit && couleur_joueur==plateau_get(plateau,v_droit))
-	{
-		if(compteurBizarre>=4) l4 = listConcatUnique(chaine_droit,l3);
-		else
-		{
-			if(compteurBizarre>=2) l4 = listConcatUnique(chaine_droit,l2);
-			else
-			{
-				if(compteurBizarre==1) l4=listConcatUnique(chaine_droit,l1);
-				else l4=listConcatUnique(chaine_droit,list);
-			}
-		}
-	}
-	//l� il faut virer les autres chaines de la doublons de la liste de chaines
-	//tet que jme suis fait chier pour RIIIIEN !a voir
+	listAdd(chaines, (void*)list);
+	actualiseChaines(chaines);
 }
 
 int coup_valide(SPartie* partie, SPosition* position)

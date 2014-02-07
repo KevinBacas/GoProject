@@ -41,3 +41,18 @@ int positionDansChaine(SChaine* chaine, SPosition* pos)
 	}
 	return positionsEgale(listCurrent((SList*)listEnsembleColore(chaine)), pos);
 }
+
+void actualiseChaines(SChaines chaines)
+{
+	SList* tail = ListInit();
+	while(!listNext(chaines));
+	tail = getListNodeData(listCurrent(chaines));
+	int i = listFind(tail,getListNodeData(listHead(getListNodeData(listHead(chaines)))));
+	if(i==1) listRemoveElement(chaines,listHead(chaines));
+	while(!listNext(listNext(chaines)))
+	{
+		i = listFind(tail,getListNodeData(listCurrent(getListNodeData(listCurrent(chaines)))));
+		if(i==1) listRemoveElement(chaines,listCurrent(chaines));
+	}
+	free(tail);
+}
