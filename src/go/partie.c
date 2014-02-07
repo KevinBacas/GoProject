@@ -11,6 +11,7 @@
 #include "chaines.h"
 #include "chaine.h"
 #include "plateau.h"
+#include <string.h>
 
 typedef SList SPlateaux;
 
@@ -104,6 +105,84 @@ void detruirePartie(SPartie* partie)
 	detruire_plateau(partie->p_courant);
 
 	free(partie);
+}
+
+int jouerPartie(SPartie* partie)
+{
+	int quit = 0;
+	int pass_counter = 0;
+	int res = 0;
+
+	do{
+		plateau_affichage(partie->p_courant);
+
+		printf("== Menu de jeu == \n");
+		printf("E5 ou C13 (par exemple) : Position sur laquelle jouer.\n");
+		printf("pass : Passer.\n");
+		printf("save : Sauvegarder la partie.\n");
+		printf("giveup : Abandonner.\n");
+		printf("undo : Revenir un coup en arriere.\n");
+		printf("quit : Quitter la partie\n");
+
+		char saisie[50];
+		scanf("%s", saisie);
+		getchar();
+		printf("%s\n", saisie);
+
+		if(!strcmp("pass", saisie))
+		{
+			pass_counter++;
+			partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
+			// Le joueur veut passer
+		}
+		else if(!strcmp("save", saisie))
+		{
+			FILE* fichier = fopen("sauvegarde.save", "w");
+			partie_sauvegarde(partie, fichier);
+			fclose(fichier);
+		}
+		else if(!strcmp("giveup", saisie))
+		{
+			res = partie->joueur == BLANC ? -1 : 1;
+			quit = 1;
+			// Le joueur courant abandonne.
+		}
+		else if(!strcmp("undo", saisie))
+		{
+			// On retourne un coup en arriere.
+		}
+		else if(!strcmp("quit", saisie))
+		{
+			res = 0;
+			quit = 1;
+		}
+		else
+		{
+			SPosition* pos = transformerPosition(saisie);
+			if(positionValide(partie->p_courant, pos))
+			{
+				if(jouer_coup(partie, pos))
+				{
+					pass_counter = 0;
+				}
+				printf("Coup non autorisé, veuillez rejouer.");
+				partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
+			}
+			else
+			{
+				printf("Commande non reconnue.\n\n")
+			}
+		}
+	}while(!quit);
+}
+
+SPartie* partie_charge(FILE* fichier)
+{
+	return NULL;
+}
+
+void partie_sauvegarde(SPartie* partie, FILE* fichier)
+{
 }
 
 void jouer_coup(SPartie partie, SPosition position)
@@ -241,3 +320,4 @@ int coup_valide(SPartie* partie, SPosition* position)
 		return 1;
 	}
 }
+

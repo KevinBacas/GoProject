@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "utilsGo.h"
 #include "chaines.h"
 #include "utilsGo.h"
 #include "territoire.h"
@@ -8,16 +9,16 @@
 STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 {
 	STerritoire* territoire = creerEnsembleColore();
-	listAdd(territoire,(void*)pos);
+	listAdd(listEnsembleColore(territoire),(void*)pos);
 	if((positionValide(plateau,pos))==0) return NULL;
 	SPosition* posG = positionGauche(pos);
 	SPosition* posD = positionDroite(pos);
 	SPosition* posB = positionBas(pos);
 	SPosition* posH = positionHaut(pos);
-	SList* l1=listConcatUnique(listEnsembleColore(territoire),determineTerritoire(plateau, posG));
-	SList* l2=listConcatUnique(l1, determineTerritoire(plateau,posD));
-	SList* l3=listConcatUnique(l2, determineTerritoire(plateau, posB));
-	SList* l4=listConcatUnique(l4, determineTerritoire(plateau, posH));
+	SList* l1=listConcatUnique(listEnsembleColore(territoire), listEnsembleColore(determineTerritoire(plateau, posG)));
+	SList* l2=listConcatUnique(l1, listEnsembleColore(determineTerritoire(plateau, posD)));
+	SList* l3=listConcatUnique(l2, listEnsembleColore(determineTerritoire(plateau, posB)));
+	SList* l4=listConcatUnique(l4, listEnsembleColore(determineTerritoire(plateau, posH)));
 
 	detruirePosition(posG);
 	detruirePosition(posD);
@@ -31,10 +32,10 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 {
 	SLibertes* liberte = listInit();
 	SPosition pos = positionPion(pion);
-	SPosition posG = positionGauche(pos);
-	SPosition posD = positionDroite(pos);
-	SPosition posB = positionBas(pos);
-	SPosition posH = positionHaut(pos);
+	SPosition* posG = positionGauche(&pos);
+	SPosition* posD = positionDroite(&pos);
+	SPosition* posB = positionBas(&pos);
+	SPosition* posH = positionHaut(&pos);
 	int taille = taille_plateau(plateau) - 1; //pour comptabilite avec le tableau 2 dimension
 
 	int x = abscissePion(pion);
@@ -42,15 +43,15 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 
 
 
-	if(positionValide(&pos)==0) return NULL;
+	if(positionValide(plateau, &pos)==0) return NULL;
 
 	if(x == taille)
 	{
 		if(y == taille) //le pion est dans le coin en haut a droite
 		{
-			if(plateau_get(plateau,&posB)==VIDE)
+			if(plateau_get(plateau,posB)==VIDE)
 				listAdd(liberte, (void*)posB);
-			if(plateau_get(plateau,&posG)==VIDE)
+			if(plateau_get(plateau,posG)==VIDE)
 				listAdd(liberte, (void*)posG);
 		}
 		else
@@ -120,7 +121,7 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 	detruirePosition(posD);
 	detruirePosition(posB);
 	detruirePosition(posH);
-	detruirePosition(pos);
+
 	return liberte;
 }
 
@@ -138,31 +139,12 @@ SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 
 int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau);
 
-SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau)
-{
-	SPositions* yeux = listInit();
-	SLibertes* libertes = determineLiberte(plateau,chaine);
-	ECouleur c_haut = plateau_get(plateau,positionHaut(listHead(libertes)));
-	ECouleur c_bas = plateau_get(plateau,positionBas((listHead(libertes))));
-	ECouleur c_gauche = plateau_get(plateau,positionGauche((listHead(libertes))));
-	ECouleur c_droite = plateau_get(plateau,positionDroite((listHead(libertes))));
-	if(c_haut == c_bas && c_bas == c_gauche && c_gauche== c_droite && (c_haut==NOIR || c_haut == BLANC)) listAdd(yeux,listHead(libertes));
-	while(listNext(libertes)!=NULL)
-	{
-		c_haut = plateau_get(plateau,positionHaut(listCurrent(libertes)));
-		c_bas = plateau_get(plateau,positionBas(listCurrent(libertes)));
-		c_gauche = plateau_get(plateau,positionGauche(listCurrent(libertes)));
-		c_droite = plateau_get(plateau,positionDroite(listCurrent(libertes)));
-		if(c_haut == c_bas && c_bas == c_gauche && c_gauche== c_droite && (c_haut==NOIR || c_haut == BLANC)) listAdd(yeux,listCurrent(libertes));
-	}
-	listDelete(libertes);
-	return yeux;
-}
+SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau);
 
-SChaine* positionDansChaines(SChaines* chaines, SPosition* pos)
+SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos)
 {
 	listHead(chaines);
-	while(listCurrent(chaines) && positionDansChaine(listCurrent(chaines), pos))
+	while(listCurrent(chaines) && !positionDansChaine(listCurrent(chaines), pos))
 	{
 		if(!listNext(chaines))
 		{
@@ -171,58 +153,58 @@ SChaine* positionDansChaines(SChaines* chaines, SPosition* pos)
 	}
 	return listCurrent(chaines);
 }
-
-SChaine* plateau_determiner_chaine(SPlateau* plateau, SChaines* chaines, SPosition* pos)
+/*
+SChaine* res = creerEnsembleColore();
+listAdd(listEnsembleColore(res), pos);
+ECouleur couleur_chaine = plateau_get(plateau, pos);
+if(couleur_chaine != VIDE && couleur_chaine != KO)
 {
-	SChaine* res = NULL;
-	listAdd(listEnsembleColore(res), pos);
-	ECouleur couleur_chaine = plateau_get(plateau, pos);
-	if(couleur_chaine != VIDE && couleur_chaine != KO)
+	//Position N
+	SPosition* pos = NULL;
+	SChaine* chaine = NULL;
+
+
+	pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)+1);
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine && )
 	{
-		//Position N
-		SPosition* pos = NULL;
-		SChaine* chaine = NULL;
-		pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)+1);
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
-
-		//Position S
-		pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)-1);
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
-
-		//Position W
-		pos = creerPosition(abscissePosition(pos)-1, ordonneePosition(pos));
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
-
-		//Position E
-		pos = creerPosition(abscissePosition(pos)+1, ordonneePosition(pos));
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
 	}
-	return res;
+	free(pos);
+
+	//Position S
+	pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)-1);
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine)
+	{
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
+	}
+	free(pos);
+
+	//Position W
+	pos = creerPosition(abscissePosition(pos)-1, ordonneePosition(pos));
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine)
+	{
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
+	}
+	free(pos);
+
+	//Position E
+	pos = creerPosition(abscissePosition(pos)+1, ordonneePosition(pos));
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine)
+	{
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
+	}
+	free(pos);
 }
+return res;
+*/
 
 void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine)
 {
