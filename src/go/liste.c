@@ -60,10 +60,13 @@ void listAdd(SList* list, void* elem)
 SListNode* listNext(SList* list)
 {
 	SListNode* res = NULL;
-	if(list->curr->next)
+	if(!listEmpty(list))
 	{
-		res = list->curr->next;
-		list->curr = list->curr->next;
+		if(list->curr->next)
+		{
+			res = list->curr->next;
+			list->curr = list->curr->next;
+		}
 	}
 	return res;
 }
@@ -86,8 +89,8 @@ void* listRemove(SList* list, int index)
 		free(to_delete);
 	}
 
-	int i = 0;
-	while(listNext(list) && i != index-1);
+	int i = 1;
+	while(listNext(list) && i != index-1) ++i;
 
 	if( i == index-1)
 	{
@@ -97,6 +100,41 @@ void* listRemove(SList* list, int index)
 		res = to_delete->data;
 		free(to_delete);
 	}
+	return res;
+}
+
+
+void* listRemoveElement(SList* list, void* elem)
+{
+	listHead(list);
+	void* res = NULL;
+
+	SListNode* curr = NULL;
+	SListNode* prev = NULL;
+	if(!listEmpty(list))
+	{
+		while(listCurrent(list) != elem){
+			prev = curr;
+			curr = listCurrent(list);
+			if(!listNext(list))
+			{
+				return res;
+			}
+		}
+
+		if(curr == list->head)
+		{
+			list->head = curr->next;
+		}
+		else
+		{
+			prev->next = curr->next;
+		}
+
+		res = curr->data;
+		free(curr);
+	}
+
 	return res;
 }
 

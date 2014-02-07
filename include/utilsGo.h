@@ -55,14 +55,13 @@ SChaine* positionDansChaines(SChaines* chaines, SPosition* pos);
 /**
  * @brief Produit la chaine a laquelle appartient le pion a la position pos sur le plateau.
  * S'il n'y a pas de pion sur cette case, alors le resultat retournee est NULL */
-// TODO :
 SChaine* plateau_determiner_chaine(SPlateau* plateau,SChaines* chaines, SPosition* pos);
 
 /**
  * @brief Realise la capture des pions correspondant a la chaine en les enlevant du plateau.
  */
 // TODO :
-void plateau_realiser_capture(SPlateau* plateau, SChaine* chaine);
+void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine);
 
 /**
  * @brief indique si l'organisation du plateau est identique a une precedente organisation de plateau.
