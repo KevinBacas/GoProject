@@ -9,8 +9,6 @@ typedef struct node SListNode;
 
 typedef struct list SList;
 
-void* getListNodeData(SListNode* _node);
-
 SList* listInit();
 
 void* listCurrent(SList* list);
@@ -19,9 +17,9 @@ int listEmpty(SList* list);
 
 void listAdd(SList* list, void* elem);
 
-SListNode* listNext(SList* list);
+void* listNext(SList* list);
 
-SListNode* listHead(SList* list);
+void* listHead(SList* list);
 
 void* listRemove(SList* list, int index);
 
@@ -33,9 +31,7 @@ int listFind(SList* list, void* elem);
 
 SList* listConcat(SList* list1, SList* list2);
 
-int listMeme(SList* list, void* elem);
-
-SList* listConcatUnique(SList* list1, SList* list2);
+SList* listConcatUnique(SList* list1, SList* list2, int(*cmp)(void*, void*));
 
 void listDelete(SList* list);
 

@@ -18,10 +18,10 @@ SEnsembleColore* creerEnsembleColore()
 {
 	ECouleur couleur = VIDE;
 	SEnsemblePosition* positions = listInit();
-	SEnsembleColore* EnsembleColore = malloc(sizeof(SEnsembleColore));
-	EnsembleColore->e_position = positions;
-	EnsembleColore->couleur = couleur;
-	return EnsembleColore;
+	SEnsembleColore* res = malloc(sizeof(SEnsembleColore));
+	res->e_position = positions;
+	res->couleur = couleur;
+	return res;
 }
 
 void setCouleurEnsembleColore(SEnsembleColore* e_colore, ECouleur couleur)
@@ -42,5 +42,10 @@ ECouleur couleurEnsembleColore(SEnsembleColore* e_colore)
 
 SEnsemblePosition* listEnsembleColore(SEnsembleColore* e_colore)
 {
-	return e_colore->e_position;
+	SEnsemblePosition* res = NULL;
+	if(e_colore)
+	{
+		res = e_colore->e_position;
+	}
+	return res;
 }

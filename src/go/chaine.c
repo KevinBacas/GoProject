@@ -3,6 +3,8 @@
 
 #include "chaine.h"
 #include "position.h"
+#include "liste.h"
+#include "positions.h"
 
 SChaine* creerChaine()
 {
@@ -32,27 +34,44 @@ SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2)
 
 int positionDansChaine(SChaine* chaine, SPosition* pos)
 {
-	listHead((SList*)listEnsembleColore(chaine));
-	while(listCurrent((SList*)listEnsembleColore(chaine))
-			&& positionsEgale(listCurrent((SList*)listEnsembleColore(chaine)), pos)
-			)
+	SList* list = (SList*)listEnsembleColore(chaine);
+
+	listHead(list);
+	int found = 0;
+
+	do
 	{
-		listNext((SList*)listEnsembleColore(chaine));
-	}
-	return positionsEgale(listCurrent((SList*)listEnsembleColore(chaine)), pos);
+		if(positionsEgale(listCurrent(list), pos))
+		{
+			found = 1;
+		}
+	} while(!found && listNext(list));
+
+	return positionsEgale(listCurrent(list), pos);
 }
 
-void actualiseChaines(SChaines chaines)
+void actualiseChaines(SChaines* chaines, SList* n_chaine)
 {
-	SList* tail = ListInit();
-	while(!listNext(chaines));
-	tail = getListNodeData(listCurrent(chaines));
-	int i = listFind(tail,getListNodeData(listHead(getListNodeData(listHead(chaines)))));
-	if(i==1) listRemoveElement(chaines,listHead(chaines));
-	while(!listNext(listNext(chaines)))
+	printf("actualiseChaines\n");
+	if(!listEmpty(chaines))
 	{
-		i = listFind(tail,getListNodeData(listCurrent(getListNodeData(listCurrent(chaines)))));
-		if(i==1) listRemoveElement(chaines,listCurrent(chaines));
+		SList* tail = n_chaine;
+
+		listHead(chaines);
+		do
+		{
+			printf("1\n");
+			SChaine* c = listCurrent(chaines);
+				printf("1.1\n");
+			SPositions* poss = listEnsembleColore(c);
+			listDisplay(poss);
+				printf("1.2\n");
+			SPosition* pos = listHead(poss);
+				printf("1.3\n");
+			int i = listFind(tail, pos);
+			printf("2\n");
+			if(i==1) listRemoveElement(chaines, c);
+		} while(listNext(chaines));
+		printf("3\n");
 	}
-	free(tail);
 }

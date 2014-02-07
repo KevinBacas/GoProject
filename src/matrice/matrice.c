@@ -123,5 +123,6 @@ char getValeurMatrice(Matrice* matrice, int x, int y)
 
 void setValeurMatrice(Matrice* matrice, int x, int y, char valeur)
 {
-  matrice->donnees[x][y] = valeur;
+	if(x > -1 && x < matrice->nbLigne && y > -1 && y < matrice->nbColonne)
+		matrice->donnees[x][y] = valeur;
 }
