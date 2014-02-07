@@ -46,6 +46,27 @@ SPosition* positionHaut(SPosition* position)
 	return creerPosition(abscissePosition(position), ordonneePosition(position)+1);
 }
 
+SPosition* transformerPosition(char* saisie)
+{
+	SPosition* res = NULL;
+	int x,y;
+	int taille_chaine = strlen(saisie);
+	if (taille_chaine == 2)
+	{
+		x = (int)(saisie[0] - 'A');
+		y = (int)(saisie[1] - '0');
+		res = creerPosition(x,y);
+	}
+	else if(taille_chaine == 3)
+	{
+		x = (int)(saisie[0] - 'A');
+		y = (int)(saisie[1] - '0')*10;
+		y += (int)(saisie[1] - '0');
+		res = creerPosition(x,y);
+	}
+	return creerPosition(x,y);
+}
+
 int positionsEgale(SPosition* pos1, SPosition* pos2)
 {
 	return (pos1->x == pos2->x && pos1->y == pos2->x) ? 1 : 0;

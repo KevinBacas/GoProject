@@ -35,13 +35,13 @@ void detruirePartie(SPartie* partie);
  * Si la sauvegarde se passe sans probleme la fonction retourne 1, sinon 0
  * */
 // TODO :
-int partie_sauvegarde(SPartie partie, FILE* fichier);
+void partie_sauvegarde(SPartie* partie, FILE* fichier);
 
 /**
  * @brief Charge une partie precedement sauvegarde Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
 // TODO :
-SPartie partie_charge(FILE* fichier);
+SPartie* partie_charge(FILE* fichier);
 
 void jouerPartie(SPartie* partie);
 

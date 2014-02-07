@@ -15,21 +15,25 @@ int main()
 {
 	printf("== JEU DE GO ==\n\n\n");
 
-	printHomeMenu();
-
 	int quit = 0;
 	do{
+		printHomeMenu();
+
 		char saisie = ' ';
+		scanf("%c", &saisie);
 		getchar();
 		switch(saisie)
 		{
 		case '1':
+		{
 			SPartie* p = initialisationPartie(questionsTerminal);
 			jouerPartie(p);
 			detruirePartie(p);
 			break;
+		}
 		case '2':
-			FILE* fichier = fopen("sauvegarde.save");
+		{
+			FILE* fichier = fopen("sauvegarde.save", "r");
 			if(fichier)
 			{
 				SPartie* p = partie_charge(fichier);
@@ -42,6 +46,7 @@ int main()
 				printf("Aucune sauvegarde n'est présente");
 			}
 			break;
+		}
 		case 'Q':
 			quit = 1;
 			break;

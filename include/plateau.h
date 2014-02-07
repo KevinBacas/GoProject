@@ -79,7 +79,7 @@ ECouleur char_to_couleur(char c);
  */
 char couleur_to_char(ECouleur c);
 
-plateau_affichage(SPlateau* plateau);
+void plateau_affichage(SPlateau* plateau);
 
 /**
  * @brief Sauvegarde le plateau dans sa position actuelle.
@@ -92,8 +92,6 @@ int plateau_sauvegarde(SPlateau* plateau, FILE* fichier);
  * Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
 SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier);
-
-SPosition* transformerPosition(SPlateau* plateau, char* saisie);
 
 int positionValide(SPlateau* plateau,SPosition* position);
 

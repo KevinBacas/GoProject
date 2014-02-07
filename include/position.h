@@ -24,6 +24,8 @@ SPosition* positionBas(SPosition* position);
 
 SPosition* positionHaut(SPosition* position);
 
+SPosition* transformerPosition(char* saisie);
+
 /**
  * @brief Test si les positions sont eguales.
  * @return 1 si vrai sinon 0.
