@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//TODO : documentation
 typedef struct node SListNode;
 
 typedef struct list SList;

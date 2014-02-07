@@ -10,6 +10,9 @@
 
 #include "ensemblePosition.h"
 
+/**
+ * @typedef SEnsemblePosition SLibertes
+ */
 typedef SEnsemblePosition SLibertes;
 
 #endif /* LIBERTES_H_ */

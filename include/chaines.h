@@ -10,6 +10,9 @@
 
 #include "liste.h"
 
+/**
+ * @typedef SList SChaines
+ */
 typedef SList SChaines;
 
 #endif /* CHAINES_H_ */

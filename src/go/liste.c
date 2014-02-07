@@ -1,4 +1,6 @@
 #include "liste.h"
+#include "position.h"
+#include "ensemblePosition.h"
 
 typedef struct node{
 	void* data;
@@ -137,19 +139,18 @@ SList* listConcat(SList* list1, SList* list2)
 	return list1;
 }
 
-// TODO : deplacer sur ensemble position
-SList* listConcatUnique(SList* list1, SList* list2)
+SEnsemblePosition* listConcatUnique(SEnsemblePosition* list1, SEnsemblePosition* list2)
 {
 	while(listNext(list2) != NULL)
 	{
 		if(listMeme(list1 , listCurrent(list2)))
 		{
-			listRemove(list2,1);
+			free(listRemove(list2, 1));
 		}
 		else
 		{
 			listAdd(list1,listCurrent(list2));
-			listRemove(list2,1);
+			free(listRemove(list2, 1));
 			listConcatUnique(list1,list2);
 		}
 
@@ -158,16 +159,13 @@ SList* listConcatUnique(SList* list1, SList* list2)
 	return list1;
 }
 
-// TODO : deplacer sur ensemble position / include position.h
-int listMeme(SList* list, void* elem)
+int listMeme(SEnsemblePosition* list, void* elem)
 {
-	/*
 	listHead(list);
-	while( positionEgale(listCurrent(list),(SPosition*)elem)==1
+	while( positionsEgale((SPosition*)listCurrent(list),(SPosition*)elem)==1
 			&& listCurrent(list) != NULL) listNext(list);
 	if(listCurrent(list)==NULL) return 0;
 	else return 1;
-	*/
 	return -1;
 }
 

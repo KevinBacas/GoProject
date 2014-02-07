@@ -3,6 +3,9 @@
 
 #include "ensemblePosition.h"
 
+/**
+ * @typedef SEnsemblePosition SPositions
+ */
 typedef SEnsemblePosition SPositions;
 
 #endif // __POSITIONS_H__

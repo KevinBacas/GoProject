@@ -4,16 +4,37 @@
 #include "pion.h"
 #include "ensembleColore.h"
 
+/**
+ * @typedef SEnsembleColore SChaine
+ */
 typedef SEnsembleColore SChaine;
 
+
+/**
+ * @brief Alloue une chaine dynamiquement et la retourne
+ * @return Chaine allouee
+ */
 SChaine* creerChaine();
 
+/**
+ * @brief detruit la chaine passee en parametre
+ * @param chaine Chaine a detruire
+ */
 void detruireChaine(SChaine* chaine);
 
+/**
+ * @brief Renvoi la couleur d une chaine
+ */
 ECouleur couleurChaine(SChaine* chaine);
 
+/**
+ * @brief Ajoute un pion a la chaine
+ */
 SChaine* ajouterPion(SChaine* chaine, SPion* pion);
 
+/**
+ * @brief concatene deux chaines et renvoi une seule chaine
+ */
 SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2);
 
 /**

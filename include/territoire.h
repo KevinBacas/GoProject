@@ -10,6 +10,9 @@
 
 #include "ensembleColore.h"
 
+/**
+ * @typedef SEnsembleColore STerritoire
+ */
 typedef SEnsembleColore STerritoire;
 
 #endif /* TERRITOIRE_H_ */

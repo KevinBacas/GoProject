@@ -68,14 +68,12 @@ void plateau_realiser_capture(SPlateau* plateau, SChaine* chaine);
  * @brief indique si l'organisation du plateau est identique a une precedente organisation de plateau.
  * La valeur retourne est de 1 pour vrai et de 0 pour faux
  */
-// TODO :
 int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau);
 
 /**
  * @brief Copie un plateau.
  * Les deux tableaux sont supposes deja alloues
  */
-// TODO :
 int plateau_copie(SPlateau* from, SPlateau* to);
 
 /**

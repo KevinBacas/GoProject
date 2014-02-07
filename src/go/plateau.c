@@ -4,8 +4,6 @@
 #include "plateau.h"
 #include "pion.h"
 
-// TODO : Allocation desalocation de la grille a� la main.
-
 SPlateau* init_plateau(int taille)
 {
 	int i;
@@ -46,10 +44,11 @@ int taille_plateau(SPlateau* plateau)
 
 ECouleur plateau_get(SPlateau* plateau, int x, int y)
 {
+	if(x < 0 || x >= taille_plateau(plateau) || y < 0 || y >= taille_plateau(plateau)) return BORD;
 	return plateau->grille[x][y];
 }
 
-void plateau_set(SPlateau* plateau, int i, int j, ECouleur couleur)
+void plateau_set(SPlateau* plateau, int x, int y, ECouleur couleur)
 {
-	plateau->grille[i][j] = couleur;
+	plateau->grille[x][y] = couleur;
 }

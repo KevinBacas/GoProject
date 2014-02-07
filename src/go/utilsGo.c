@@ -5,11 +5,9 @@
 
 #include "utilsGo.h"
 
-SLibertes* determineLiberte(SPlateau* plateau,SChaine* chaine);
-
+// TODO : Via strat op
 STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos);
 
-//TODO : recheck Chaine => liste de positions
 SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 {
 	SLibertes* liberte = listInit();
@@ -76,12 +74,14 @@ SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 	return liberte;
 }
 
-// TODO : faire passer la chaine a l etat suivant ?
 SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 {
 	if(listEnsembleColore(chaine)==NULL) return NULL;
 
-	SLibertes* liberte = listConcatUnique(libertesAdjacente(plateau,listCurrent(listEnsembleColore(chaine))), determineLiberte(plateau,(SChaine*)listNext(chaine)) );
+	SPion* pion_curr = listCurrent(listEnsembleColore(chaine));
+	listNext(listEnsembleColore(chaine));
+
+	SLibertes* liberte = listConcatUnique(libertesAdjacente(plateau, pion_curr), determineLiberte(plateau, chaine));
 
 	return liberte;
 }

@@ -3,6 +3,9 @@
 
 #include "liste.h"
 
+/**
+ * @typedef SList SEnsemblePosition
+ */
 typedef SList SEnsemblePosition;
 
 #endif // __ENSEMBLE_POSITION_H__

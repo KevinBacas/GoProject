@@ -3,6 +3,7 @@
 
 #include "plateau.h"
 
+//TODO : documentation
 typedef struct
 {
 	int x;
