@@ -92,8 +92,16 @@ int plateau_sauvegarde(SPlateau* plateau, FILE* fichier);
 SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier);
 
 
-SPosition* transformerPosition(SPlateau* plateau, char* saisie);
+SPosition* transformerPosition(char* saisie);
 
 int positionValide(SPlateau* plateau,SPosition* position);
+
+SPosition* voisinDroit(SPlateau* plateau, SPosition* position);
+
+SPosition* voisinGauche(SPlateau* plateau, SPosition* position);
+
+SPosition* voisinBas(SPlateau* plateau, SPosition* position);
+
+SPosition* voisinHaut(SPlateau* plateau, SPosition* position);
 
 #endif /* PLATEAU_H_ */

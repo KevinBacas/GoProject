@@ -105,3 +105,67 @@ void detruirePartie(SPartie* partie)
 
 	free(partie);
 }
+
+void jouer_coup(SPartie partie, SPosition position)
+{
+	ECouleur couleur_joueur = partie->joueur;
+	SPlateau* plateau = partie->p_courant;
+	SChaines* chaines = partie->chaines;
+
+
+}
+
+int coup_valide(SPartie* partie, SPosition* position)
+{
+	ECouleur couleur_joueur = partie->joueur;
+	SPlateau* plateau = partie->p_courant;
+	SChaines* chaines = partie->chaines;
+
+	SPion* pion = creerPion(&position, couleur_joueur);
+	SPosition* v_droit = voisinDroit(plateau,&position);
+	SPosition* v_gauche = voisinGauche(plateau,position);
+	SPosition* v_bas = voisinBas(plateau,position);
+	SPosition* v_haut = voisinHaut(plateau,position);
+
+	SChaine* chaine_droit = positionDansChaines(chaines,v_droit);
+	SChaine* chaine_gauche = positionDansChaines(chaines,v_gauche);
+	SChaine* chaine_bas = positionDansChaines(chaines,v_bas);
+	SChaine* chaine_haut = positionDansChaines(chaines,v_haut);
+
+	if(plateau_get(plateau, position)!=VIDE) return 0;
+
+	//cas de capture, on capture !!!
+	if(couleur_joueur != plateau_get(plateau,v_droit) && determineLiberte(plateau,chaine_droit)==NULL)
+	{
+		plateau_realiser_capture(plateau,chaines,chaine_droit);
+		return 1;
+	}
+	if(couleur_joueur != plateau_get(plateau,v_gauche) && determineLiberte(plateau,chaine_gauche)==NULL)
+	{
+		plateau_realiser_capture(plateau,chaines,chaine_gauche);
+		return 1;
+	}
+	if(couleur_joueur != plateau_get(plateau,v_bas)&& determineLiberte(plateau,chaine_bas)==NULL)
+	{
+			plateau_realiser_capture(plateau,chaines,chaine_bas);
+		return 1;
+	}
+	if(couleur_joueur != plateau_get(plateau,v_haut) && determineLiberte(plateau,chaine_haut)==NULL)
+	{
+		plateau_realiser_capture(plateau,chaines,chaine_haut);
+		return 1;
+	}
+
+	if(listEmpty(libertesAdjacente(plateau,pion))==1)
+	{
+		if(couleur_joueur==plateau_get(plateau,v_haut) && determineLiberte(plateau,chaine_haut)==NULL)
+			return 0;
+		if(couleur_joueur==plateau_get(plateau,v_droit) && determineLiberte(plateau,chaine_droit)==NULL)
+			return 0;
+		if(couleur_joueur==plateau_get(plateau,v_gauche) && determineLiberte(plateau,chaine_gauche)==NULL)
+			return 0;
+		if(couleur_joueur==plateau_get(plateau,v_bas) && determineLiberte(plateau,chaine_bas)==NULL)
+			return 0;
+	}
+	else return 1;
+}

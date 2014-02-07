@@ -42,6 +42,8 @@ int partie_sauvegarde(SPartie partie, FILE* fichier);
  */
 // TODO :
 SPartie partie_charge(FILE* fichier);
+//TODO :
+void jouer_coup(SPartie partie, SPosition position);
 
 
 #endif /* PARTIE_H_ */

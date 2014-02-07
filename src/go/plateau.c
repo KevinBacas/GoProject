@@ -96,7 +96,7 @@ SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier)
 }
 */
 
-SPosition* transformerPosition(SPlateau* plateau, char* saisie)
+SPosition* transformerPosition(char* saisie)
 {
 	char tab_abscisse[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','s','r'};
 	char tab_ordonnee[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
@@ -125,4 +125,40 @@ int positionValide(SPlateau* plateau,SPosition* position)
 	int taille=taille_plateau(plateau);
 	if(x >= taille || x < 0 || y >= taille || y<0) return 0;
 	else return 1;
+}
+
+SPosition* voisinDroit(SPlateau* plateau, SPosition* position)
+{
+	if(plateau_get(plateau,positionDroite(position))==VIDE||plateau_get(plateau,positionDroite(position))==KO) return NULL;
+	else
+	{
+		return positionDroite(position);
+	}
+}
+
+SPosition* voisinGauche(SPlateau* plateau, SPosition* position)
+{
+	if(plateau_get(plateau,positionGauche(position))==VIDE||plateau_get(plateau,positionGauche(position))==KO) return NULL;
+	else
+	{
+		return positionGauche(position);
+	}
+}
+
+SPosition* voisinHaut(SPlateau* plateau, SPosition* position)
+{
+	if(plateau_get(plateau,positionHaut(position))==VIDE||plateau_get(plateau,positionHaut(position))==KO) return NULL;
+	else
+	{
+		return positionHaut(position);
+	}
+}
+
+SPosition* voisinBas(SPlateau* plateau, SPosition* position)
+{
+	if(plateau_get(plateau,positionBas(position))==VIDE||plateau_get(plateau,positionBas(position))==KO) return NULL;
+	else
+	{
+		return positionBas(position);
+	}
 }
