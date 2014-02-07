@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "utilsGo.h"
 #include "chaines.h"
 #include "utilsGo.h"
 #include "territoire.h"
@@ -139,7 +138,26 @@ SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 
 int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau);
 
-SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau);
+SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau)
+{
+	SPositions* yeux = listInit();
+	SLibertes* libertes = determineLiberte(plateau,chaine);
+	ECouleur c_haut = plateau_get(plateau,positionHaut(listHead(libertes)));
+	ECouleur c_bas = plateau_get(plateau,positionBas((listHead(libertes))));
+	ECouleur c_gauche = plateau_get(plateau,positionGauche((listHead(libertes))));
+	ECouleur c_droite = plateau_get(plateau,positionDroite((listHead(libertes))));
+	if(c_haut == c_bas && c_bas == c_gauche && c_gauche== c_droite && (c_haut==NOIR || c_haut == BLANC)) listAdd(yeux,listHead(libertes));
+	while(listNext(libertes)!=NULL)
+	{
+		c_haut = plateau_get(plateau,positionHaut(listCurrent(libertes)));
+		c_bas = plateau_get(plateau,positionBas(listCurrent(libertes)));
+		c_gauche = plateau_get(plateau,positionGauche(listCurrent(libertes)));
+		c_droite = plateau_get(plateau,positionDroite(listCurrent(libertes)));
+		if(c_haut == c_bas && c_bas == c_gauche && c_gauche== c_droite && (c_haut==NOIR || c_haut == BLANC)) listAdd(yeux,listCurrent(libertes));
+	}
+	listDelete(libertes);
+	return yeux;
+}
 
 SChaine* positionDansChaines(SChaines* chaines, SPosition* pos)
 {

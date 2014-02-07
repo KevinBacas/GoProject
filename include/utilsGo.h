@@ -1,9 +1,3 @@
-/*
- * utilsGo.h
- *
- *  Created on: Feb 6, 2014
- *      Author: dev
- */
 
 #ifndef UTILSGO_H_
 #define UTILSGO_H_
