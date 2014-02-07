@@ -12,15 +12,23 @@
 
 typedef struct partie SPartie;
 
+typedef void(*FonctionQuestions)(int numeroQuestion, SPartie* partie);
+
+/**
+ * @brief fonction de question pour la version terminal.
+ */
+void questionsTerminal(int i, SPartie* partie);
+
 /**
  * @brief Initialise la partie en fonction des reponses aux differentes questions :
- * noms et natures des joueurs, taille du plateau parmi 9x9, 13x13 et 19x19, etc.
+ * natures des joueurs, taille du plateau parmi 9x9, 13x13 et 19x19, Komi.
  * Pour rendre cette partie independante du mode texte ou mode SDL,
  * une fonction specifique permettra de prendre en compte ces deux mode.
  * La declaration de cette fonctiontant la suivante : typedef void (*FonctionQuestions)(int numeroQuestion, Partie* partie) ;
 */
-// TODO : definir le parametre
-SPartie initialisationPartie(/*FonctionQuestions fonctionQuestions*/);
+SPartie* initialisationPartie(FonctionQuestions fonctionQuestions);
+
+void detruirePartie(SPartie* partie);
 
 /**
  * @brief Sauvegarde la partie dans sa position actuelle

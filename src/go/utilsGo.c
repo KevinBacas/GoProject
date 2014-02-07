@@ -105,7 +105,7 @@ SChaine* plateau_determiner_chaine(SPlateau* plateau, SChaines* chaines, SPositi
 {
 	SChaine* res = NULL;
 	listAdd(listEnsembleColore(res), pos);
-	ECouleur couleur_chaine = plateau_get(plateau, abscissePosition(pos), ordonneePosition(pos));
+	ECouleur couleur_chaine = plateau_get(plateau, pos);
 	if(couleur_chaine != VIDE && couleur_chaine != KO)
 	{
 		//Position N
@@ -155,7 +155,15 @@ SChaine* plateau_determiner_chaine(SPlateau* plateau, SChaines* chaines, SPositi
 
 void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine)
 {
-
+	listRemoveElement(chaines, chaine);
+	listHead(listEnsembleColore(chaine));
+	do
+	{
+		SPosition* pos = listCurrent(listEnsembleColore(chaine));
+		plateau_set(plateau, pos, VIDE);
+		free(pos);
+	}while(listNext(chaine));
+	while(!listEmpty(listEnsembleColore(chaine))) free(listRemove(listEnsembleColore(chaine), 0));
 }
 
 int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau)
@@ -163,11 +171,14 @@ int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau)
 	int res = 1;
 	int taille = taille_plateau(plateau);
 	int i,j;
+	SPosition pos;
 	for(i = 0 ; i < taille && res ; ++i)
 	{
 		for(j = 0 ; j < taille && res ; ++j)
 		{
-			if(plateau_get(plateau, i, j) != plateau_get(ancienPlateau, i, j))
+			pos.x = i;
+			pos.y = j;
+			if(plateau_get(plateau, &pos) != plateau_get(ancienPlateau, &pos))
 			{
 				res = 0;
 			}
@@ -180,11 +191,14 @@ int plateau_copie(SPlateau* from, SPlateau* to)
 {
 	int taille = taille_plateau(from);
 	int i,j;
+	SPosition pos;
 	for(i = 0 ; i < taille ; ++i)
 	{
 		for(j = 0 ; j < taille ; ++j)
 		{
-			plateau_set(to, i, j, plateau_get(from, i, j));
+			pos.x = i;
+			pos.y = j;
+			plateau_set(to, &pos, plateau_get(from, &pos));
 		}
 	}
 }

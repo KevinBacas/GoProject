@@ -1,10 +1,10 @@
 
-
 #ifndef PLATEAU_H_
 #define PLATEAU_H_
 
 #include "couleur.h"
 #include "matrice.h"
+#include "position.h"
 
 /**
  * @struct SPlateau
@@ -51,7 +51,7 @@ int taille_plateau(SPlateau* plateau);
  * @param y position en y
  * @return Couleur de la position
  */
-ECouleur plateau_get(SPlateau* plateau, int x, int y);
+ECouleur plateau_get(SPlateau* plateau, SPosition* pos);
 
 /**
  * @fn void plateau_set(SPlateau* plateau, int x, int y, ECouleur couleur)
@@ -61,7 +61,7 @@ ECouleur plateau_get(SPlateau* plateau, int x, int y);
  * @param y position en y
  * @param couleur Couleur a mettre
  */
-void plateau_set(SPlateau* plateau, int x, int y, ECouleur couleur);
+void plateau_set(SPlateau* plateau, SPosition* pos, ECouleur couleur);
 
 /**
  * @fn ECouleur char_to_couleur(char c)
@@ -90,5 +90,8 @@ int plateau_sauvegarde(SPlateau* plateau, FILE* fichier);
  * Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
 SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier);
+
+
+SPosition* transformerPosition(SPlateau* plateau, char* saisie);
 
 #endif /* PLATEAU_H_ */
