@@ -17,7 +17,6 @@
 
 SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion);
 
-// TODO : TOUT
 /**
  * @brief determine l'ensemble des libertes d'une chaine donnee en fonction de la position des pions sur le plateau
  */
@@ -60,7 +59,6 @@ SChaine* plateau_determiner_chaine(SPlateau* plateau,SChaines* chaines, SPositio
 /**
  * @brief Realise la capture des pions correspondant a la chaine en les enlevant du plateau.
  */
-// TODO :
 void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine);
 
 /**
@@ -80,5 +78,14 @@ int plateau_copie(SPlateau* from, SPlateau* to);
  */
 // TODO : PAS UNE PRIO
 SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* plateau);
+
+/** @brief en fonction de la position du pion et de sa couleur retourne les chaines
+ * capturees. Si aucune chaine n’est capturee par la pose du pion, alors la valeur NULL est retournee.
+ * L’entier (reference par) valide est egal a zero si le fait placer le poin en cette position conduit a contruire une chaine sans liberte de la couleur du pion
+ * (sauf si ce coup produit la capture d’au moins une chaine adverse).
+ * Dans le cas contraire l’entier reference par valide est egale a 1.
+*/
+SChaines* captureChaines(SPlateau* plateau, SPion* pion, int* valide);
+
 
 #endif // UTILSGO_H_

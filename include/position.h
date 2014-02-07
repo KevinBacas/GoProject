@@ -1,8 +1,6 @@
 #ifndef __POSITION__
 #define __POSITION__
 
-#include "plateau.h"
-
 //TODO : documentation
 typedef struct
 {
@@ -28,7 +26,6 @@ SPosition* positionHaut(SPosition* position);
 
 int positionValide(SPlateau* plateau,SPosition* position);
 
-SPosition* transformerPosition(SPlateau* plateau, char* saisie);
 
 /**
  * @brief Test si les positions sont eguales.
