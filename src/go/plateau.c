@@ -76,6 +76,39 @@ char couleur_to_char(ECouleur c)
 	default : return 'V';
 	}
 }
+
+plateau_affichage(SPlateau* plateau)
+{
+	int taille = plateau->taille;
+	int i,j;
+	printf(" ");
+	for(j = 0 ; j < taille ; ++j)
+	{
+		printf("%c", 'a'+j);
+	}
+	printf("\n");
+
+	for(i = 0 ; i < taille ; ++i)
+	{
+		printf("%d", i);
+		for(j = 0 ; j < taille ; ++j)
+		{
+			SPosition pos;
+			pos.x = i;
+			pos.y = j;
+			printf("%c", couleur_to_char(plateau_get(plateau, &pos)));
+		}
+		printf("%d\n", i);
+	}
+
+	printf(" ");
+	for(j = 0 ; j < taille ; ++j)
+	{
+		printf("%c", 'a'+j);
+	}
+	printf("\n");
+}
+
 /*
 int plateau_sauvegarde(SPlateau* plateau, FILE* fichier)
 {

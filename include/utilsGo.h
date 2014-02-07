@@ -46,15 +46,9 @@ int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau
 SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau);
 
 /**
- * @brief Determine si une position fait partie d'une des chaines
- * @return pointeur vers la chaine si oui sinon NULL.
- */
-SChaine* positionDansChaines(SChaines* chaines, SPosition* pos);
-
-/**
  * @brief Produit la chaine a laquelle appartient le pion a la position pos sur le plateau.
  * S'il n'y a pas de pion sur cette case, alors le resultat retournee est NULL */
-SChaine* plateau_determiner_chaine(SPlateau* plateau,SChaines* chaines, SPosition* pos);
+SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos);
 
 /**
  * @brief Realise la capture des pions correspondant a la chaine en les enlevant du plateau.
@@ -71,7 +65,7 @@ int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau);
  * @brief Copie un plateau.
  * Les deux tableaux sont supposes deja alloues
  */
-int plateau_copie(SPlateau* from, SPlateau* to);
+void plateau_copie(SPlateau* from, SPlateau* to);
 
 /**
  * @brief Determine la ou les chaines entourant un territoire

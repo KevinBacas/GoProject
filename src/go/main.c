@@ -3,13 +3,50 @@
 
 #include "partie.h"
 
+void printHomeMenu()
+{
+	printf("-- MENU --\n");
+	printf("1) Jouer une nouvelle partie\n");
+	printf("2) Charger dernière partie\n");
+	printf("Q) Quitter le jeu\n");
+}
+
 int main()
 {
-	printf("Hello world !");
+	printf("== JEU DE GO ==\n\n\n");
 
-	SPartie* p = initialisationPartie(questionsTerminal);
+	printHomeMenu();
 
-	detruirePartie(p);
+	int quit = 0;
+	do{
+		char saisie = ' ';
+		getchar();
+		switch(saisie)
+		{
+		case '1':
+			SPartie* p = initialisationPartie(questionsTerminal);
+			jouerPartie(p);
+			detruirePartie(p);
+			break;
+		case '2':
+			FILE* fichier = fopen("sauvegarde.save");
+			if(fichier)
+			{
+				SPartie* p = partie_charge(fichier);
+				fclose(fichier);
+				jouerPartie(p);
+				detruirePartie(p);
+			}
+			else
+			{
+				printf("Aucune sauvegarde n'est présente");
+			}
+			break;
+		case 'Q':
+			quit = 1;
+			break;
+		}
+	}while(!quit);
 
 	return EXIT_SUCCESS;
 }

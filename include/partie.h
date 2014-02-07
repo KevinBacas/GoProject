@@ -43,5 +43,7 @@ int partie_sauvegarde(SPartie partie, FILE* fichier);
 // TODO :
 SPartie partie_charge(FILE* fichier);
 
+void jouerPartie(SPartie* partie);
+
 
 #endif /* PARTIE_H_ */

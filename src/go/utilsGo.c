@@ -141,10 +141,10 @@ int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau
 
 SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau);
 
-SChaine* positionDansChaines(SChaines* chaines, SPosition* pos)
+SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos)
 {
 	listHead(chaines);
-	while(listCurrent(chaines) && positionDansChaine(listCurrent(chaines), pos))
+	while(listCurrent(chaines) && !positionDansChaine(listCurrent(chaines), pos))
 	{
 		if(!listNext(chaines))
 		{
@@ -153,58 +153,58 @@ SChaine* positionDansChaines(SChaines* chaines, SPosition* pos)
 	}
 	return listCurrent(chaines);
 }
-
-SChaine* plateau_determiner_chaine(SPlateau* plateau, SChaines* chaines, SPosition* pos)
+/*
+SChaine* res = creerEnsembleColore();
+listAdd(listEnsembleColore(res), pos);
+ECouleur couleur_chaine = plateau_get(plateau, pos);
+if(couleur_chaine != VIDE && couleur_chaine != KO)
 {
-	SChaine* res = NULL;
-	listAdd(listEnsembleColore(res), pos);
-	ECouleur couleur_chaine = plateau_get(plateau, pos);
-	if(couleur_chaine != VIDE && couleur_chaine != KO)
+	//Position N
+	SPosition* pos = NULL;
+	SChaine* chaine = NULL;
+
+
+	pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)+1);
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine && )
 	{
-		//Position N
-		SPosition* pos = NULL;
-		SChaine* chaine = NULL;
-		pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)+1);
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
-
-		//Position S
-		pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)-1);
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
-
-		//Position W
-		pos = creerPosition(abscissePosition(pos)-1, ordonneePosition(pos));
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
-
-		//Position E
-		pos = creerPosition(abscissePosition(pos)+1, ordonneePosition(pos));
-		chaine = positionDansChaines(chaines, pos);
-		if(chaine)
-		{
-			concatenerChaine(res, chaine);
-			listRemoveElement(chaines, chaine);
-		}
-		free(pos);
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
 	}
-	return res;
+	free(pos);
+
+	//Position S
+	pos = creerPosition(abscissePosition(pos), ordonneePosition(pos)-1);
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine)
+	{
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
+	}
+	free(pos);
+
+	//Position W
+	pos = creerPosition(abscissePosition(pos)-1, ordonneePosition(pos));
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine)
+	{
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
+	}
+	free(pos);
+
+	//Position E
+	pos = creerPosition(abscissePosition(pos)+1, ordonneePosition(pos));
+	chaine = positionDansChaines(chaines, pos);
+	if(chaine)
+	{
+		concatenerChaine(res, chaine);
+		listRemoveElement(chaines, chaine);
+	}
+	free(pos);
 }
+return res;
+*/
 
 void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine)
 {

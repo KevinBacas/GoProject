@@ -105,3 +105,8 @@ void detruirePartie(SPartie* partie)
 
 	free(partie);
 }
+
+void jouerPartie(SPartie* partie)
+{
+
+}
