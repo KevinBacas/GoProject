@@ -118,32 +118,35 @@ void* listRemoveElement(SList* list, void* elem)
 		SListNode* curr = NULL;
 		listHead(list);
 
-		prev = curr;
-		curr = list->curr;
-		while(listCurrent(list) != elem)
+		int found = 0;
+
+		do
 		{
 			prev = curr;
 			curr = list->curr;
-			if(!listNext(list))
+			if(listCurrent(list) == elem)
 			{
-				return res;
+				found = 1;
+
+				if(curr == list->head)
+				{
+					list->head = list->head->next;
+					list->curr = list->head;
+				}
+				else
+				{
+					prev->next = curr->next;
+					list->curr = prev;
+				}
+
+				res = curr->data;
+				printf("destruction %x\n", curr);
+				free(curr);
 			}
-		}
-
-		if(curr == list->head)
-		{
-			list->head = list->head->next;
-			list->curr = list->head;
-		}
-		else
-		{
-			prev->next = curr->next;
-			list->curr = prev;
-		}
-
-		res = curr->data;
-		free(curr);
+		}while(!found && listNext(list));
 	}
+
+	printf("FIN destruction \n");
 
 	return res;
 }

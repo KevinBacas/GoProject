@@ -250,11 +250,8 @@ void jouer_coup(SPartie* partie, SPosition* position)
 	// création de la nouvelle chaine
 	SChaine* new_chaine = creerEnsembleColore();
 	setCouleurEnsembleColore(new_chaine, couleur_joueur);
-	listHead(list);
-	do
-	{
-		listAdd(listEnsembleColore(new_chaine), listCurrent(list));
-	}while(listNext(list));
+
+	listConcatUnique(listEnsembleColore(new_chaine), list, positionsEgale);
 
 	// On detruit la chaine
 	//listDelete(list);
