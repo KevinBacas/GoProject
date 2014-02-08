@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include "position.h"
+#include "couleur.h"
 
 typedef struct partie SPartie;
 
@@ -43,10 +44,10 @@ SPartie* partie_charge(FILE* fichier);
  * */
 void partie_sauvegarde(SPartie* partie, FILE* fichier);
 
-void jouer_coup(SPartie* partie, SPosition* position);
+void jouer_coup(SPartie* partie, ECouleur couleur, SPosition* position);
 
 int coup_valide(SPartie* partie, SPosition* position);
 
-int jouerPartie(SPartie* partie);
+float jouerPartie(SPartie* partie);
 
 #endif /* PARTIE_H_ */

@@ -28,8 +28,7 @@ SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine);
  * retourne quand meme l'ensemble des intersections voisines mais en specifiant que ce Territoire n'a aucune couleur.
  * Ce cas est exploite par la fonction estUnSeki
  */
-// TODO :
-STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos);
+STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos, SPositions* positions);
 
 /**
  * @brief determine si un territoire forme un seki pour les chaines de differentes couleurs concernees.
@@ -65,6 +64,6 @@ SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* pla
 SChaines* captureChaines(SPlateau* plateau, SPion* pion, int* valide);
 
 
-int compter_point(SPlateau* plateau,float komi);
+float compter_point(SPlateau* plateau,float komi);
 
 #endif // UTILSGO_H_

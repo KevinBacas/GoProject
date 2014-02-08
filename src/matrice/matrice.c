@@ -45,7 +45,7 @@ Matrice* chargerMatrice(FILE* fichier)
 
   if(fichier)
   {
-	  fscanf(fichier, "%d %d", &nbLig, &nbCol);
+	  fscanf(fichier, "%d %d\n", &nbLig, &nbCol);
 	  res = allouerMatrice(nbLig, nbCol);
 	  if(res->donnees)
 	  {
@@ -57,6 +57,7 @@ Matrice* chargerMatrice(FILE* fichier)
 				  fscanf(fichier, "%c ", &(res->donnees[i][j]));
 			  }
 		  }
+		  fscanf(fichier, "\n");
 	  }
   }
 

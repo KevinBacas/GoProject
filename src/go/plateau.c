@@ -73,7 +73,7 @@ char couleur_to_char(ECouleur c)
 	case NOIR : return 'N';
 	case VIDE : return '_';
 	case BLANC : return 'B';
-	case BORD : return '-';
+	case BORD : return '_';
 	default : return 'D';
 	}
 }

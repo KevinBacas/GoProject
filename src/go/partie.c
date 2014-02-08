@@ -25,6 +25,7 @@ typedef enum TypeJoueur
 
 typedef enum
 {
+	NVALIDE,
 	SAVE,
 	PASS,
 	COUP,
@@ -112,45 +113,66 @@ SPartie* initialisationPartie(FonctionQuestions fonctionQuestions)
 
 SPartie* partie_charge(FILE* fichier)
 {
-	SPartie* partie = NULL;
+	SPartie* res = NULL;
 	if(fichier)
 	{
-		SPartie* res = calloc(sizeof(SPartie), 1);
+		res = malloc(sizeof(SPartie));
 
-		fscanf(fichier, "%d %f %d %d\n",
-				&(partie->joueur),
-				&(partie->komi),
-				&(partie->t_j1),
-				&(partie->t_j2));
+		printf("a\n");
+		int joueur = 0;
+		float komi = 0.0f;
+		int type_j1 = 0;
+		int type_j2 = 0;
+
+		fscanf(fichier,
+				"%d %f %d %d\n",
+				&joueur,
+				&komi,
+				&type_j1,
+				&type_j2);
+
+		printf("%d %f %d %d\n", joueur, komi, type_j1, type_j2);
+		printf("b\n");
+		res->joueur = (ECouleur)joueur;
+		res->komi = komi;
+		res->t_j1 = (ETypeJoueur)type_j1;
+		res->t_j2 = (ETypeJoueur)type_j2;
+		printf("c\n");
 
 		res->p_courant = plateau_chargement(fichier);
+		printf("d\n");
 		if(res->p_courant)
 		{
+			printf("e\n");
 			int nb_plats = 0;
 			fscanf(fichier, "%d\n", &nb_plats);
-			partie->p_prec = listInit();
+			res->p_prec = listInit();
+			printf("f\n");
 
 			int i = 0;
-			int ok = 1;
 			SPlateau* plat_curr = NULL;
 
 			do
 			{
+				printf("g\n");
 				plat_curr = plateau_chargement(fichier);
 
-				if(ok)
+				if(plat_curr)
 				{
-					listAdd(partie->p_prec, plat_curr);
+					listAdd(res->p_prec, plat_curr);
 				}
-			}while((i < nb_plats) && ok);
+				++i;
+			}while(plat_curr && (i < nb_plats));
+
+			res->chaines = listInit();
 		}
 		else
 		{
-			free(partie);
-			partie = NULL;
+			free(res);
+			res = NULL;
 		}
 	}
-	return partie;
+	return res;
 }
 
 void partie_sauvegarde(SPartie* partie, FILE* fichier)
@@ -174,7 +196,6 @@ void partie_sauvegarde(SPartie* partie, FILE* fichier)
 		if(plats && !listEmpty(plats))
 		{
 			listHead(plats);
-			fprintf(fichier, "%d\n", listSize(plats));
 			do
 			{
 				plateau_sauvegarde(listCurrent(plats), fichier);
@@ -247,16 +268,18 @@ ECoupJoue joueur_terminal(SPartie* partie)
 			{
 				if(coup_valide(partie, pos))
 				{
-					jouer_coup(partie, pos);
+					jouer_coup(partie, partie->joueur, pos);
 				}
 				else
 				{
+					res = NVALIDE;
 					free(pos);
 					printf("Coup non autorisé, veuillez rejouer.");
 				}
 			}
 			else
 			{
+				res = NVALIDE;
 				free(pos);
 				printf("Position non valide.\n\n");
 			}
@@ -291,7 +314,7 @@ ECoupJoue ordinateur_jouer(SPartie* partie)
 			pos->y = rand() % taille_plateau(partie->p_courant);
 		}
 
-		jouer_coup(partie, pos);
+		jouer_coup(partie, partie->joueur, pos);
 
 		coup = COUP;
 	}
@@ -299,11 +322,11 @@ ECoupJoue ordinateur_jouer(SPartie* partie)
 	return coup;
 }
 
-int jouerPartie(SPartie* partie)
+float jouerPartie(SPartie* partie)
 {
 	int quit = 0;
 	int pass_counter = 0;
-	int res = 0;
+	float res = 0;
 	int nb_tour = 0;
 
 	do
@@ -330,11 +353,14 @@ int jouerPartie(SPartie* partie)
 			}
 			break;
 		}
+		case NVALIDE:
+			break;
 		case COUP:
 			partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
 			SPlateau* plateau = init_plateau(taille_plateau(partie->p_courant));
 			plateau_copie(partie->p_courant, plateau);
 			listAdd(partie->p_prec, plateau);
+			pass_counter = 0;
 			break;
 		case QUIT:
 			quit = 1;
@@ -362,11 +388,9 @@ int jouerPartie(SPartie* partie)
 	return res;
 }
 
-void jouer_coup(SPartie* partie, SPosition* position)
+void jouer_coup(SPartie* partie, ECouleur couleur, SPosition* position)
 {
-	printf("jouer_coup\n");
-
-	ECouleur couleur_joueur = partie->joueur;
+	ECouleur couleur_joueur = couleur;
 	SPlateau* plateau = partie->p_courant;
 	SChaines* chaines = partie->chaines;
 
@@ -374,22 +398,25 @@ void jouer_coup(SPartie* partie, SPosition* position)
 	listAdd(list, position);
 
 	SPosition* v_droit = voisinDroit(plateau, position);
-	SPosition* v_gauche = voisinGauche(plateau, position);
-	SPosition* v_bas = voisinBas(plateau, position);
-	SPosition* v_haut = voisinHaut(plateau, position);
-
 	SChaine* chaine_droit = plateau_determiner_chaine(chaines, v_droit);
+	if(v_droit && chaine_droit && plateau_get(plateau,v_droit)==couleur_joueur)
+		listConcatUnique(list, listEnsembleColore(chaine_droit), positionsEgale);
+
+	SPosition* v_gauche = voisinGauche(plateau, position);
 	SChaine* chaine_gauche = plateau_determiner_chaine(chaines, v_gauche);
+	if(v_gauche && chaine_gauche && plateau_get(plateau,v_gauche)==couleur_joueur)
+		listConcatUnique(list, listEnsembleColore(chaine_gauche), positionsEgale);
+
+	SPosition* v_bas = voisinBas(plateau, position);
 	SChaine* chaine_bas = plateau_determiner_chaine(chaines, v_bas);
+	if(v_bas && chaine_bas && plateau_get(plateau,v_bas)==couleur_joueur)
+		listConcatUnique(list, listEnsembleColore(chaine_bas), positionsEgale);
+
+	SPosition* v_haut = voisinHaut(plateau, position);
 	SChaine* chaine_haut = plateau_determiner_chaine(chaines, v_haut);
+	if(v_haut && chaine_haut && plateau_get(plateau,v_haut)==couleur_joueur)
+		listConcatUnique(list, listEnsembleColore(chaine_haut), positionsEgale);
 
-	//plateau_set(plateau, position, couleur_joueur);
-
-
-	if(v_droit && chaine_droit && plateau_get(plateau,v_droit)==couleur_joueur) listConcatUnique(list, listEnsembleColore(chaine_droit), positionsEgale);
-	if(v_bas && chaine_bas && plateau_get(plateau,v_bas)==couleur_joueur) listConcatUnique(list, listEnsembleColore(chaine_bas), positionsEgale);
-	if(v_gauche && chaine_gauche && plateau_get(plateau,v_gauche)==couleur_joueur) listConcatUnique(list, listEnsembleColore(chaine_gauche), positionsEgale);
-	if(v_haut && chaine_haut && plateau_get(plateau,v_haut)==couleur_joueur) listConcatUnique(list, listEnsembleColore(chaine_haut), positionsEgale);
 
 	// On actualise les chaines
 	actualiseChaines(chaines, list);
@@ -404,11 +431,11 @@ void jouer_coup(SPartie* partie, SPosition* position)
 	}while(listNext(list));
 
 	// On detruit la chaine
-	//listDelete(list);
+	listDelete(list);
 	// On ajoute la liste colore a la liste des chaines
 	listAdd(chaines, new_chaine);
 
-	displayChaine(new_chaine);
+//	displayChaine(new_chaine);
 
 
 //	printf("----- DISPLAY CHAINES -----\n");
@@ -496,13 +523,21 @@ int coup_valide(SPartie* partie, SPosition* position)
 	// !!
 	if(listEmpty(libertesAdjacente(plateau,position)))
 	{
-		if(    (v_haut 		&& chaine_haut 		&& couleur_joueur==plateau_get(plateau,v_haut) 		&& listEmpty(determineLiberte(plateau,chaine_haut)))
-			|| (v_droit 	&& chaine_droit 	&& couleur_joueur==plateau_get(plateau,v_droit) 	&& listEmpty(determineLiberte(plateau,chaine_droit)))
-			|| (v_gauche 	&& chaine_gauche 	&& couleur_joueur==plateau_get(plateau,v_gauche) 	&& listEmpty(determineLiberte(plateau,chaine_gauche)))
-			|| (v_bas 		&& chaine_bas 		&& couleur_joueur==plateau_get(plateau,v_bas) 		&& listEmpty(determineLiberte(plateau,chaine_bas)))
+		SLibertes* lib_haut 	= determineLiberte(plateau, chaine_haut);
+		SLibertes* lib_droit 	= determineLiberte(plateau, chaine_droit);
+		SLibertes* lib_gauche 	= determineLiberte(plateau, chaine_gauche);
+		SLibertes* lib_bas 		= determineLiberte(plateau, chaine_bas);
+		if(    (v_haut 		&& chaine_haut 		&& couleur_joueur==plateau_get(plateau,v_haut) 		&& listEmpty(lib_haut))
+			|| (v_droit 	&& chaine_droit 	&& couleur_joueur==plateau_get(plateau,v_droit) 	&& listEmpty(lib_droit))
+			|| (v_gauche 	&& chaine_gauche 	&& couleur_joueur==plateau_get(plateau,v_gauche) 	&& listEmpty(lib_gauche))
+			|| (v_bas 		&& chaine_bas 		&& couleur_joueur==plateau_get(plateau,v_bas) 		&& listEmpty(lib_bas))
 			)
 		{
 			plateau_set(plateau, position, VIDE);
+			listDelete(lib_haut);
+			listDelete(lib_droit);
+			listDelete(lib_gauche);
+			listDelete(lib_bas);
 			free(v_droit);
 			free(v_gauche);
 			free(v_bas);
@@ -513,4 +548,3 @@ int coup_valide(SPartie* partie, SPosition* position)
 
 	return 1;
 }
-

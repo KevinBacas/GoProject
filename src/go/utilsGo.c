@@ -9,55 +9,65 @@
 #include "couleur.h"
 
 
-STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
+STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos, SPositions* positions)
 {
-	STerritoire* territoire = creerEnsembleColore();
-	SList* list = listEnsembleColore(territoire);
-	listAdd(list,(void*)pos);
-	if((positionValide(plateau,pos))==0 && plateau_get(plateau, pos) != VIDE) return NULL;
+	STerritoire* territoire = NULL;
+	if( plateau && pos && positions)
+	{
+		territoire = creerEnsembleColore();
+		SList* list = listEnsembleColore(territoire);
 
-	SPosition* posG = positionGauche(pos);
-	SPosition* posD = positionDroite(pos);
-	SPosition* posB = positionBas(pos);
-	SPosition* posH = positionHaut(pos);
+		if( positionValide(plateau, pos)==0 || plateau_get(plateau, pos) != VIDE || listSearch(positions, pos, positionsEgale)) return NULL;
 
-	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posG)), positionsEgale);
-	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posD)), positionsEgale);
-	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posB)), positionsEgale);
-	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posH)), positionsEgale);
+		listAdd(list,(void*)pos);
+		listAdd(positions, pos);
+		SPosition* posG = positionGauche(pos);
+		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posG, positions)), positionsEgale);
+		//detruirePosition(posG);
 
+		SPosition* posD = positionDroite(pos);
+		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posD, positions)), positionsEgale);
+		//detruirePosition(posD);
 
-	detruirePosition(posG);
-	detruirePosition(posD);
-	detruirePosition(posB);
-	detruirePosition(posH);
+		SPosition* posB = positionBas(pos);
+		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posB, positions)), positionsEgale);
+		//detruirePosition(posB);
+
+		SPosition* posH = positionHaut(pos);
+		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posH, positions)), positionsEgale);
+		//detruirePosition(posH);
+	}
 
 	return territoire;
 }
 
 
-int compter_point(SPlateau* plateau,float komi)
+float compter_point(SPlateau* plateau, float komi)
 {
 	STerritoire* territoire = creerEnsembleColore();
 	int x,y;
-	int score = komi;
-	for(x=0;x<19;x++)
+	float score = komi;
+	int taille = taille_plateau(plateau);
+
+	for(x = 0 ; x < taille ; ++x)
 	{
-		for(y=0;y<19;y++)
+		for(y = 0 ; y < taille ; ++y)
 		{
 			SPosition* position = creerPosition(x,y);
 			ECouleur couleur_position = plateau_get(plateau,position);
 			if(couleur_position == NOIR || couleur_position == BLANC)
 			{
-				score += (int)couleur_position;
+				score += (float)couleur_position;
 			}
 			else
 			{
 				if(listFind(listEnsembleColore(territoire), position)==0)
 				{
-					territoire = determineTerritoire(plateau, position);
+					SPositions* positions = listInit();
+					territoire = determineTerritoire(plateau, position, positions);
+					listDelete(positions);
 				}
-				score += (int)(couleur_territoire(territoire));
+				score += (float)couleur_territoire(territoire);
 			}
 		}
 	}
@@ -101,7 +111,7 @@ SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 {
 	if(!chaine) return NULL;
 	SPositions* positions = listEnsembleColore(chaine);
-	listDisplay(positions);
+
 	if(listEmpty(positions)) return NULL;
 
 	SLibertes* res = listInit();
@@ -114,8 +124,6 @@ SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 
 	return res;
 }
-
-int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau);
 
 SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau)
 {
@@ -134,10 +142,18 @@ SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau)
 
 	while(listNext(libertes)!=NULL)
 	{
-		c_haut = plateau_get(plateau, positionHaut(listCurrent(libertes)));
-		c_bas = plateau_get(plateau, positionBas(listCurrent(libertes)));
-		c_gauche = plateau_get(plateau, positionGauche(listCurrent(libertes)));
-		c_droite = plateau_get(plateau, positionDroite(listCurrent(libertes)));
+		SPosition* pos_haut = positionHaut(listCurrent(libertes));
+		SPosition* pos_bas = positionBas(listCurrent(libertes));
+		SPosition* pos_gauche = positionGauche(listCurrent(libertes));
+		SPosition* pos_droit = positionDroite(listCurrent(libertes));
+		c_haut = plateau_get(plateau, pos_haut);
+		c_bas = plateau_get(plateau, pos_bas);
+		c_gauche = plateau_get(plateau, pos_gauche);
+		c_droite = plateau_get(plateau, pos_droit);
+		free(pos_haut);
+		free(pos_bas);
+		free(pos_gauche);
+		free(pos_droit);
 		if(c_haut == c_bas && c_bas == c_gauche && c_gauche== c_droite && (c_haut==NOIR || c_haut == BLANC)) listAdd(yeux,listCurrent(libertes));
 	}
 	listDelete(libertes);
@@ -166,3 +182,5 @@ SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos)
 }
 
 SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* plateau);
+
+int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau);

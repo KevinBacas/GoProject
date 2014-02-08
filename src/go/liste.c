@@ -93,17 +93,19 @@ void* listRemove(SList* list, int index)
 				res = to_delete->data;
 				free(to_delete);
 			}
-
-			int i = 1;
-			while(listNext(list) && i != index-1) ++i;
-
-			if( i == index-1)
+			else
 			{
-				// l'element existe
-				SListNode* to_delete = list->curr->next;
-				list->curr->next = list->curr->next->next;
-				res = to_delete->data;
-				free(to_delete);
+				int i = 1;
+				while(listNext(list) && i != index-1) ++i;
+
+				if( i == index-1)
+				{
+					// l'element existe
+					SListNode* to_delete = list->curr->next;
+					list->curr->next = list->curr->next->next;
+					res = to_delete->data;
+					free(to_delete);
+				}
 			}
 		}
 	}
@@ -143,13 +145,10 @@ void* listRemoveElement(SList* list, void* elem)
 				}
 
 				res = curr->data;
-				printf("destruction %x\n", curr);
 				free(curr);
 			}
 		}while(!found && listNext(list));
 	}
-
-	printf("FIN destruction \n");
 
 	return res;
 }
@@ -166,23 +165,23 @@ int listSize(SList* list)
 	return res;
 }
 
-void listDisplay(SList* list)
-{
-	if(!listEmpty(list))
-	{
-		listHead(list);
-		printf("%X", (unsigned int)(list->curr->data));
-		while(listNext(list))
-		{
-			printf(" -> %X", (unsigned int)(list->curr->data));
-		}
-		printf("\n");
-	}
-	else
-	{
-		printf("%X est vide\n", (unsigned int)(list));
-	}
-}
+//void listDisplay(SList* list)
+//{
+//	if(!listEmpty(list))
+//	{
+//		listHead(list);
+//		printf("%X", (unsigned int)(list->curr->data));
+//		while(listNext(list))
+//		{
+//			printf(" -> %X", (unsigned int)(list->curr->data));
+//		}
+//		printf("\n");
+//	}
+//	else
+//	{
+//		printf("%X est vide\n", (unsigned int)(list));
+//	}
+//}
 
 int listFind(SList* list, void* elem)
 {
@@ -195,6 +194,20 @@ int listFind(SList* list, void* elem)
 		}
 	}
 	return 1;
+}
+
+int listSearch(SList* list, void* elem, int(*cmp)(void*, void*))
+{
+	int found = 0;
+	if(list && elem && cmp && !listEmpty(list))
+	{
+		listHead(list);
+		do
+		{
+			found = cmp(listCurrent(list), elem);
+		}while(!found && listNext(list));
+	}
+	return found;
 }
 
 SList* listConcat(SList* list1, SList* list2)

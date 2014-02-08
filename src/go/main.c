@@ -27,13 +27,10 @@ void playTerminalMod()
 		case '1':
 		{
 			SPartie* p = initialisationPartie(questionsTerminal);
-			printf("debut de la partie\n");
 
-			printf("Score de fin : %d\n", jouerPartie(p));
+			printf("Score de fin : %f\n", jouerPartie(p));
 
-			printf("fin de la partie\n");
 			detruirePartie(p);
-			printf("destroyed\n");
 			break;
 		}
 		case '2':

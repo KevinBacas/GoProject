@@ -46,6 +46,6 @@ int positionDansChaine(SChaine* chaine, SPosition* pos);
 
 void actualiseChaines(SChaines* chaines, SList* n_chaine);
 
-void displayChaine(SChaine* chaine);
+//void displayChaine(SChaine* chaine);
 
 #endif // __CHAINE__
