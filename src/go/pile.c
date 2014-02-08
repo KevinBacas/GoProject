@@ -5,16 +5,13 @@
 typedef struct StackNode {
 	void* data;
 	struct StackNode* prev;
+	struct StackNode* next;
 } SStackNode;
 
 typedef struct Stack{
+	int curr_index;
 	SStackNode* head;
 } SStack;
-
-void* getStackNodeData(SStackNode* _node)
-{
-	return _node->data;
-}
 
 SStack* initStack()
 {
@@ -27,7 +24,7 @@ void pushStack(SStack* _stack, void* _elem)
 {
 	SStackNode* node = malloc(sizeof(SStackNode));
 	node->data = _elem;
-	node->prev = _stack->head;
+
 	_stack->head = node;
 }
 

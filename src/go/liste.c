@@ -114,15 +114,14 @@ void* listRemoveElement(SList* list, void* elem)
 
 	if(!listEmpty(list))
 	{
-		printf("A\n");
 		SListNode* prev = NULL;
 		SListNode* curr = NULL;
 		listHead(list);
-		printf("B\n");
 
 		prev = curr;
 		curr = list->curr;
-		while(listCurrent(list) != elem){
+		while(listCurrent(list) != elem)
+		{
 			prev = curr;
 			curr = list->curr;
 			if(!listNext(list))
@@ -131,24 +130,33 @@ void* listRemoveElement(SList* list, void* elem)
 			}
 		}
 
-		printf("C\n");
-
 		if(curr == list->head)
 		{
-			printf("C.1\n");
 			list->head = list->head->next;
+			list->curr = list->head;
 		}
 		else
 		{
-			printf("C.2\n");
 			prev->next = curr->next;
+			list->curr = prev;
 		}
-		printf("D\n");
 
 		res = curr->data;
 		free(curr);
 	}
 
+	return res;
+}
+
+int listSize(SList* list)
+{
+	int res = 0;
+	if(list)
+	{
+		listHead(list);
+		++res;
+		while(listNext(list)) ++res;
+	}
 	return res;
 }
 
@@ -204,26 +212,28 @@ SList* listConcatUnique(SList* list1, SList* list2, int(*cmp)(void*, void*))
 	{
 		list1->head = list2->head; list1->curr = list2->curr;
 	}
+	else if(listEmpty(list2))
+	{
+		return list1;
+	}
 	else
 	{
 		listHead(list2);
 		do
 		{
-			int already_in = 0;
 			listHead(list1);
 			do
 			{
-				if(cmp(listCurrent(list1), listCurrent(list2)))
+				if(!cmp(listCurrent(list1), listCurrent(list2)))
 				{
-					already_in = 1;
-					continue;
+					listAdd(list1, listCurrent(list2));
 				}
-			}while(listNext(list2));
+				else
+				{
+					//TODO
+				}
+			}while(listNext(list1));
 
-			if(!already_in)
-			{
-				listAdd(list1, listCurrent(list2));
-			}
 		}while(listNext(list2));
 	}
 	return list1;

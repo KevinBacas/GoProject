@@ -53,15 +53,15 @@ SPosition* transformerPosition(char* saisie)
 	int taille_chaine = strlen(saisie);
 	if (taille_chaine == 2)
 	{
-		y = (int)(saisie[0] - 'A');
-		x = (int)(saisie[1] - '0');
+		x = (int)(saisie[0] - 'A');
+		y = (int)(saisie[1] - '0');
 		res = creerPosition(x,y);
 	}
 	else if(taille_chaine == 3)
 	{
-		y = (int)(saisie[0] - 'A');
-		x = (int)(saisie[1] - '0')*10;
-		x += (int)(saisie[1] - '0');
+		x = (int)(saisie[0] - 'A');
+		y = (int)(saisie[1] - '0')*10;
+		y += (int)(saisie[1] - '0');
 		res = creerPosition(x,y);
 	}
 	return res;
@@ -71,5 +71,6 @@ int positionsEgale(void* pos1, void* pos2)
 {
 	SPosition* p1 = (SPosition*)pos1;
 	SPosition* p2 = (SPosition*)pos2;
-	return ((p1->x == p2->x) && (p1->y == p2->x));
+	printf("(%d == %d) && (%d == %d)\n", p1->x, p2->x, p1->y ,p2->y);
+	return ((p1->x == p2->x) && (p1->y == p2->y));
 }

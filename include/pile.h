@@ -5,8 +5,6 @@
 typedef struct StackNode SStackNode;
 typedef struct Stack SStack;
 
-void* getStackNodeData(SStackNode* _node);
-
 SStack* initStack();
 
 void pushStack(SStack* _stack, void* _elem);

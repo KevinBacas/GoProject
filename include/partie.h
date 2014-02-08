@@ -44,7 +44,7 @@ SPartie* partie_charge(FILE* fichier);
 // TODO :
 void partie_sauvegarde(SPartie* partie, FILE* fichier);
 
-void jouer_coup(SPartie* partie, SPosition position);
+void jouer_coup(SPartie* partie, SPosition* position);
 
 int coup_valide(SPartie* partie, SPosition* position);
 
