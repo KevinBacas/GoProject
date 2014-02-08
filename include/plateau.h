@@ -5,6 +5,7 @@
 #include "couleur.h"
 #include "matrice.h"
 #include "position.h"
+#include "chaine.h"
 
 /**
  * @struct SPlateau
@@ -91,7 +92,24 @@ int plateau_sauvegarde(SPlateau* plateau, FILE* fichier);
  * @brief Charge un plateau precedement sauvegarde
  * Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
-SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier);
+SPlateau* plateau_chargement(FILE* fichier);
+
+/**
+ * @brief Realise la capture des pions correspondant a la chaine en les enlevant du plateau.
+ */
+void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine);
+
+/**
+ * @brief indique si l'organisation du plateau est identique a une precedente organisation de plateau.
+ * La valeur retourne est de 1 pour vrai et de 0 pour faux
+ */
+int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau);
+
+/**
+ * @brief Copie un plateau.
+ * Les deux tableaux sont supposes deja alloues
+ */
+void plateau_copie(SPlateau* from, SPlateau* to);
 
 int positionValide(SPlateau* plateau,SPosition* position);
 

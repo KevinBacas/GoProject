@@ -25,6 +25,7 @@ typedef enum TypeJoueur
 
 typedef enum
 {
+	SAVE,
 	PASS,
 	COUP,
 	GIVEUP,
@@ -109,20 +110,86 @@ SPartie* initialisationPartie(FonctionQuestions fonctionQuestions)
 	return res;
 }
 
+SPartie* partie_charge(FILE* fichier)
+{
+	SPartie* partie = NULL;
+	if(fichier)
+	{
+		SPartie* res = calloc(sizeof(SPartie), 1);
+
+		fscanf(fichier, "%d %f %d %d\n",
+				&(partie->joueur),
+				&(partie->komi),
+				&(partie->t_j1),
+				&(partie->t_j2));
+
+		res->p_courant = plateau_chargement(fichier);
+		if(res->p_courant)
+		{
+			int nb_plats = 0;
+			fscanf(fichier, "%d\n", &nb_plats);
+			partie->p_prec = listInit();
+
+			int i = 0;
+			int ok = 1;
+			SPlateau* plat_curr = NULL;
+
+			do
+			{
+				plat_curr = plateau_chargement(fichier);
+
+				if(ok)
+				{
+					listAdd(partie->p_prec, plat_curr);
+				}
+			}while((i < nb_plats) && ok);
+		}
+		else
+		{
+			free(partie);
+			partie = NULL;
+		}
+	}
+	return partie;
+}
+
+void partie_sauvegarde(SPartie* partie, FILE* fichier)
+{
+	if(partie && fichier)
+	{
+		// joueur courant, komi, type J1, type J2
+		fprintf(fichier, "%d %f %d %d\n",
+				partie->joueur,
+				partie->komi,
+				partie->t_j1,
+				partie->t_j2);
+
+		SPlateau* plat_courant = partie->p_courant;
+		if(plat_courant)
+		{
+			plateau_sauvegarde(plat_courant, fichier);
+		}
+
+		SPlateaux* plats = partie->p_prec;
+		if(plats && !listEmpty(plats))
+		{
+			listHead(plats);
+			fprintf(fichier, "%d\n", listSize(plats));
+			do
+			{
+				plateau_sauvegarde(listCurrent(plats), fichier);
+			}while(listNext(plats));
+		}
+	}
+}
+
 void detruirePartie(SPartie* partie)
 {
-	printf("detruireChaine\n");
 	while(!listEmpty(partie->chaines)) detruireChaine(listRemove(partie->chaines, 0));
-	printf("detruirePlateau\n");
 	while(!listEmpty(partie->p_prec)) detruire_plateau(listRemove(partie->p_prec, 0));
-	printf("detruirechaines\n");
 	listDelete(partie->chaines);
-	printf("detruirep_prec\n");
 	listDelete(partie->p_prec);
-	printf("detruirep_courant\n");
 	detruire_plateau(partie->p_courant);
-	printf("PARTIE\n");
-
 	free(partie);
 }
 
@@ -152,6 +219,7 @@ ECoupJoue joueur_terminal(SPartie* partie)
 		FILE* fichier = fopen("sauvegarde.save", "w");
 		partie_sauvegarde(partie, fichier);
 		fclose(fichier);
+		res = SAVE;
 	}
 	else if(!strcmp("giveup", saisie))
 	{
@@ -264,13 +332,17 @@ int jouerPartie(SPartie* partie)
 		}
 		case COUP:
 			partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
-			//TODO: SAVE for undo
+			SPlateau* plateau = init_plateau(taille_plateau(partie->p_courant));
+			plateau_copie(partie->p_courant, plateau);
+			listAdd(partie->p_prec, plateau);
 			break;
 		case QUIT:
 			quit = 1;
 			break;
 		case GIVEUP:
 			quit = 2;
+			break;
+		case SAVE:
 			break;
 		}
 		nb_tour++;
@@ -288,15 +360,6 @@ int jouerPartie(SPartie* partie)
 	}
 
 	return res;
-}
-
-SPartie* partie_charge(FILE* fichier)
-{
-	return NULL;
-}
-
-void partie_sauvegarde(SPartie* partie, FILE* fichier)
-{
 }
 
 void jouer_coup(SPartie* partie, SPosition* position)
@@ -389,45 +452,48 @@ int coup_valide(SPartie* partie, SPosition* position)
 	if(v_droit && chaine_droit && couleur_joueur != plateau_get(plateau,v_droit) && listEmpty(libertes))
 	{
 		plateau_realiser_capture(plateau, chaines, chaine_droit);
+		free(v_droit);
 		++nb_captures;
 	}
-	free(libertes);
+	listDelete(libertes);
 	libertes = NULL;
 
 	libertes = determineLiberte(plateau,chaine_gauche);
 	if(v_gauche && chaine_gauche && couleur_joueur != plateau_get(plateau,v_gauche) && listEmpty(libertes))
 	{
 		plateau_realiser_capture(plateau, chaines, chaine_gauche);
+		free(v_gauche);
 		++nb_captures;
 	}
-	free(libertes);
+	listDelete(libertes);
 	libertes = NULL;
 
 	libertes = determineLiberte(plateau,chaine_bas);
 	if(v_bas && chaine_bas && couleur_joueur != plateau_get(plateau,v_bas)&& listEmpty(libertes))
 	{
 		plateau_realiser_capture(plateau, chaines, chaine_bas);
+		free(v_bas);
 		++nb_captures;
 	}
-	free(libertes);
+	listDelete(libertes);
 	libertes = NULL;
 
 	libertes = determineLiberte(plateau,chaine_haut);
 	if(v_haut && chaine_haut && couleur_joueur != plateau_get(plateau,v_haut) && listEmpty(libertes))
 	{
 		plateau_realiser_capture(plateau, chaines, chaine_haut);
+		free(v_haut);
 		++nb_captures;
 	}
-	free(libertes);
+	listDelete(libertes);
 	libertes = NULL;
 
 	if(nb_captures)
 	{
-		printf("%d capture(s)\n", nb_captures);
 		return 1;
 	}
 
-
+	// !!
 	if(listEmpty(libertesAdjacente(plateau,position)))
 	{
 		if(    (v_haut 		&& chaine_haut 		&& couleur_joueur==plateau_get(plateau,v_haut) 		&& listEmpty(determineLiberte(plateau,chaine_haut)))
@@ -437,6 +503,10 @@ int coup_valide(SPartie* partie, SPosition* position)
 			)
 		{
 			plateau_set(plateau, position, VIDE);
+			free(v_droit);
+			free(v_gauche);
+			free(v_bas);
+			free(v_haut);
 			return 0;
 		}
 	}

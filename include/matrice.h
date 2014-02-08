@@ -98,4 +98,9 @@ int getNbLigne(Matrice* matrice);
  */
 int getNbColonne(Matrice* matrice);
 
+// TODO : DOC
+int nbLigneMatrice(Matrice* matrice);
+
+int nbColonneMatrice(Matrice* matrice);
+
 #endif

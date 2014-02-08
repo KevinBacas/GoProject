@@ -41,10 +41,13 @@ void playTerminalMod()
 			FILE* fichier = fopen("sauvegarde.save", "r");
 			if(fichier)
 			{
-				SPartie* p = partie_charge(fichier);
+				SPartie* partie = partie_charge(fichier);
 				fclose(fichier);
-				jouerPartie(p);
-				detruirePartie(p);
+				if(partie)
+				{
+					jouerPartie(partie);
+					detruirePartie(partie);
+				}
 			}
 			else
 			{
@@ -67,12 +70,6 @@ void playSDLMod()
 int main(int argc, char** argv)
 {
 	printf("== JEU DE GO ==\n\n\n");
-
-	int i;
-	for(i = 0 ; i < argc ; ++i)
-	{
-		printf("%s\n", argv[i]);
-	}
 
 	if(argc == 2)
 	{

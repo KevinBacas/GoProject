@@ -41,7 +41,6 @@ SPartie* partie_charge(FILE* fichier);
  * @brief Sauvegarde la partie dans sa position actuelle
  * Si la sauvegarde se passe sans probleme la fonction retourne 1, sinon 0
  * */
-// TODO :
 void partie_sauvegarde(SPartie* partie, FILE* fichier);
 
 void jouer_coup(SPartie* partie, SPosition* position);

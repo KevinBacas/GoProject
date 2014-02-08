@@ -51,23 +51,6 @@ SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau);
 SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos);
 
 /**
- * @brief Realise la capture des pions correspondant a la chaine en les enlevant du plateau.
- */
-void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine);
-
-/**
- * @brief indique si l'organisation du plateau est identique a une precedente organisation de plateau.
- * La valeur retourne est de 1 pour vrai et de 0 pour faux
- */
-int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau);
-
-/**
- * @brief Copie un plateau.
- * Les deux tableaux sont supposes deja alloues
- */
-void plateau_copie(SPlateau* from, SPlateau* to);
-
-/**
  * @brief Determine la ou les chaines entourant un territoire
  */
 // TODO : PAS UNE PRIO

@@ -80,28 +80,31 @@ void* listHead(SList* list)
 
 void* listRemove(SList* list, int index)
 {
-	listHead(list);
 	void* res = NULL;
-	if(!listEmpty(list))
+	if(list)
 	{
-		if(index == 0)
+		listHead(list);
+		if(!listEmpty(list))
 		{
-			SListNode* to_delete = list->head;
-			list->head = list->head->next;
-			res = to_delete->data;
-			free(to_delete);
-		}
+			if(index == 0)
+			{
+				SListNode* to_delete = list->head;
+				list->head = list->head->next;
+				res = to_delete->data;
+				free(to_delete);
+			}
 
-		int i = 1;
-		while(listNext(list) && i != index-1) ++i;
+			int i = 1;
+			while(listNext(list) && i != index-1) ++i;
 
-		if( i == index-1)
-		{
-			// l'element existe
-			SListNode* to_delete = list->curr->next;
-			list->curr->next = list->curr->next->next;
-			res = to_delete->data;
-			free(to_delete);
+			if( i == index-1)
+			{
+				// l'element existe
+				SListNode* to_delete = list->curr->next;
+				list->curr->next = list->curr->next->next;
+				res = to_delete->data;
+				free(to_delete);
+			}
 		}
 	}
 	return res;
@@ -213,7 +216,8 @@ SList* listConcatUnique(SList* list1, SList* list2, int(*cmp)(void*, void*))
 {
 	if(!list1 || listEmpty(list1))
 	{
-		list1->head = list2->head; list1->curr = list2->curr;
+		list1->head = list2->head;
+		list1->curr = list2->curr;
 	}
 	else if(!list2 || listEmpty(list2))
 	{
@@ -224,19 +228,17 @@ SList* listConcatUnique(SList* list1, SList* list2, int(*cmp)(void*, void*))
 		listHead(list2);
 		do
 		{
+			int found = 0;
 			listHead(list1);
 			do
 			{
-				if(!cmp(listCurrent(list1), listCurrent(list2)))
-				{
-					listAdd(list1, listCurrent(list2));
-				}
-				else
-				{
-					//TODO
-				}
-			}while(listNext(list1));
+				found = cmp(listCurrent(list1), listCurrent(list2));
+			}while(!found && listNext(list1));
 
+			if(!found)
+			{
+				listAdd(list1, listCurrent(list2));
+			}
 		}while(listNext(list2));
 	}
 	return list1;
@@ -244,9 +246,12 @@ SList* listConcatUnique(SList* list1, SList* list2, int(*cmp)(void*, void*))
 
 void listDelete(SList* list)
 {
-	while(!listEmpty(list))
+	if(list)
 	{
-		listRemove(list,0);
+		while(!listEmpty(list))
+		{
+			listRemove(list,0);
+		}
+		free(list);
 	}
-	free(list);
 }

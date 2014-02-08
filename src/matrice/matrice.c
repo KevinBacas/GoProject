@@ -94,7 +94,7 @@ void sauvegarderMatrice(Matrice* matrice, FILE* fichier)
 		        {
 		        	fprintf(fichier, "%c ", matrice->donnees[i][j]);
 		        }
-		        printf("\n");
+		        fprintf(fichier, "\n");
 		    }
 		}
 	}
@@ -125,4 +125,14 @@ void setValeurMatrice(Matrice* matrice, int x, int y, char valeur)
 {
 	if(x > -1 && x < matrice->nbLigne && y > -1 && y < matrice->nbColonne)
 		matrice->donnees[x][y] = valeur;
+}
+
+int nbLigneMatrice(Matrice* matrice)
+{
+	return matrice->nbLigne;
+}
+
+int nbColonneMatrice(Matrice* matrice)
+{
+	return matrice->nbColonne;
 }

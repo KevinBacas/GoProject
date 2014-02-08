@@ -110,25 +110,85 @@ void plateau_affichage(SPlateau* plateau)
 	printf("\n");
 }
 
-/*
 int plateau_sauvegarde(SPlateau* plateau, FILE* fichier)
 {
+	printf("plateau_sauvegarde\n");
 	sauvegarderMatrice(plateau->grille, fichier);
 	return 1;
 }
-*/
-/*
-SPlateau* plateau_chargement(SPlateau* plateau, FILE* fichier)
+
+SPlateau* plateau_chargement(FILE* fichier)
 {
-	SPlateau* res = NULL;
-	res->grille = chargerMatrice(fichier);
-	if(res->grille)
+	SPlateau* plateau = malloc(sizeof(SPlateau));
+
+	plateau->grille = chargerMatrice(fichier);
+	if(plateau->grille)
 	{
-		plateau->taille = getNbLigne(res->grille);
+		plateau->taille = nbLigneMatrice(plateau->grille);
 	}
-	ret
+	else
+	{
+		free(plateau);
+		plateau = NULL;
+	}
+
+	return plateau;
 }
-*/
+
+void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine)
+{
+	if(!chaine) return;
+
+	SList* list = listEnsembleColore(chaine);
+
+	listHead(list);
+	do
+	{
+		SPosition* pos = listCurrent(list);
+		plateau_set(plateau, pos, VIDE);
+	}while(listNext(list));
+
+//	listDelete(list);
+//	listRemoveElement(chaines, chaine);
+//	free(chaine);
+}
+
+int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau)
+{
+	int res = 1;
+	int taille = taille_plateau(plateau);
+	int i,j;
+	SPosition pos;
+	for(i = 0 ; i < taille && res ; ++i)
+	{
+		for(j = 0 ; j < taille && res ; ++j)
+		{
+			pos.x = i;
+			pos.y = j;
+			if(plateau_get(plateau, &pos) != plateau_get(ancienPlateau, &pos))
+			{
+				res = 0;
+			}
+		}
+	}
+	return res;
+}
+
+void plateau_copie(SPlateau* from, SPlateau* to)
+{
+	int taille = taille_plateau(from);
+	int i,j;
+	SPosition pos;
+	for(i = 0 ; i < taille ; ++i)
+	{
+		for(j = 0 ; j < taille ; ++j)
+		{
+			pos.x = i;
+			pos.y = j;
+			plateau_set(to, &pos, plateau_get(from, &pos));
+		}
+	}
+}
 
 int positionValide(SPlateau* plateau,SPosition* position)
 {

@@ -109,11 +109,8 @@ SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 	do
 	{
 		SLibertes* libs = libertesAdjacente(plateau, listCurrent(positions));
-		listDisplay(libs);
 		listConcatUnique(res, libs, positionsEgale);
 	} while(listNext(positions));
-
-	listDisplay(res);
 
 	return res;
 }
@@ -147,7 +144,6 @@ SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau)
 	return yeux;
 }
 
-
 SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos)
 {
 	SChaine* res = NULL;
@@ -167,61 +163,6 @@ SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos)
 		}
 	}
 	return res;
-}
-
-void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine)
-{
-	if(!chaine) return;
-
-	SList* list = listEnsembleColore(chaine);
-
-	listHead(list);
-	do
-	{
-		SPosition* pos = listCurrent(list);
-		plateau_set(plateau, pos, VIDE);
-	}while(listNext(list));
-
-	//while(!listEmpty(list)) /*free*/(listRemove(list, 0));
-	listRemoveElement(chaines, chaine);
-	//free(chaine);
-}
-
-int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau)
-{
-	int res = 1;
-	int taille = taille_plateau(plateau);
-	int i,j;
-	SPosition pos;
-	for(i = 0 ; i < taille && res ; ++i)
-	{
-		for(j = 0 ; j < taille && res ; ++j)
-		{
-			pos.x = i;
-			pos.y = j;
-			if(plateau_get(plateau, &pos) != plateau_get(ancienPlateau, &pos))
-			{
-				res = 0;
-			}
-		}
-	}
-	return res;
-}
-
-void plateau_copie(SPlateau* from, SPlateau* to)
-{
-	int taille = taille_plateau(from);
-	int i,j;
-	SPosition pos;
-	for(i = 0 ; i < taille ; ++i)
-	{
-		for(j = 0 ; j < taille ; ++j)
-		{
-			pos.x = i;
-			pos.y = j;
-			plateau_set(to, &pos, plateau_get(from, &pos));
-		}
-	}
 }
 
 SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* plateau);
