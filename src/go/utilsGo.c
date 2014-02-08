@@ -8,9 +8,10 @@
 
 STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 {
+	if(plateau_get(plateau,pos)!=VIDE) return NULL;
+
 	STerritoire* territoire = creerEnsembleColore();
 	listAdd(listEnsembleColore(territoire),(void*)pos);
-	if((positionValide(plateau,pos))==0) return NULL;
 	SPosition* posG = positionGauche(pos);
 	SPosition* posD = positionDroite(pos);
 	SPosition* posB = positionBas(pos);
