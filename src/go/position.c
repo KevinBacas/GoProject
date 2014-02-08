@@ -71,6 +71,6 @@ int positionsEgale(void* pos1, void* pos2)
 {
 	SPosition* p1 = (SPosition*)pos1;
 	SPosition* p2 = (SPosition*)pos2;
-	printf("(%d == %d) && (%d == %d)\n", p1->x, p2->x, p1->y ,p2->y);
+	//printf("(%d == %d) && (%d == %d)\n", p1->x, p2->x, p1->y ,p2->y);
 	return ((p1->x == p2->x) && (p1->y == p2->y));
 }

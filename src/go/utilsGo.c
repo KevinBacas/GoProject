@@ -6,6 +6,7 @@
 #include "utilsGo.h"
 #include "territoire.h"
 #include "position.h"
+#include "couleur.h"
 
 
 STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
@@ -13,15 +14,18 @@ STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 	STerritoire* territoire = creerEnsembleColore();
 	SList* list = listEnsembleColore(territoire);
 	listAdd(list,(void*)pos);
-	if((positionValide(plateau,pos))==0) return NULL;
+	if((positionValide(plateau,pos))==0 && plateau_get(plateau, pos) != VIDE) return NULL;
+
 	SPosition* posG = positionGauche(pos);
 	SPosition* posD = positionDroite(pos);
 	SPosition* posB = positionBas(pos);
 	SPosition* posH = positionHaut(pos);
+
 	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posG)), positionsEgale);
 	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posD)), positionsEgale);
 	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posB)), positionsEgale);
 	listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posH)), positionsEgale);
+
 
 	detruirePosition(posG);
 	detruirePosition(posD);
@@ -31,9 +35,37 @@ STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 	return territoire;
 }
 
+
+int compter_point(SPlateau* plateau,float komi)
+{
+	STerritoire* territoire = creerEnsembleColore();
+	int x,y;
+	int score = komi;
+	for(x=0;x<19;x++)
+	{
+		for(y=0;y<19;y++)
+		{
+			SPosition* position = creerPosition(x,y);
+			ECouleur couleur_position = plateau_get(plateau,position);
+			if(couleur_position == NOIR || couleur_position == BLANC)
+			{
+				score += (int)couleur_position;
+			}
+			else
+			{
+				if(listFind(listEnsembleColore(territoire), position)==0)
+				{
+					territoire = determineTerritoire(plateau, position);
+				}
+				score += (int)(couleur_territoire(territoire));
+			}
+		}
+	}
+	return score;
+}
+
 SLibertes* libertesAdjacente(SPlateau* plateau, SPosition* pos)
 {
-
 	if(positionValide(plateau, pos)==0) return NULL;
 
 	SLibertes* liberte = listInit();
@@ -68,7 +100,6 @@ SLibertes* libertesAdjacente(SPlateau* plateau, SPosition* pos)
 SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 {
 	if(!chaine) return NULL;
-	printf("determineLiberte chaine : "); printf("%x\n", chaine);
 	SPositions* positions = listEnsembleColore(chaine);
 	listDisplay(positions);
 	if(listEmpty(positions)) return NULL;
@@ -78,12 +109,10 @@ SLibertes* determineLiberte(SPlateau* plateau, SChaine* chaine)
 	do
 	{
 		SLibertes* libs = libertesAdjacente(plateau, listCurrent(positions));
-		printf("determineLiberte (%d,%d): ", abscissePosition(listCurrent(positions)), ordonneePosition(listCurrent(positions)));
 		listDisplay(libs);
 		listConcatUnique(res, libs, positionsEgale);
 	} while(listNext(positions));
 
-	printf("determineLiberte res : ");
 	listDisplay(res);
 
 	return res;
@@ -135,7 +164,6 @@ SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos)
 		if(found)
 		{
 			res = listCurrent(chaines);
-			printf("plateau_determiner_chaine : %X | %d\n", res, found);
 		}
 	}
 	return res;
@@ -151,11 +179,10 @@ void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* cha
 	do
 	{
 		SPosition* pos = listCurrent(list);
-		printf("x : %d, y : %d\n", pos->x, pos->y);
 		plateau_set(plateau, pos, VIDE);
 	}while(listNext(list));
 
-	while(!listEmpty(list)) ///*free*/(listRemove(list, 0));
+	//while(!listEmpty(list)) /*free*/(listRemove(list, 0));
 	listRemoveElement(chaines, chaine);
 	//free(chaine);
 }

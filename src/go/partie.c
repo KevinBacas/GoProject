@@ -13,6 +13,7 @@
 #include "plateau.h"
 #include "utilsGo.h"
 #include <string.h>
+#include <time.h>
 
 typedef SList SPlateaux;
 
@@ -21,6 +22,14 @@ typedef enum TypeJoueur
 	HUMAN,
 	BOT
 } ETypeJoueur;
+
+typedef enum
+{
+	PASS,
+	COUP,
+	GIVEUP,
+	QUIT
+} ECoupJoue;
 
 struct partie
 {
@@ -117,92 +126,167 @@ void detruirePartie(SPartie* partie)
 	free(partie);
 }
 
+ECoupJoue joueur_terminal(SPartie* partie)
+{
+	ECoupJoue res = COUP;
+
+	printf("Joueur : %s.\n", partie->joueur == BLANC ? "BlLanc" : "Noir");
+	printf("<lettre><num> : Position sur laquelle jouer (ex : A0).\n");
+	printf("pass : Passer.\n");
+	printf("save : Sauvegarder la partie.\n");
+	printf("giveup : Abandonner.\n");
+	printf("undo : Revenir un coup en arriere.\n");
+	printf("redo : Revenir un coup en avant.\n");
+	printf("quit : Quitter la partie.\n");
+
+	char saisie[50];
+	scanf("%s", saisie);
+	while ( getchar() != '\n' );
+
+	if(!strcmp("pass", saisie))
+	{
+		res = PASS;
+	}
+	else if(!strcmp("save", saisie))
+	{
+		FILE* fichier = fopen("sauvegarde.save", "w");
+		partie_sauvegarde(partie, fichier);
+		fclose(fichier);
+	}
+	else if(!strcmp("giveup", saisie))
+	{
+		res = GIVEUP;
+		// Le joueur courant abandonne.
+	}
+	else if(!strcmp("undo", saisie))
+	{
+		// On retourne un coup en arriere.
+	}
+	else if(!strcmp("redo", saisie))
+	{
+		// On retourne un coup en arriere.
+	}
+	else if(!strcmp("quit", saisie))
+	{
+		res = QUIT;
+	}
+	else
+	{
+		SPosition* pos = transformerPosition(saisie);
+		if(pos)
+		{
+			if(positionValide(partie->p_courant, pos))
+			{
+				if(coup_valide(partie, pos))
+				{
+					jouer_coup(partie, pos);
+				}
+				else
+				{
+					free(pos);
+					printf("Coup non autorisé, veuillez rejouer.");
+				}
+			}
+			else
+			{
+				free(pos);
+				printf("Position non valide.\n\n");
+			}
+		}
+		else
+		{
+			printf("Commande non reconnue.");
+		}
+	}
+
+	return res;
+}
+
+ECoupJoue ordinateur_jouer(SPartie* partie)
+{
+	ECoupJoue coup;
+	srand(time(NULL));
+	int r = rand() % 100;
+
+	if(r < 2)
+	{
+		coup = PASS;
+	}
+	else
+	{
+		SPosition* pos = malloc(sizeof(SPosition));
+		pos->x = -1;
+		pos->y = -1;
+		while(!coup_valide(partie, pos))
+		{
+			pos->x = rand() % taille_plateau(partie->p_courant);
+			pos->y = rand() % taille_plateau(partie->p_courant);
+		}
+
+		jouer_coup(partie, pos);
+
+		coup = COUP;
+	}
+
+	return coup;
+}
+
 int jouerPartie(SPartie* partie)
 {
 	int quit = 0;
 	int pass_counter = 0;
 	int res = 0;
+	int nb_tour = 0;
 
-	do{
+	do
+	{
 		plateau_affichage(partie->p_courant);
 
-		printf("== Menu de jeu == \n");
-		printf("E5 ou C13 (par exemple) : Position sur laquelle jouer.\n");
-		printf("pass : Passer.\n");
-		printf("save : Sauvegarder la partie.\n");
-		printf("giveup : Abandonner.\n");
-		printf("undo : Revenir un coup en arriere.\n");
-		printf("quit : Quitter la partie\n");
+		ECoupJoue coup = QUIT;
+		ETypeJoueur type = partie->joueur == BLANC ? partie->t_j1 : partie->t_j2;
 
-		char saisie[50];
-		scanf("%s", saisie);
-		while ( getchar() != '\n' );
+		if(type == BOT)
+			coup = ordinateur_jouer(partie);
+		else
+			coup = joueur_terminal(partie);
 
-		if(!strcmp("pass", saisie))
+		switch(coup)
 		{
+		case PASS:
+		{
+			partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
 			pass_counter++;
 			if(pass_counter == 2)
 			{
-				printf("On quitte (double pass)\n");
 				quit = 1;
 			}
+			break;
+		}
+		case COUP:
 			partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
-		}
-		else if(!strcmp("save", saisie))
-		{
-			FILE* fichier = fopen("sauvegarde.save", "w");
-			partie_sauvegarde(partie, fichier);
-			fclose(fichier);
-		}
-		else if(!strcmp("giveup", saisie))
-		{
-			res = partie->joueur == BLANC ? -1 : 1;
+			//TODO: SAVE for undo
+			break;
+		case QUIT:
 			quit = 1;
-			// Le joueur courant abandonne.
+			break;
+		case GIVEUP:
+			quit = 2;
+			break;
 		}
-		else if(!strcmp("undo", saisie))
-		{
-			// On retourne un coup en arriere.
-		}
-		else if(!strcmp("quit", saisie))
-		{
-			res = 0;
-			quit = 1;
-		}
-		else
-		{
-			SPosition* pos = transformerPosition(saisie);
-			if(pos)
-			{
-				if(positionValide(partie->p_courant, pos))
-				{
-					if(coup_valide(partie, pos))
-					{
-						jouer_coup(partie, pos);
-						pass_counter = 0;
-						partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
-					}
-					else
-					{
-						free(pos);
-						printf("Coup non autorisé, veuillez rejouer.");
-					}
-				}
-				else
-				{
-					free(pos);
-					printf("Position non valide.\n\n");
-				}
-			}
-			else
-			{
-				printf("Commande non reconnue.");
-			}
-		}
+		nb_tour++;
+		printf("tour num : %d\n", nb_tour);
+
 	}while(!quit);
 
-	printf("lel\n");
-	// CALCUL SCORE TOUSSA TOUSSA
+	if(quit == 1)
+	{
+		res = compter_point(partie->p_courant, partie->komi);
+	}
+	else
+	{
+		res = partie->joueur == BLANC ? -1 : 1;
+	}
+
 	return res;
 }
 
@@ -250,8 +334,11 @@ void jouer_coup(SPartie* partie, SPosition* position)
 	// création de la nouvelle chaine
 	SChaine* new_chaine = creerEnsembleColore();
 	setCouleurEnsembleColore(new_chaine, couleur_joueur);
-
-	listConcatUnique(listEnsembleColore(new_chaine), list, positionsEgale);
+	listHead(list);
+	do
+	{
+		listAdd(listEnsembleColore(new_chaine), listCurrent(list));
+	}while(listNext(list));
 
 	// On detruit la chaine
 	//listDelete(list);
@@ -261,20 +348,20 @@ void jouer_coup(SPartie* partie, SPosition* position)
 	displayChaine(new_chaine);
 
 
+//	printf("----- DISPLAY CHAINES -----\n");
+//	printf("%d chaines\n", listSize(chaines));
+//	listHead(chaines);
+//	do
+//	{
+//		displayChaine(listCurrent(chaines));
+//	}while(listNext(chaines));
+//	printf("----- DISPLAY CHAINES -----\n");
 
-	printf("----- DISPLAY CHAINES -----\n");
-	printf("%d chaines\n", listSize(chaines));
-	listHead(chaines);
-	do
-	{
-		displayChaine(listCurrent(chaines));
-	}while(listNext(chaines));
-	printf("----- DISPLAY CHAINES -----\n");
 }
 
 int coup_valide(SPartie* partie, SPosition* position)
 {
-	printf("coup_valide\n");
+	//printf("coup_valide\n");
 
 	ECouleur couleur_joueur = partie->joueur;
 	SPlateau* plateau = partie->p_courant;
@@ -341,7 +428,6 @@ int coup_valide(SPartie* partie, SPosition* position)
 	}
 
 
-	printf("END\n");
 	if(listEmpty(libertesAdjacente(plateau,position)))
 	{
 		if(    (v_haut 		&& chaine_haut 		&& couleur_joueur==plateau_get(plateau,v_haut) 		&& listEmpty(determineLiberte(plateau,chaine_haut)))

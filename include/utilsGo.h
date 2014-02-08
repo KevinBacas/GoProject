@@ -82,4 +82,6 @@ SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* pla
 SChaines* captureChaines(SPlateau* plateau, SPion* pion, int* valide);
 
 
+int compter_point(SPlateau* plateau,float komi);
+
 #endif // UTILSGO_H_

@@ -45,8 +45,6 @@ int positionDansChaine(SChaine* chaine, SPosition* pos)
 		found = positionsEgale(listCurrent(list), pos);
 	} while(!found && listNext(list));
 
-	printf("positionDansChaine (%d,%d) : %x %d\n", abscissePosition(pos), ordonneePosition(pos), chaine, found);
-
 	return found;
 }
 
@@ -67,7 +65,6 @@ void actualiseChaines(SChaines* chaines, SList* n_chaine)
 
 			if(i==1)
 			{
-				printf("destruction chaine : "); displayChaine(c);
 				listRemoveElement(chaines, c);
 			}
 		} while(listNext(chaines));
@@ -76,7 +73,6 @@ void actualiseChaines(SChaines* chaines, SList* n_chaine)
 
 void displayChaine(SChaine* chaine)
 {
-	printf("Chaine %x %c : ", chaine, couleur_to_char(couleurEnsembleColore(chaine)));
 	SList* list = listEnsembleColore(chaine);
 
 	if(!listEmpty(list))
@@ -84,7 +80,7 @@ void displayChaine(SChaine* chaine)
 		listHead(list);
 		do
 		{
-			printf("(%d,%d) / ", abscissePosition(listCurrent(list)), ordonneePosition(listCurrent(list)));
+			printf("(%d,%d) /", abscissePosition(listCurrent(list)), ordonneePosition(listCurrent(list)));
 		}while(listNext(list));
 	}
 	printf("\n");

@@ -5,7 +5,7 @@ all : compile
 compile : $(BIN_FOLDER)/GoProject.out
 	echo "Compilation des executables terminee"
 	
-$(BIN_FOLDER)/GoProject.out : main.c $(DIST_FOLDER)/chaine.o $(DIST_FOLDER)/ensembleColore.o $(DIST_FOLDER)/liste.o $(DIST_FOLDER)/partie.o $(DIST_FOLDER)/pile.o $(DIST_FOLDER)/pion.o $(DIST_FOLDER)/plateau.o $(DIST_FOLDER)/position.o $(DIST_FOLDER)/utilsGo.o
+$(BIN_FOLDER)/GoProject.out : main.c $(DIST_FOLDER)/chaine.o $(DIST_FOLDER)/ensembleColore.o $(DIST_FOLDER)/liste.o $(DIST_FOLDER)/partie.o $(DIST_FOLDER)/pile.o $(DIST_FOLDER)/pion.o $(DIST_FOLDER)/plateau.o $(DIST_FOLDER)/position.o $(DIST_FOLDER)/utilsGo.o $(DIST_FOLDER)/territoire.o
 	$(CC) $^ -L $(LIB_FOLDER) -l Matrice -o $@
 	
 $(DIST_FOLDER)/chaine.o : chaine.c $(INCLUDE_FOLDER)/chaine.h

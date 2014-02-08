@@ -28,7 +28,9 @@ void playTerminalMod()
 		{
 			SPartie* p = initialisationPartie(questionsTerminal);
 			printf("debut de la partie\n");
-			jouerPartie(p);
+
+			printf("Score de fin : %d\n", jouerPartie(p));
+
 			printf("fin de la partie\n");
 			detruirePartie(p);
 			printf("destroyed\n");

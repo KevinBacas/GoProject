@@ -211,11 +211,11 @@ SList* listConcat(SList* list1, SList* list2)
 
 SList* listConcatUnique(SList* list1, SList* list2, int(*cmp)(void*, void*))
 {
-	if(listEmpty(list1))
+	if(!list1 || listEmpty(list1))
 	{
 		list1->head = list2->head; list1->curr = list2->curr;
 	}
-	else if(listEmpty(list2))
+	else if(!list2 || listEmpty(list2))
 	{
 		return list1;
 	}

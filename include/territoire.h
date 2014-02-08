@@ -22,4 +22,6 @@ ECouleur compareCouleur(ECouleur couleur1, ECouleur couleur2);
 
 ECouleur determineCouleurTerritoire(SPlateau* plateau, STerritoire* territoire, ECouleur couleur);
 
+ECouleur couleur_territoire(STerritoire* territoire);
+
 #endif /* TERRITOIRE_H_ */
