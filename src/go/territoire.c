@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include "territoire.h"
 
-
+//essaye de donner une couleur a une position, si on a 2 voisin de couleurs differentes non VIDE, retourne VIDE
+//sinon retourne la couleur de la case d'une couleur
+//si c'est vide, retourne BORD pour ne pas perturber la fonction récursive.
 ECouleur couleurVoisin(SPlateau* plateau, SPosition* position)
 {
 	SPosition* haut = positionHaut(position);
@@ -36,7 +38,7 @@ ECouleur couleurVoisin(SPlateau* plateau, SPosition* position)
 
 	return retourner;
 }
-
+//retourne VIDE si les 2 couleurs sont differentes, si elles sont pareil, retourne cette couleur, sinon retourne BORD.
 ECouleur compareCouleur(ECouleur couleur1, ECouleur couleur2)
 {
 	if(couleur1 == BORD || couleur1 == KO)
@@ -61,4 +63,5 @@ ECouleur determineCouleurTerritoire(SPlateau* plateau, STerritoire* territoire, 
 
 	return compareCouleur(couleur_de_comparaison, determineCouleurTerritoire(plateau, listNext(listEnsembleColore(territoire), couleurVoisin(plateau,position_territoire))));
 }
+
 

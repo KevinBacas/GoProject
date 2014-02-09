@@ -21,6 +21,8 @@ STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 	SList* l3=listConcatUnique(l2, listEnsembleColore(determineTerritoire(plateau, posB)));
 	SList* l4=listConcatUnique(l4, listEnsembleColore(determineTerritoire(plateau, posH)));
 
+	territoire->couleur = determineCouleurTerritoire(plateau, l4);
+
 	detruirePosition(posG);
 	detruirePosition(posD);
 	detruirePosition(posB);
@@ -29,6 +31,33 @@ STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos)
 	return l4;
 }
 
+int compter_point(SPlateau* plateau,float komi)
+{
+	STerritoire* territoire = creerEnsembleColore();
+	int x,y;
+	int score = komi;
+	for(x=0;x<19;x++)
+	{
+		for(y=0;y<19;y++)
+		{
+			SPosition* position = creerPosition(x,y);
+			ECouleur couleur_position = plateau_get(plateau,position);
+			if(couleur_position == NOIR || couleur_position == BLANC)
+			{
+				score += (int)couleur_position;
+			}
+			else
+			{
+				if(listFind(listEnsembleColore(territoire), position)==0)
+				{
+					territoire = determineTerritoire(plateau, position);
+				}
+				score += (int)(territoire->couleur);
+			}
+		}
+	}
+	return score;
+}
 SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion)
 {
 	SLibertes* liberte = listInit();
