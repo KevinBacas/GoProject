@@ -165,7 +165,7 @@ int jouerPartie(SPartie* partie)
 				{
 					pass_counter = 0;
 				}
-				printf("Coup non autorisé, veuillez rejouer.");
+				printf("Coup non autorise, veuillez rejouer.");
 				partie->joueur = (partie->joueur == BLANC) ? NOIR : BLANC;
 			}
 			else
