@@ -40,6 +40,7 @@ int taille_plateau(SPlateau* plateau)
 
 ECouleur plateau_get(SPlateau* plateau, SPosition* pos)
 {
+	//if(!pos) return BORD;
 	int x = abscissePosition(pos);
 	int y = ordonneePosition(pos);
 	if(x < 0 || x >= taille_plateau(plateau) || y < 0 || y >= taille_plateau(plateau)) return BORD;
@@ -57,7 +58,7 @@ ECouleur char_to_couleur(char c)
 	{
 	case'K' : return KO;
 	case'N' : return NOIR;
-	case'V' : return VIDE;
+	case'_' : return VIDE;
 	case'B' : return BLANC;
 	case'-' : return BORD;
 	default : return VIDE;
@@ -70,10 +71,10 @@ char couleur_to_char(ECouleur c)
 	{
 	case KO : return 'K';
 	case NOIR : return 'N';
-	case VIDE : return 'V';
+	case VIDE : return '_';
 	case BLANC : return 'B';
 	case BORD : return '-';
-	default : return 'V';
+	default : return 'D';
 	}
 }
 
@@ -84,13 +85,13 @@ void plateau_affichage(SPlateau* plateau)
 	printf(" ");
 	for(j = 0 ; j < taille ; ++j)
 	{
-		printf("%c", 'a'+j);
+		printf("%d", j);
 	}
 	printf("\n");
 
 	for(i = 0 ; i < taille ; ++i)
 	{
-		printf("%d", i);
+		printf("%c", 'A'+i);
 		for(j = 0 ; j < taille ; ++j)
 		{
 			SPosition pos;
@@ -98,13 +99,13 @@ void plateau_affichage(SPlateau* plateau)
 			pos.y = j;
 			printf("%c", couleur_to_char(plateau_get(plateau, &pos)));
 		}
-		printf("%d\n", i);
+		printf("%c\n", 'A'+i);
 	}
 
 	printf(" ");
 	for(j = 0 ; j < taille ; ++j)
 	{
-		printf("%c", 'a'+j);
+		printf("%d", j);
 	}
 	printf("\n");
 }
@@ -140,7 +141,8 @@ int positionValide(SPlateau* plateau,SPosition* position)
 
 SPosition* voisinDroit(SPlateau* plateau, SPosition* position)
 {
-	if(plateau_get(plateau,positionDroite(position))==VIDE||plateau_get(plateau,positionDroite(position))==KO) return NULL;
+	ECouleur coul = plateau_get(plateau,positionDroite(position));
+	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
 	else
 	{
 		return positionDroite(position);
@@ -149,7 +151,8 @@ SPosition* voisinDroit(SPlateau* plateau, SPosition* position)
 
 SPosition* voisinGauche(SPlateau* plateau, SPosition* position)
 {
-	if(plateau_get(plateau,positionGauche(position))==VIDE||plateau_get(plateau,positionGauche(position))==KO) return NULL;
+	ECouleur coul = plateau_get(plateau,positionGauche(position));
+	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
 	else
 	{
 		return positionGauche(position);
@@ -158,7 +161,8 @@ SPosition* voisinGauche(SPlateau* plateau, SPosition* position)
 
 SPosition* voisinHaut(SPlateau* plateau, SPosition* position)
 {
-	if(plateau_get(plateau,positionHaut(position))==VIDE||plateau_get(plateau,positionHaut(position))==KO) return NULL;
+	ECouleur coul = plateau_get(plateau,positionHaut(position));
+	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
 	else
 	{
 		return positionHaut(position);
@@ -167,7 +171,8 @@ SPosition* voisinHaut(SPlateau* plateau, SPosition* position)
 
 SPosition* voisinBas(SPlateau* plateau, SPosition* position)
 {
-	if(plateau_get(plateau,positionBas(position))==VIDE||plateau_get(plateau,positionBas(position))==KO) return NULL;
+	ECouleur coul = plateau_get(plateau,positionBas(position));
+	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
 	else
 	{
 		return positionBas(position);

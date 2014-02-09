@@ -3,6 +3,8 @@
 
 #include "chaine.h"
 #include "position.h"
+#include "liste.h"
+#include "positions.h"
 
 SChaine* creerChaine()
 {
@@ -32,27 +34,58 @@ SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2)
 
 int positionDansChaine(SChaine* chaine, SPosition* pos)
 {
-	listHead((SList*)listEnsembleColore(chaine));
-	while(listCurrent((SList*)listEnsembleColore(chaine))
-			&& positionsEgale(listCurrent((SList*)listEnsembleColore(chaine)), pos)
-			)
+	SList* list = (SList*)listEnsembleColore(chaine);
+
+	listHead(list);
+	int found = 0;
+
+	do
 	{
-		listNext((SList*)listEnsembleColore(chaine));
-	}
-	return positionsEgale(listCurrent((SList*)listEnsembleColore(chaine)), pos);
+
+		found = positionsEgale(listCurrent(list), pos);
+	} while(!found && listNext(list));
+
+	printf("positionDansChaine (%d,%d) : %x %d\n", abscissePosition(pos), ordonneePosition(pos), chaine, found);
+
+	return found;
 }
 
-void actualiseChaines(SChaines chaines)
+void actualiseChaines(SChaines* chaines, SList* n_chaine)
 {
-	SList* tail = ListInit();
-	while(!listNext(chaines));
-	tail = getListNodeData(listCurrent(chaines));
-	int i = listFind(tail,getListNodeData(listHead(getListNodeData(listHead(chaines)))));
-	if(i==1) listRemoveElement(chaines,listHead(chaines));
-	while(!listNext(listNext(chaines)))
+	if(!listEmpty(chaines))
 	{
-		i = listFind(tail,getListNodeData(listCurrent(getListNodeData(listCurrent(chaines)))));
-		if(i==1) listRemoveElement(chaines,listCurrent(chaines));
+		SList* tail = n_chaine;
+
+		listHead(chaines);
+		do
+		{
+			SChaine* c = listCurrent(chaines);
+			SPositions* poss = listEnsembleColore(c);
+			SPosition* pos = listHead(poss);
+
+			int i = listFind(tail, pos);
+
+			if(i==1)
+			{
+				printf("destruction chaine : "); displayChaine(c);
+				listRemoveElement(chaines, c);
+			}
+		} while(listNext(chaines));
 	}
-	free(tail);
+}
+
+void displayChaine(SChaine* chaine)
+{
+	printf("Chaine %x %c : ", chaine, couleur_to_char(couleurEnsembleColore(chaine)));
+	SList* list = listEnsembleColore(chaine);
+
+	if(!listEmpty(list))
+	{
+		listHead(list);
+		do
+		{
+			printf("(%d,%d) / ", abscissePosition(listCurrent(list)), ordonneePosition(listCurrent(list)));
+		}while(listNext(list));
+	}
+	printf("\n");
 }

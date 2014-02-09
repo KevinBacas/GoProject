@@ -15,7 +15,7 @@
 #include "chaines.h"
 #include "positions.h"
 
-SLibertes* libertesAdjacente(SPlateau* plateau,SPion* pion);
+SLibertes* libertesAdjacente(SPlateau* plateau, SPosition* pos);
 
 /**
  * @brief determine l'ensemble des libertes d'une chaine donnee en fonction de la position des pions sur le plateau

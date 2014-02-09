@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "partie.h"
 
@@ -11,24 +12,26 @@ void printHomeMenu()
 	printf("Q) Quitter le jeu\n");
 }
 
-int main()
+void playTerminalMod()
 {
-	printf("== JEU DE GO ==\n\n\n");
-
 	int quit = 0;
-	do{
+	do
+	{
 		printHomeMenu();
 
 		char saisie = ' ';
 		scanf("%c", &saisie);
-		getchar();
+		while ( getchar() != '\n' );
 		switch(saisie)
 		{
 		case '1':
 		{
 			SPartie* p = initialisationPartie(questionsTerminal);
+			printf("debut de la partie\n");
 			jouerPartie(p);
+			printf("fin de la partie\n");
 			detruirePartie(p);
+			printf("destroyed\n");
 			break;
 		}
 		case '2':
@@ -52,6 +55,34 @@ int main()
 			break;
 		}
 	}while(!quit);
+}
+
+void playSDLMod()
+{
+	printf("SDL !");
+}
+
+int main(int argc, char** argv)
+{
+	printf("== JEU DE GO ==\n\n\n");
+
+	int i;
+	for(i = 0 ; i < argc ; ++i)
+	{
+		printf("%s\n", argv[i]);
+	}
+
+	if(argc == 2)
+	{
+		if(strcmp("--SDL", argv[1]) == 0)
+		{
+			playSDLMod();
+		}
+	}
+	else
+	{
+		playTerminalMod();
+	}
 
 	return EXIT_SUCCESS;
 }

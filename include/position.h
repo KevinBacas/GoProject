@@ -30,6 +30,6 @@ SPosition* transformerPosition(char* saisie);
  * @brief Test si les positions sont eguales.
  * @return 1 si vrai sinon 0.
  */
-int positionsEgale(SPosition* pos1, SPosition* pos2);
+int positionsEgale(void* pos1, void* pos2);
 
 #endif

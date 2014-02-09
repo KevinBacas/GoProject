@@ -3,6 +3,7 @@
 
 #include "pion.h"
 #include "ensembleColore.h"
+#include "chaines.h"
 
 /**
  * @typedef SEnsembleColore SChaine
@@ -43,6 +44,8 @@ SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2);
  */
 int positionDansChaine(SChaine* chaine, SPosition* pos);
 
-void actualiseChaines(SChaines chaines);
+void actualiseChaines(SChaines* chaines, SList* n_chaine);
+
+void displayChaine(SChaine* chaine);
 
 #endif // __CHAINE__

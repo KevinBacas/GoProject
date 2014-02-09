@@ -64,10 +64,13 @@ SPosition* transformerPosition(char* saisie)
 		y += (int)(saisie[1] - '0');
 		res = creerPosition(x,y);
 	}
-	return creerPosition(x,y);
+	return res;
 }
 
-int positionsEgale(SPosition* pos1, SPosition* pos2)
+int positionsEgale(void* pos1, void* pos2)
 {
-	return (pos1->x == pos2->x && pos1->y == pos2->x) ? 1 : 0;
+	SPosition* p1 = (SPosition*)pos1;
+	SPosition* p2 = (SPosition*)pos2;
+	printf("(%d == %d) && (%d == %d)\n", p1->x, p2->x, p1->y ,p2->y);
+	return ((p1->x == p2->x) && (p1->y == p2->y));
 }
