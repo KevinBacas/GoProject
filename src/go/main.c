@@ -42,6 +42,7 @@ void playTerminalMod()
 				fclose(fichier);
 				if(partie)
 				{
+					rejouerPartie(partie);
 					jouerPartie(partie);
 					detruirePartie(partie);
 				}

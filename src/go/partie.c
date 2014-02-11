@@ -548,3 +548,24 @@ int coup_valide(SPartie* partie, SPosition* position)
 
 	return 1;
 }
+
+void rejouerPartie(SPartie* partie)
+{
+    int x;
+    int y;
+    SPlateau* plateau = partie->p_courant;
+    int taille = taille_plateau(plateau);
+
+    for(x=0; x < taille; ++x)
+    {
+        for(y=0; y<taille; ++y)
+        {
+            SPosition* position = creerPosition(x,y);
+            ECouleur couleur_pos = plateau_get(plateau, position);
+            if(couleur_pos != VIDE || couleur_pos !=KO);
+            {
+                jouer_coup(partie,couleur_pos, position);
+            }
+        }
+    }
+}
