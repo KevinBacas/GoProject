@@ -35,7 +35,6 @@ void detruirePartie(SPartie* partie);
 /**
  * @brief Charge une partie precedement sauvegarde Si le chargement n'est pas possible, retourne un Pointeur NULL
  */
-// TODO :
 SPartie* partie_charge(FILE* fichier);
 
 /**
@@ -49,5 +48,7 @@ void jouer_coup(SPartie* partie, ECouleur couleur, SPosition* position);
 int coup_valide(SPartie* partie, SPosition* position);
 
 float jouerPartie(SPartie* partie);
+
+void rejouerPartie(SPartie* partie);
 
 #endif /* PARTIE_H_ */

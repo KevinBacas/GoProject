@@ -61,7 +61,7 @@ SPosition* transformerPosition(char* saisie)
 	{
 		x = (int)(saisie[0] - 'A');
 		y = (int)(saisie[1] - '0')*10;
-		y += (int)(saisie[1] - '0');
+		y += (int)(saisie[2] - '0');
 		res = creerPosition(x,y);
 	}
 	return res;
