@@ -458,13 +458,9 @@ int coup_valide(SPartie* partie, SPosition* position)
 	SPlateau* plateau = partie->p_courant;
 	SChaines* chaines = partie->chaines;
 
-	/* _______ for(i==0; i<4; ++i){
-	 *			*tab_pos = NULL;
-	 *			*(tab_pos+1) = NULL;
-	 *			*(tab_pos+2) =NULL;
-	 *			*(tab_pos+3)=NULL;
-	 *			}
-	*/
+	/*int compteur_pour_ko = 0;
+	 * tab_position* tab_null = {NULL};
+	 */
 	//SPion* pion = creerPion(*position, couleur_joueur);
 	SPosition* v_droit = voisinDroit(plateau,position);
 	SPosition* v_gauche = voisinGauche(plateau,position);
@@ -491,8 +487,7 @@ int coup_valide(SPartie* partie, SPosition* position)
 		++nb_captures;
 		/*
 		 *
-		 *
-		 * *tab_pos = v_droit;
+		 *if(!(listNext(v_droit)) compteur_pour_ko = 1;
 		 */
 	}
 	listDelete(libertes);
@@ -504,9 +499,8 @@ int coup_valide(SPartie* partie, SPosition* position)
 		plateau_realiser_capture(plateau, chaines, chaine_gauche);
 		free(v_gauche);
 		++nb_captures;
-		/* *(tab_pos+1) = v_gauche;
-		 *
-		 *
+		/*
+		 * if(!(listNext(v_gauche))  compteur_pour_ko = 2;
 		 */
 	}
 	listDelete(libertes);
@@ -518,9 +512,8 @@ int coup_valide(SPartie* partie, SPosition* position)
 		plateau_realiser_capture(plateau, chaines, chaine_bas);
 		free(v_bas);
 		++nb_captures;
-		/* *(tab_pos+2) = v_bas;
-		 *
-		 *
+		/*
+		 * if(!(listNext(v_bas)) compteur_pour_ko = 4;
 		 */
 	}
 	listDelete(libertes);
@@ -532,9 +525,8 @@ int coup_valide(SPartie* partie, SPosition* position)
 		plateau_realiser_capture(plateau, chaines, chaine_haut);
 		free(v_haut);
 		++nb_captures;
-		/* *(tab_pos+3) = v_haut;
-		 *
-		 *
+		/*
+		 * if(!(listNext(v_haut)) compteur_pour_ko = 8;
 		 */
 	}
 	listDelete(libertes);
@@ -542,9 +534,21 @@ int coup_valide(SPartie* partie, SPosition* position)
 
 	if(nb_captures)
 	{
-		/*gererKO(plateau, tab_de_stockage, tab_pos);
+		/* if(compteur_pour_ko == 1)
+		 * 		gererKO(plateau, tab_de_stockage, v_droit);
+		 * 		set_plateau(plateau,v_droit,KO);
 		 *
-		 *  j'ai changé la place de plateau par rapport au prototype que jté filé
+		 * if(compteur_pour_ko == 2)
+		 * 		gererKO(plateau, tab_de_stockage, v_gauche);
+		 * 		set_plateau(plateau,v_gauche,KO);
+		 *
+		 * if(compteur_pour_ko == 4)
+		 * 		gererKO(plateau, tab_de_stockage, v_bas);
+		 * 		set_plateau(plateau,v_bas,KO);
+		 *
+		 * if(compteur_pour_ko == 8)
+		 * 		gererKO(plateau, tab_de_stockage, v_haut);
+		 * 		set_plateau(plateau,v_haut,KO);
 		 */
 		return 1;
 
@@ -575,7 +579,7 @@ int coup_valide(SPartie* partie, SPosition* position)
 			return 0;
 		}
 	}
-	/*gererKO(plateau, tab_de_stockage, tab_pos);
+	/*gererKO(plateau, tab_de_stockage, tab_null);
 	 *
 	 * ici tab_pos doit valloir NULL pour chaque case.
 	 */
