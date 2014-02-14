@@ -27,3 +27,6 @@ clean :
 	@rm -rvf $(LIB_FOLDER)/*.so
 	@rm -rvf $(DIST_FOLDER)/*.o
 	@rm -rvf $(BIN_FOLDER)/*.out
+	
+rebuild : clean compile
+	@echo "Rebuild fait."

@@ -118,7 +118,6 @@ SPartie* partie_charge(FILE* fichier)
 	{
 		res = malloc(sizeof(SPartie));
 
-		printf("a\n");
 		int joueur = 0;
 		float komi = 0.0f;
 		int type_j1 = 0;
@@ -131,35 +130,53 @@ SPartie* partie_charge(FILE* fichier)
 				&type_j1,
 				&type_j2);
 
-		printf("%d %f %d %d\n", joueur, komi, type_j1, type_j2);
-		printf("b\n");
+		if(feof(fichier))
+		{
+			free(res);
+			res = NULL;
+			return res;
+		}
+
+		printf("%d %f %d %d\n",
+				joueur,
+				komi,
+				type_j1,
+				type_j2);
+
 		res->joueur = (ECouleur)joueur;
 		res->komi = komi;
 		res->t_j1 = (ETypeJoueur)type_j1;
 		res->t_j2 = (ETypeJoueur)type_j2;
-		printf("c\n");
 
 		res->p_courant = plateau_chargement(fichier);
-		printf("d\n");
 		if(res->p_courant)
 		{
-			printf("e\n");
 			int nb_plats = 0;
 			fscanf(fichier, "%d\n", &nb_plats);
+			if(feof(fichier))
+			{
+				free(res);
+				res = NULL;
+				return res;
+			}
+
 			res->p_prec = listInit();
-			printf("f\n");
 
 			int i = 0;
 			SPlateau* plat_curr = NULL;
 
 			do
 			{
-				printf("g\n");
 				plat_curr = plateau_chargement(fichier);
 
 				if(plat_curr)
 				{
 					listAdd(res->p_prec, plat_curr);
+				}
+				else
+				{
+					free(res);
+					res = NULL;
 				}
 				++i;
 			}while(plat_curr && (i < nb_plats));
@@ -237,7 +254,15 @@ ECoupJoue joueur_terminal(SPartie* partie)
 	}
 	else if(!strcmp("save", saisie))
 	{
-		FILE* fichier = fopen("sauvegarde.save", "w");
+		char nom_dossier [50];
+		char saisie[50];
+		strcpy(nom_dossier, "./save/");
+
+		printf("Veuillez choisir un nom de sauvegarde : ");
+
+		scanf("%s", saisie);
+		strcat(nom_dossier, saisie);
+		FILE* fichier = fopen(nom_dossier, "w");
 		partie_sauvegarde(partie, fichier);
 		fclose(fichier);
 		res = SAVE;
@@ -247,6 +272,7 @@ ECoupJoue joueur_terminal(SPartie* partie)
 		res = GIVEUP;
 		// Le joueur courant abandonne.
 	}
+	/*
 	else if(!strcmp("undo", saisie))
 	{
 		// On retourne un coup en arriere.
@@ -255,6 +281,7 @@ ECoupJoue joueur_terminal(SPartie* partie)
 	{
 		// On retourne un coup en arriere.
 	}
+	*/
 	else if(!strcmp("quit", saisie))
 	{
 		res = QUIT;
@@ -435,17 +462,17 @@ void jouer_coup(SPartie* partie, ECouleur couleur, SPosition* position)
 	// On ajoute la liste colore a la liste des chaines
 	listAdd(chaines, new_chaine);
 
-//	displayChaine(new_chaine);
+	displayChaine(new_chaine);
 
 
-//	printf("----- DISPLAY CHAINES -----\n");
-//	printf("%d chaines\n", listSize(chaines));
-//	listHead(chaines);
-//	do
-//	{
-//		displayChaine(listCurrent(chaines));
-//	}while(listNext(chaines));
-//	printf("----- DISPLAY CHAINES -----\n");
+	printf("----- DISPLAY CHAINES -----\n");
+	printf("%d chaines\n", listSize(chaines));
+	listHead(chaines);
+	do
+	{
+		displayChaine(listCurrent(chaines));
+	}while(listNext(chaines));
+	printf("----- DISPLAY CHAINES -----\n");
 
 }
 

@@ -1,8 +1,40 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #include "partie.h"
+
+void printdir(char *dir, int depth)
+{
+    DIR *dp;
+    struct dirent *entry;
+    struct stat statbuf;
+
+    if((dp = opendir(dir)) == NULL) {
+        fprintf(stderr,"cannot open directory: %s\n", dir);
+        return;
+    }
+    chdir(dir);
+    while((entry = readdir(dp)) != NULL)
+    {
+        lstat(entry->d_name,&statbuf);
+        if(S_ISDIR(statbuf.st_mode))
+        {
+            if(	strcmp(".",entry->d_name) == 0
+            	|| strcmp("..",entry->d_name) == 0)
+                continue;
+            printf("%*s%s/\n",depth,"",entry->d_name);
+            /* Recurse at a new indent level */
+            printdir(entry->d_name,depth+4);
+        }
+        else printf("%*s%s\n",depth,"",entry->d_name);
+    }
+    chdir("..");
+    closedir(dp);
+}
 
 void printHomeMenu()
 {
@@ -35,22 +67,38 @@ void playTerminalMod()
 		}
 		case '2':
 		{
-			FILE* fichier = fopen("sauvegarde.save", "r");
+			char nom_dossier [50];
+			char saisie[50];
+			strcpy(nom_dossier, "./save/");
+
+			printf("sauvegardes disponibles :\n");
+			printdir(nom_dossier, 0);
+			printf("Veuillez choisir une sauvegarde : ");
+
+			scanf("%s", saisie);
+			strcat(nom_dossier, saisie);
+			FILE* fichier = fopen(nom_dossier, "r+");
 			if(fichier)
 			{
 				SPartie* partie = partie_charge(fichier);
-				fclose(fichier);
 				if(partie)
 				{
 					rejouerPartie(partie);
 					jouerPartie(partie);
 					detruirePartie(partie);
 				}
+				else
+				{
+					printf("Erreur : \n"
+							"=>	!!! La partie n'a pas pu être chargée correctement.\n");
+				}
 			}
 			else
 			{
-				printf("Aucune sauvegarde n'est présente");
+				printf("Erreur : \n"
+						"=>	!!! Le fichier de sauvegarde demandé n'est présent.\n");
 			}
+			fclose(fichier);
 			break;
 		}
 		case 'Q':

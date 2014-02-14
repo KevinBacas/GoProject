@@ -55,6 +55,12 @@ Matrice* chargerMatrice(FILE* fichier)
 			  for(j = 0 ; j < res->nbColonne ; ++j)
 			  {
 				  fscanf(fichier, "%c ", &(res->donnees[i][j]));
+				  if(feof(fichier))
+				  {
+					  free(res);
+					  res = NULL;
+					  return res;
+				  }
 			  }
 		  }
 		  fscanf(fichier, "\n");

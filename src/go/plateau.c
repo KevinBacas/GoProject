@@ -137,20 +137,21 @@ SPlateau* plateau_chargement(FILE* fichier)
 
 void plateau_realiser_capture(SPlateau* plateau, SChaines* chaines, SChaine* chaine)
 {
-	if(!chaine) return;
-
-	SList* list = listEnsembleColore(chaine);
-
-	listHead(list);
-	do
+	if(chaine)
 	{
-		SPosition* pos = listCurrent(list);
-		plateau_set(plateau, pos, VIDE);
-	}while(listNext(list));
+		SList* list = listEnsembleColore(chaine);
 
-//	listDelete(list);
-//	listRemoveElement(chaines, chaine);
-//	free(chaine);
+		listHead(list);
+		do
+		{
+			SPosition* pos = listCurrent(list);
+			plateau_set(plateau, pos, VIDE);
+		}while(listNext(list));
+
+		//listDelete(list);
+		listRemoveElement(chaines, chaine);
+		//free(chaine);
+	}
 }
 
 int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau)

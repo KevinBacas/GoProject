@@ -71,17 +71,17 @@ void actualiseChaines(SChaines* chaines, SList* n_chaine)
 	}
 }
 
-//void displayChaine(SChaine* chaine)
-//{
-//	SList* list = listEnsembleColore(chaine);
-//
-//	if(!listEmpty(list))
-//	{
-//		listHead(list);
-//		do
-//		{
-//			printf("(%d,%d) /", abscissePosition(listCurrent(list)), ordonneePosition(listCurrent(list)));
-//		}while(listNext(list));
-//	}
-//	printf("\n");
-//}
+void displayChaine(SChaine* chaine)
+{
+	SList* list = listEnsembleColore(chaine);
+
+	if(!listEmpty(list))
+	{
+		listHead(list);
+		do
+		{
+			printf("(%d,%d) /", abscissePosition(listCurrent(list)), ordonneePosition(listCurrent(list)));
+		}while(listNext(list));
+	}
+	printf("\n");
+}

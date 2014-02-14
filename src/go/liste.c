@@ -165,23 +165,23 @@ int listSize(SList* list)
 	return res;
 }
 
-//void listDisplay(SList* list)
-//{
-//	if(!listEmpty(list))
-//	{
-//		listHead(list);
-//		printf("%X", (unsigned int)(list->curr->data));
-//		while(listNext(list))
-//		{
-//			printf(" -> %X", (unsigned int)(list->curr->data));
-//		}
-//		printf("\n");
-//	}
-//	else
-//	{
-//		printf("%X est vide\n", (unsigned int)(list));
-//	}
-//}
+void listDisplay(SList* list)
+{
+	if(!listEmpty(list))
+	{
+		listHead(list);
+		printf("%X", (unsigned int)(list->curr->data));
+		while(listNext(list))
+		{
+			printf(" -> %X", (unsigned int)(list->curr->data));
+		}
+		printf("\n");
+	}
+	else
+	{
+		printf("%X est vide\n", (unsigned int)(list));
+	}
+}
 
 int listFind(SList* list, void* elem)
 {
