@@ -41,7 +41,6 @@ int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau
  * @brief Determine la position des yeux relatifs a une chaine
  * Si la chaine n'a aucun oeil alors la valeur retournee est NULL
  */
-// TODO :
 SPositions* lesYeuxDeLaChaine(SChaine* chaine, SPlateau* plateau);
 
 /**
@@ -63,7 +62,12 @@ SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* pla
 */
 SChaines* captureChaines(SPlateau* plateau, SPion* pion, int* valide);
 
-
+/*
+ * @brief Permet de compter les points d'un plateau
+ * @param plateau plateau final à calculer
+ * @param komi le komi relatif à la partie
+ * @return un score relatif (< 0 Noir gagnant, >0 Blanc gagnant, 0 match nul)
+ */
 float compter_point(SPlateau* plateau,float komi);
 
 #endif // UTILSGO_H_

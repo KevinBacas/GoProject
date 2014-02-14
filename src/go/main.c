@@ -7,6 +7,11 @@
 
 #include "partie.h"
 
+/*
+ * @brief Permet d'afficher le contenu d'un dossier récursivement
+ * @param dir Nom du dossier
+ * @param depth Sert pour l'affichage
+ */
 void printdir(char *dir, int depth)
 {
     DIR *dp;
@@ -14,23 +19,23 @@ void printdir(char *dir, int depth)
     struct stat statbuf;
 
     if((dp = opendir(dir)) == NULL) {
-        fprintf(stderr,"cannot open directory: %s\n", dir);
+        fprintf(stderr, "cannot open directory: %s\n", dir);
         return;
     }
     chdir(dir);
     while((entry = readdir(dp)) != NULL)
     {
-        lstat(entry->d_name,&statbuf);
+        lstat(entry->d_name, &statbuf);
         if(S_ISDIR(statbuf.st_mode))
         {
-            if(	strcmp(".",entry->d_name) == 0
-            	|| strcmp("..",entry->d_name) == 0)
+            if(	strcmp(".", entry->d_name) == 0
+            	|| strcmp("..", entry->d_name) == 0)
                 continue;
-            printf("%*s%s/\n",depth,"",entry->d_name);
+            printf("%*s%s/\n", depth, "", entry->d_name);
             /* Recurse at a new indent level */
             printdir(entry->d_name,depth+4);
         }
-        else printf("%*s%s\n",depth,"",entry->d_name);
+        else printf("%*s%s\n", depth, "", entry->d_name);
     }
     chdir("..");
     closedir(dp);
