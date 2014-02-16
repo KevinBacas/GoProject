@@ -45,19 +45,15 @@ Matrice* chargerMatrice(FILE* fichier)
 
   if(fichier)
   {
-	  printf("A\n");
 	  fscanf(fichier, "%d %d\n", &nbLig, &nbCol);
 	  res = allouerMatrice(nbLig, nbCol);
 	  if(res->donnees)
 	  {
-		  printf("B\n");
 		  int i,j;
 		  for(i = 0 ; i < res->nbLigne ; ++i)
 		  {
-			  printf("C\n");
 			  for(j = 0 ; j < res->nbColonne ; ++j)
 			  {
-				  printf("D\n");
 				  fscanf(fichier, "%c ", &(res->donnees[i][j]));
 
 			  }

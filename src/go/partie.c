@@ -105,7 +105,6 @@ void questionsTerminal(int i, SPartie* partie)
 
 			char name[50];
 			sprintf(name, "./preset/handi%d-%d.txt", rep, taille_plateau(partie->p_courant));
-			printf("%s\n", name);
 
 			FILE* fichier = fopen(name, "r+");
 			if(fichier)
@@ -197,18 +196,15 @@ SPartie* partie_charge(FILE* fichier)
 
 			do
 			{
-				printf("%d tour\n", i);
 				plat_curr = plateau_chargement(fichier);
 
 				if(plat_curr)
 				{
-					printf("a\n");
 					listAdd(res->p_prec, plat_curr);
 					plateau_affichage(plat_curr);
 				}
 				else
 				{
-					printf("b\n");
 					free(res);
 					res = NULL;
 				}
@@ -270,7 +266,7 @@ ECoupJoue joueur_terminal(SPartie* partie)
 {
 	ECoupJoue res = COUP;
 
-	printf("Joueur : %s.\n", partie->joueur == BLANC ? "BlLanc" : "Noir");
+	printf("Joueur : %s.\n", partie->joueur == BLANC ? "Blanc" : "Noir");
 	printf("<lettre><num> : Position sur laquelle jouer (ex : E5).\n");
 	printf("pass : Passer.\n");
 	printf("save : Sauvegarder la partie.\n");

@@ -120,7 +120,16 @@ void playSDLMod()
 
 int main(int argc, char** argv)
 {
-	printf("== JEU DE GO ==\n\n\n");
+	printf("\n===============================================================================\n");
+	printf("  OooOoo o.OOoOoo O       o       o.OOOo.   o.OOoOoo        .oOOOo.   .oOOOo.  \n");
+	printf("      O   O       o       O        O    `o   O             .O     o  .O     o. \n");
+	printf("      o   o       O       o        o      O  o             o         O       o \n");
+	printf("      O   ooOO    o       o        O      o  ooOO          O         o       O \n");
+	printf("      o   O       o       O        o      O  O             O   .oOOo O       o \n");
+	printf("      O   o       O       O        O      o  o             o.      O o       O \n");
+	printf("O     o   O       `o     Oo        o    .O'  O              O.    oO `o     O' \n");
+	printf("`OooOO'  ooOooOoO  `OoooO'O        OooOO'   ooOooOoO         `OooO'   `OoooO'  \n");
+	printf("===============================================================================\n\n");
 
 	if(argc == 2)
 	{

@@ -23,19 +23,15 @@ STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos, SPositions* 
 		listAdd(positions, pos);
 		SPosition* posG = positionGauche(pos);
 		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posG, positions)), positionsEgale);
-		//detruirePosition(posG);
 
 		SPosition* posD = positionDroite(pos);
 		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posD, positions)), positionsEgale);
-		//detruirePosition(posD);
 
 		SPosition* posB = positionBas(pos);
 		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posB, positions)), positionsEgale);
-		//detruirePosition(posB);
 
 		SPosition* posH = positionHaut(pos);
 		listConcatUnique(list, listEnsembleColore(determineTerritoire(plateau, posH, positions)), positionsEgale);
-		//detruirePosition(posH);
 	}
 
 	return territoire;

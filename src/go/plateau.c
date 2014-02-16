@@ -80,30 +80,45 @@ void plateau_affichage(SPlateau* plateau)
 {
 	int taille = plateau->taille;
 	int i,j;
-	printf(" ");
+
+	printf("  ");
 	for(j = 0 ; j < taille ; ++j)
 	{
-		printf("%d", j);
+		if(j < 9)
+		{
+			printf("%d ", j+1);
+		}
+		else
+		{
+			printf("%d", j+1);
+		}
 	}
 	printf("\n");
 
 	for(i = 0 ; i < taille ; ++i)
 	{
-		printf("%c", 'A'+i);
+		printf("%c ", 'A'+i);
 		for(j = 0 ; j < taille ; ++j)
 		{
 			SPosition pos;
 			pos.x = i;
 			pos.y = j;
-			printf("%c", couleur_to_char(plateau_get(plateau, &pos)));
+			printf("%c ", couleur_to_char(plateau_get(plateau, &pos)));
 		}
 		printf("%c\n", 'A'+i);
 	}
 
-	printf(" ");
+	printf("  ");
 	for(j = 0 ; j < taille ; ++j)
 	{
-		printf("%d", j);
+		if(j < 9)
+		{
+			printf("%d ", j+1);
+		}
+		else
+		{
+			printf("%d", j+1);
+		}
 	}
 	printf("\n");
 }
