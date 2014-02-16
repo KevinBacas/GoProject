@@ -80,6 +80,10 @@ ECouleur char_to_couleur(char c);
  */
 char couleur_to_char(ECouleur c);
 
+/*
+ * @brief permet l'affichage du plateau
+ * @param plateau
+ */
 void plateau_affichage(SPlateau* plateau);
 
 /**
@@ -111,14 +115,32 @@ int plateau_est_identique(SPlateau* plateau, SPlateau* ancienPlateau);
  */
 void plateau_copie(SPlateau* from, SPlateau* to);
 
+/**
+ * @brief verifie si une position est valide
+ * @param plateau
+ * @param position position a valider
+ * @return 1 si oui sinon 0
+ */
 int positionValide(SPlateau* plateau,SPosition* position);
 
+/**
+ * @brief Renvoi la position du voision droit si elle est valide
+ */
 SPosition* voisinDroit(SPlateau* plateau, SPosition* position);
 
+/**
+ * @brief Renvoi la position du voision gauche si elle est valide
+ */
 SPosition* voisinGauche(SPlateau* plateau, SPosition* position);
 
+/**
+ * @brief Renvoi la position du voision bas si elle est valide
+ */
 SPosition* voisinBas(SPlateau* plateau, SPosition* position);
 
+/**
+ * @brief Renvoi la position du voision haut si elle est valide
+ */
 SPosition* voisinHaut(SPlateau* plateau, SPosition* position);
 
 #endif /* PLATEAU_H_ */

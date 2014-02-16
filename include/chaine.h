@@ -44,8 +44,9 @@ SChaine* concatenerChaine(SChaine* chaine1, SChaine* chaine2);
  */
 int positionDansChaine(SChaine* chaine, SPosition* pos);
 
+/**
+ * @brief actualise les chaines par rapport à la nouvelle chaine passée en paramètre
+ */
 void actualiseChaines(SChaines* chaines, SList* n_chaine);
-
-void displayChaine(SChaine* chaine);
 
 #endif // __CHAINE__

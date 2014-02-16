@@ -15,6 +15,9 @@
 #include "chaines.h"
 #include "positions.h"
 
+/**
+ * @biref calcul les libertés pour une position donnee
+ */
 SLibertes* libertesAdjacente(SPlateau* plateau, SPosition* pos);
 
 /**
@@ -34,7 +37,6 @@ STerritoire* determineTerritoire(SPlateau* plateau, SPosition* pos, SPositions* 
  * @brief determine si un territoire forme un seki pour les chaines de differentes couleurs concernees.
  * La valeur retournee est de 1 pour vrai et de 0 pour faux
  */
-// TODO :
 int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau);
 
 /**
@@ -51,10 +53,10 @@ SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos);
 /**
  * @brief Determine la ou les chaines entourant un territoire
  */
-// TODO : PAS UNE PRIO
 SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* plateau);
 
-/** @brief en fonction de la position du pion et de sa couleur retourne les chaines
+/**
+ * @brief en fonction de la position du pion et de sa couleur retourne les chaines
  * capturees. Si aucune chaine n’est capturee par la pose du pion, alors la valeur NULL est retournee.
  * L’entier (reference par) valide est egal a zero si le fait placer le poin en cette position conduit a contruire une chaine sans liberte de la couleur du pion
  * (sauf si ce coup produit la capture d’au moins une chaine adverse).
@@ -62,7 +64,7 @@ SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* pla
 */
 SChaines* captureChaines(SPlateau* plateau, SPion* pion, int* valide);
 
-/*
+/**
  * @brief Permet de compter les points d'un plateau
  * @param plateau plateau final à calculer
  * @param komi le komi relatif à la partie

@@ -5,11 +5,11 @@
  * @enum Couleur
  */
 typedef enum Couleur {
-	KO			= -2,
 	NOIR		= -1,
 	VIDE		= 0,
 	BLANC		= 1,
-	BORD		= 2
+	BORD		= 2,
+	UNDEFINED
 } ECouleur;
 
 #endif

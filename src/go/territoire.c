@@ -17,7 +17,7 @@ ECouleur couleurVoisin(SPlateau* plateau, SPosition* position)
 	ECouleur c3 = plateau_get(plateau, gauche);
 	ECouleur c4 = plateau_get(plateau, droite);
 
-	ECouleur retourner = KO;
+	ECouleur retourner = UNDEFINED;
 
 	if(c1==NOIR && c2!=BLANC && c3!=BLANC && c4!=BLANC) retourner = NOIR;
 	if(c1==BLANC && c2!=NOIR && c3!=NOIR && c4!=NOIR) retourner = BLANC;
@@ -29,7 +29,7 @@ ECouleur couleurVoisin(SPlateau* plateau, SPosition* position)
 	if(c1!=NOIR && c2!=NOIR && c3!=NOIR && c4!=BLANC) retourner = BLANC;
 
 	if(c1==VIDE && c2==VIDE && c3 == VIDE && c4==VIDE) retourner = BORD;
-	if(retourner==KO) retourner = VIDE;
+	if(retourner==UNDEFINED) retourner = VIDE;
 
 	detruirePosition(haut);
 	detruirePosition(bas);
@@ -41,14 +41,14 @@ ECouleur couleurVoisin(SPlateau* plateau, SPosition* position)
 //retourne VIDE si les 2 couleurs sont differentes, si elles sont pareil, retourne cette couleur, sinon retourne BORD.
 ECouleur compareCouleur(ECouleur couleur1, ECouleur couleur2)
 {
-	if(couleur1 == BORD || couleur1 == KO)
+	if(couleur1 == BORD || couleur1 == UNDEFINED)
 	{
-		if(couleur2==KO) return BORD;
+		if(couleur2==UNDEFINED) return BORD;
 		else return couleur2;
 	}
-	if(couleur2 == BORD || couleur2 == KO)
+	if(couleur2 == BORD || couleur2 == UNDEFINED)
 	{
-		if(couleur1==KO) return BORD;
+		if(couleur1==UNDEFINED) return BORD;
 		else return couleur1;
 	}
 	if(couleur1==couleur2) return couleur1;

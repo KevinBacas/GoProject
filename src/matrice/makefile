@@ -9,9 +9,14 @@ $(DIST_FOLDER)/matriceShared.o : matrice.c $(INCLUDE_FOLDER)/matrice.h
 # G�n�ration de la biblioth�que dynamique (.so)
 $(LIB_FOLDER)/libMatrice.so : $(DIST_FOLDER)/matriceShared.o
 	$(CC) -shared $< -o $@
+	
+#CAS WINDOWS (.dll)
+windows : $(LIB_FOLDER)/Matrice.dll
 
-$(DIST_FOLDER)/matriceTest.o : matriceTest.c $(INCLUDE_FOLDER)/matrice.h
+# .o de la matrice dynamique
+$(DIST_FOLDER)/matriceSharedWindows.o : matrice.c $(INCLUDE_FOLDER)/matrice.h
 	$(CC) -c $< -o $@
 
-$(BIN_FOLDER)/matriceTest.out : $(DIST_FOLDER)/matriceTest.o
-	$(CC) $< -o $@
+# G�n�ration de la biblioth�que dynamique (.dll)
+$(LIB_FOLDER)/Matrice.dll : $(DIST_FOLDER)/matriceSharedWindows.o
+	$(CC) -shared $< -o $@

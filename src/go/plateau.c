@@ -56,7 +56,6 @@ ECouleur char_to_couleur(char c)
 {
 	switch(c)
 	{
-	case'K' : return KO;
 	case'N' : return NOIR;
 	case'_' : return VIDE;
 	case'B' : return BLANC;
@@ -69,7 +68,6 @@ char couleur_to_char(ECouleur c)
 {
 	switch(c)
 	{
-	case KO : return 'K';
 	case NOIR : return 'N';
 	case VIDE : return '_';
 	case BLANC : return 'B';
@@ -124,10 +122,12 @@ SPlateau* plateau_chargement(FILE* fichier)
 	plateau->grille = chargerMatrice(fichier);
 	if(plateau->grille)
 	{
-		plateau->taille = nbLigneMatrice(plateau->grille);
+		printf("BON \n");
+		plateau->taille = getNbLigne(plateau->grille);
 	}
 	else
 	{
+		printf("PAS BON \n");
 		free(plateau);
 		plateau = NULL;
 	}
@@ -203,7 +203,7 @@ int positionValide(SPlateau* plateau,SPosition* position)
 SPosition* voisinDroit(SPlateau* plateau, SPosition* position)
 {
 	ECouleur coul = plateau_get(plateau,positionDroite(position));
-	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
+	if(coul == VIDE || coul == BORD) return NULL;
 	else
 	{
 		return positionDroite(position);
@@ -213,7 +213,7 @@ SPosition* voisinDroit(SPlateau* plateau, SPosition* position)
 SPosition* voisinGauche(SPlateau* plateau, SPosition* position)
 {
 	ECouleur coul = plateau_get(plateau,positionGauche(position));
-	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
+	if(coul == VIDE || coul == BORD) return NULL;
 	else
 	{
 		return positionGauche(position);
@@ -223,7 +223,7 @@ SPosition* voisinGauche(SPlateau* plateau, SPosition* position)
 SPosition* voisinHaut(SPlateau* plateau, SPosition* position)
 {
 	ECouleur coul = plateau_get(plateau,positionHaut(position));
-	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
+	if(coul == VIDE || coul == BORD) return NULL;
 	else
 	{
 		return positionHaut(position);
@@ -233,7 +233,7 @@ SPosition* voisinHaut(SPlateau* plateau, SPosition* position)
 SPosition* voisinBas(SPlateau* plateau, SPosition* position)
 {
 	ECouleur coul = plateau_get(plateau,positionBas(position));
-	if(coul == VIDE || coul == KO || coul == BORD) return NULL;
+	if(coul == VIDE || coul == BORD) return NULL;
 	else
 	{
 		return positionBas(position);

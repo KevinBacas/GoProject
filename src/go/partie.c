@@ -45,7 +45,6 @@ struct partie
 };
 
 
-//TODO : Refaire handicap
 void questionsTerminal(int i, SPartie* partie)
 {
 	switch(i)
@@ -53,16 +52,18 @@ void questionsTerminal(int i, SPartie* partie)
 	case 0:
 	{
 		char rep = ' ';
-		do{
-			printf("Renseigner la Nature du joueur 1 (H pour Humain, B pour Bot) :");
+		do
+		{
+			printf("Renseigner la Nature du joueur 1 (H pour Humain, B pour Bot) : ");
 			scanf("%c", &rep);
 			getchar();
 		}while(rep != 'H' && rep != 'B');
 		partie->t_j1 = rep == 'H' ? HUMAN : BOT;
 		rep = ' ';
 
-		do{
-			printf("Renseigner la Nature du joueur 2 (H pour Humain, B pour Bot) :");
+		do
+		{
+			printf("Renseigner la Nature du joueur 2 (H pour Humain, B pour Bot) : ");
 			scanf("%c", &rep);
 			getchar();
 		}while(rep != 'H' && rep != 'B');
@@ -72,24 +73,60 @@ void questionsTerminal(int i, SPartie* partie)
 	case 1:
 	{
 		char rep = ' ';
-		do{
-			printf("Renseigner le komi (A = 0.5, B = 7.5) :");
-			scanf("%c", &rep);
-			getchar();
-		}while(!(rep == 'A' || rep == 'B'));
-		partie->komi = rep == 'A' ? 0.5f : 7.5f;
-		break;
-	}
-	case 2:
-	{
-		char rep = ' ';
-		do{
-			printf("Taille du plateau (A = 9x9, B = 13x13, C = 19x19) :");
+		do
+		{
+			printf("Taille du plateau (A = 9x9, B = 13x13, C = 19x19) : ");
 			scanf("%c", &rep);
 			getchar();
 		}while(!(rep == 'A' || rep == 'B' || rep == 'C'));
 		int taille = rep == 'A' ? 9 : (rep == 'B' ? 13 : 19);
 		partie->p_courant = init_plateau(taille);
+		break;
+	}
+	case 2:
+	{
+		int rep = -1;
+
+		do{
+			printf("Renseigner le handicap (de 0 a 9) : ");
+			scanf("%d", &rep);
+			getchar();
+		}while(!(rep < 10 && rep > -1));
+
+		if(rep == 0)
+		{
+			partie->joueur = NOIR;
+			partie->komi = 7.5;
+		}
+		else
+		{
+			partie->joueur = rep == 1 ? NOIR : BLANC;
+			partie->komi = 0.5;
+
+			char name[50];
+			sprintf(name, "./preset/handi%d-%d.txt", rep, taille_plateau(partie->p_courant));
+			printf("%s\n", name);
+
+			FILE* fichier = fopen(name, "r+");
+			if(fichier)
+			{
+				SPlateau* plateau = plateau_chargement(fichier);
+				if(plateau)
+				{
+					plateau_copie(plateau, partie->p_courant);
+					detruire_plateau(plateau);
+					rejouerPartie(partie);
+				}
+				else
+				{
+					printf("Le fichier d'handicap n'a pas pu etre charge.\n");
+				}
+			}
+			else
+			{
+				printf("Le fichier d'handicap n'a pas pu etre charge.\n");
+			}
+		}
 		break;
 	}
 	default: break;
@@ -101,13 +138,12 @@ SPartie* initialisationPartie(FonctionQuestions fonctionQuestions)
 	SPartie* res = calloc(sizeof(SPartie), 1);
 	int i;
 	const int nb_question = 3;
+	res->chaines = listInit();
+	res->p_prec = listInit();
 	for(i = 0 ; i < nb_question ; ++i)
 	{
 		fonctionQuestions(i, res);
 	}
-	res->chaines = listInit();
-	res->p_prec = listInit();
-	res->joueur = NOIR;
 	return res;
 }
 
@@ -137,12 +173,6 @@ SPartie* partie_charge(FILE* fichier)
 			return res;
 		}
 
-		printf("%d %f %d %d\n",
-				joueur,
-				komi,
-				type_j1,
-				type_j2);
-
 		res->joueur = (ECouleur)joueur;
 		res->komi = komi;
 		res->t_j1 = (ETypeJoueur)type_j1;
@@ -167,19 +197,23 @@ SPartie* partie_charge(FILE* fichier)
 
 			do
 			{
+				printf("%d tour\n", i);
 				plat_curr = plateau_chargement(fichier);
 
 				if(plat_curr)
 				{
+					printf("a\n");
 					listAdd(res->p_prec, plat_curr);
+					plateau_affichage(plat_curr);
 				}
 				else
 				{
+					printf("b\n");
 					free(res);
 					res = NULL;
 				}
 				++i;
-			}while(plat_curr && (i < nb_plats));
+			}while(plat_curr && (i < nb_plats-1));
 
 			res->chaines = listInit();
 		}
@@ -212,6 +246,7 @@ void partie_sauvegarde(SPartie* partie, FILE* fichier)
 		SPlateaux* plats = partie->p_prec;
 		if(plats && !listEmpty(plats))
 		{
+			fprintf(fichier, "%d\n", listSize(plats));
 			listHead(plats);
 			do
 			{
@@ -236,7 +271,7 @@ ECoupJoue joueur_terminal(SPartie* partie)
 	ECoupJoue res = COUP;
 
 	printf("Joueur : %s.\n", partie->joueur == BLANC ? "BlLanc" : "Noir");
-	printf("<lettre><num> : Position sur laquelle jouer (ex : A0).\n");
+	printf("<lettre><num> : Position sur laquelle jouer (ex : E5).\n");
 	printf("pass : Passer.\n");
 	printf("save : Sauvegarder la partie.\n");
 	printf("giveup : Abandonner.\n");
@@ -270,18 +305,7 @@ ECoupJoue joueur_terminal(SPartie* partie)
 	else if(!strcmp("giveup", saisie))
 	{
 		res = GIVEUP;
-		// Le joueur courant abandonne.
 	}
-	/*
-	else if(!strcmp("undo", saisie))
-	{
-		// On retourne un coup en arriere.
-	}
-	else if(!strcmp("redo", saisie))
-	{
-		// On retourne un coup en arriere.
-	}
-	*/
 	else if(!strcmp("quit", saisie))
 	{
 		res = QUIT;
@@ -354,7 +378,6 @@ float jouerPartie(SPartie* partie)
 	int quit = 0;
 	int pass_counter = 0;
 	float res = 0;
-	int nb_tour = 0;
 
 	do
 	{
@@ -398,8 +421,6 @@ float jouerPartie(SPartie* partie)
 		case SAVE:
 			break;
 		}
-		nb_tour++;
-		printf("tour num : %d\n", nb_tour);
 
 	}while(!quit);
 
@@ -461,34 +482,16 @@ void jouer_coup(SPartie* partie, ECouleur couleur, SPosition* position)
 	listDelete(list);
 	// On ajoute la liste colore a la liste des chaines
 	listAdd(chaines, new_chaine);
-
-	displayChaine(new_chaine);
-
-
-	printf("----- DISPLAY CHAINES -----\n");
-	printf("%d chaines\n", listSize(chaines));
-	listHead(chaines);
-	do
-	{
-		displayChaine(listCurrent(chaines));
-	}while(listNext(chaines));
-	printf("----- DISPLAY CHAINES -----\n");
-
 }
 
-//TODO : changer les commentaires en code ! ne pas oublier le prototype et de mettre dans partie le tableau 2 dim de position.
 int coup_valide(SPartie* partie, SPosition* position)
 {
-	//printf("coup_valide\n");
 
 	ECouleur couleur_joueur = partie->joueur;
 	SPlateau* plateau = partie->p_courant;
 	SChaines* chaines = partie->chaines;
 
-	/*int compteur_pour_ko = 0;
-	 * tab_position* tab_null = {NULL};
-	 */
-	//SPion* pion = creerPion(*position, couleur_joueur);
+
 	SPosition* v_droit = voisinDroit(plateau,position);
 	SPosition* v_gauche = voisinGauche(plateau,position);
 	SPosition* v_bas = voisinBas(plateau,position);
@@ -526,10 +529,6 @@ int coup_valide(SPartie* partie, SPosition* position)
 		plateau_realiser_capture(plateau, chaines, chaine_droit);
 		free(v_droit);
 		++nb_captures;
-		/*
-		 *
-		 *if(!(listNext(v_droit)) compteur_pour_ko = 1;
-		 */
 	}
 	listDelete(libertes);
 	libertes = NULL;
@@ -540,9 +539,6 @@ int coup_valide(SPartie* partie, SPosition* position)
 		plateau_realiser_capture(plateau, chaines, chaine_gauche);
 		free(v_gauche);
 		++nb_captures;
-		/*
-		 * if(!(listNext(v_gauche))  compteur_pour_ko = 2;
-		 */
 	}
 	listDelete(libertes);
 	libertes = NULL;
@@ -553,9 +549,6 @@ int coup_valide(SPartie* partie, SPosition* position)
 		plateau_realiser_capture(plateau, chaines, chaine_bas);
 		free(v_bas);
 		++nb_captures;
-		/*
-		 * if(!(listNext(v_bas)) compteur_pour_ko = 4;
-		 */
 	}
 	listDelete(libertes);
 	libertes = NULL;
@@ -566,36 +559,16 @@ int coup_valide(SPartie* partie, SPosition* position)
 		plateau_realiser_capture(plateau, chaines, chaine_haut);
 		free(v_haut);
 		++nb_captures;
-		/*
-		 * if(!(listNext(v_haut)) compteur_pour_ko = 8;
-		 */
 	}
 	listDelete(libertes);
 	libertes = NULL;
 
 	if(nb_captures)
 	{
-		/* if(compteur_pour_ko == 1)
-		 * 		gererKO(plateau, tab_de_stockage, v_droit);
-		 * 		set_plateau(plateau,v_droit,KO);
-		 *
-		 * if(compteur_pour_ko == 2)
-		 * 		gererKO(plateau, tab_de_stockage, v_gauche);
-		 * 		set_plateau(plateau,v_gauche,KO);
-		 *
-		 * if(compteur_pour_ko == 4)
-		 * 		gererKO(plateau, tab_de_stockage, v_bas);
-		 * 		set_plateau(plateau,v_bas,KO);
-		 *
-		 * if(compteur_pour_ko == 8)
-		 * 		gererKO(plateau, tab_de_stockage, v_haut);
-		 * 		set_plateau(plateau,v_haut,KO);
-		 */
 		return 1;
 
 	}
 
-	// !!
 	if(listEmpty(libertesAdjacente(plateau,position)))
 	{
 		SLibertes* lib_haut 	= determineLiberte(plateau, chaine_haut);
@@ -620,10 +593,6 @@ int coup_valide(SPartie* partie, SPosition* position)
 			return 0;
 		}
 	}
-	/*gererKO(plateau, tab_de_stockage, tab_null);
-	 *
-	 * ici tab_pos doit valloir NULL pour chaque case.
-	 */
 	return 1;
 }
 
@@ -640,7 +609,7 @@ void rejouerPartie(SPartie* partie)
         {
             SPosition* position = creerPosition(x,y);
             ECouleur couleur_pos = plateau_get(plateau, position);
-            if(couleur_pos != VIDE || couleur_pos !=KO);
+            if(couleur_pos != VIDE);
             {
                 jouer_coup(partie,couleur_pos, position);
             }

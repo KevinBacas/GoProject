@@ -17,9 +17,15 @@ export CC = gcc $(CFLAGS) -I $(INCLUDE_FOLDER)
 # regle pour la build eclipse
 all : compile
 
+
 # Compilation de tout le projet (Generation des bibliotheque et des executables)
-compile : 
+compile :
 	@cd $(SRC_FOLDER)/matrice && make --no-print-directory
+	@cd $(SRC_FOLDER)/go && make --no-print-directory
+
+#cas pour la compilation sous windows
+windows :
+	@cd $(SRC_FOLDER)/matrice && make windows --no-print-directory
 	@cd $(SRC_FOLDER)/go && make --no-print-directory
 
 # Clean de tout les fichiers .o dans le dossier dist

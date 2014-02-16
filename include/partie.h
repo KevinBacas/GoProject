@@ -12,8 +12,14 @@
 #include "position.h"
 #include "couleur.h"
 
+/**
+ * @struct partie
+ */
 typedef struct partie SPartie;
 
+/**
+ * @typedef void(*FonctionQuestions)(int numeroQuestion, SPartie* partie)
+ */
 typedef void(*FonctionQuestions)(int numeroQuestion, SPartie* partie);
 
 /**
@@ -30,6 +36,9 @@ void questionsTerminal(int i, SPartie* partie);
 */
 SPartie* initialisationPartie(FonctionQuestions fonctionQuestions);
 
+/**
+ * @brief detruit une partie en la desallouant
+ */
 void detruirePartie(SPartie* partie);
 
 /**
@@ -43,12 +52,33 @@ SPartie* partie_charge(FILE* fichier);
  * */
 void partie_sauvegarde(SPartie* partie, FILE* fichier);
 
+/**
+ * @brief permet de jouer un coup
+ * @param partie
+ * @param couleur couleur du joueur
+ * @param position Position du coup
+ */
 void jouer_coup(SPartie* partie, ECouleur couleur, SPosition* position);
 
+/**
+ * @brief verifie si un coup est valide
+ * @param partie
+ * @param position position du coup
+ * @return 1 si oui sinon 0
+ */
 int coup_valide(SPartie* partie, SPosition* position);
 
+/**
+ * @brief fonction qui joue une partie
+ * @param partie
+ * @return score de la partie si < 0 NOIR gagnant si > 0 BLANC gagnant
+ */
 float jouerPartie(SPartie* partie);
 
+/**
+ * @biref rejoue chaque coup d'une partie (fonction faite pour le chargement
+ * @param partie
+ */
 void rejouerPartie(SPartie* partie);
 
 #endif /* PARTIE_H_ */
