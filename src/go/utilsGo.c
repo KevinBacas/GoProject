@@ -181,6 +181,83 @@ SChaine* plateau_determiner_chaine(SChaines* chaines, SPosition* pos)
 	return res;
 }
 
-SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* plateau);
+SChaines* plateau_entoure_un_territoire(STerritoire* leTerritoire, SPlateau* plateau)
+{
+	SChaines* liste_de_chaines = creerEnsembleColore();
+	listHead(listEnsembleColore(leTerritoire));
 
-int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau);
+	SPosition* v_haut = voisinHaut(plateau,listCurent(listEnsembleColore(leTerritoire)));
+	SPosition* v_bas = voisinBas(plateau,listCurent(listEnsembleColore(leTerritoire)));
+	SPosition* v_gauche = voisinGauche(plateau,listCurent(listEnsembleColore(leTerritoire)));
+	SPosition* v_droit = voisinDroit(plateau,listCurent(listEnsembleColore(leTerritoire)));
+
+	SChaine* chaine_haut = plateau_determiner_chaine(liste_de_chaines,v_haut);
+	SChaine* chaine_bas = plateau_determiner_chaine(liste_de_chaines,v_bas);
+	SChaine* chaine_gauche = plateau_determiner_chaine(liste_de_chaines,v_gauche);
+	SChaine* chaine_droite = plateau_determiner_chaine(liste_de_chaines,v_droit);
+
+	if(v_haut && chaine_haut && listFind(liste_de_chaines,chaine_haut))
+	{
+		listAdd(liste_de_chaines,chaine_haut);
+	}
+	if(v_bas && chaine_bas && listFind(liste_de_chaines,chaine_bas))
+	{
+		listAdd(liste_de_chaines,chaine_bas);
+	}
+	if(v_gauche && chaine_gauche && listFind(liste_de_chaines,chaine_gauche))
+	{
+		listAdd(liste_de_chaines,chaine_gauche);
+	}
+	if(v_droit && chaine_droite && listFind(liste_de_chaines,chaine_droite))
+	{
+		listAdd(liste_de_chaines,chaine_droite);
+	}
+
+
+	while(listEmpty(listNext(listEnsembleColore(leTerritoire))))
+	{
+		v_haut = voisinHaut(plateau,listCurent(listEnsembleColore(leTerritoire)));
+		v_bas = voisinBas(plateau,listCurent(listEnsembleColore(leTerritoire)));
+		v_gauche = voisinGauche(plateau,listCurent(listEnsembleColore(leTerritoire)));
+		v_droit = voisinDroit(plateau,listCurent(listEnsembleColore(leTerritoire)));
+
+		chaine_haut = plateau_determiner_chaine(liste_de_chaines,v_haut);
+		chaine_bas = plateau_determiner_chaine(liste_de_chaines,v_bas);
+		chaine_gauche = plateau_determiner_chaine(liste_de_chaines,v_gauche);
+		chaine_droite = plateau_determiner_chaine(liste_de_chaines,v_droit);
+
+		if(v_haut && chaine_haut && listFind(liste_de_chaines,chaine_haut))
+		{
+			listAdd(liste_de_chaines,chaine_haut);
+		}
+		if(v_bas && chaine_bas && listFind(liste_de_chaines,chaine_bas))
+		{
+			listAdd(liste_de_chaines,chaine_bas);
+		}
+		if(v_gauche && chaine_gauche && listFind(liste_de_chaines,chaine_gauche))
+		{
+			listAdd(liste_de_chaines,chaine_gauche);
+		}
+		if(v_droit && chaine_droite && listFind(liste_de_chaines,chaine_droite))
+		{
+			listAdd(liste_de_chaines,chaine_droite);
+		}
+	}
+	return liste_de_chaines;
+}
+
+int estUnSeki(STerritoire* leTerritoire, SChaines* lesChaines, SPlateau* plateau)
+{
+	ECouleur couleur_courrant = couleurChaine(listHead(lesChaines));
+	SChaines* liste_de_chaines = plateau_entoure_un_territoire(leTerritoire,plateau);
+	if(!listFind(liste_de_chaines,listHead(lesChaines)))
+	{
+		return 0;
+	}
+	while(listNext(lesChaines))
+	{
+		if(!listFind(liste_de_chaines,listCurrent(lesChaines)) || couleurChaine(listCurrent(lesChaines)))	return 0;
+		couleur_courrant = couleurChaine(listCurrent(lesChaines));
+	}
+	return 1;
+}
