@@ -502,6 +502,20 @@ int coup_valide(SPartie* partie, SPosition* position)
 	if(plateau_get(plateau, position)!=VIDE) return 0;
 
 	plateau_set(plateau, position, couleur_joueur);
+
+	// Verifications pour le KO
+	// Si le plateau d'il y a deux tours est identique au plateau courant
+	// Alors c'est un KO
+	if(listSize(partie->p_prec) > 2)
+	{
+		SPlateau* p_prec_2_t = listGetElement(partie->p_prec, listSize(partie->p_prec) - 1);
+		if( plateau_est_identique(partie->p_courant, p_prec_2_t))
+		{
+			plateau_set(plateau, position, VIDE);
+			return 0;
+		}
+	}
+
 	//cas de capture, on capture !!!
 	int nb_captures = 0;
 	SLibertes* libertes = NULL;

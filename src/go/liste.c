@@ -153,6 +153,21 @@ void* listRemoveElement(SList* list, void* elem)
 	return res;
 }
 
+void* listGetElement(SList* list, int index)
+{
+	void* res = NULL;
+	if(list && index > -1 && index < listSize(list))
+	{
+		int i;
+		for(i = 0 ; i < index ; ++i)
+		{
+			listNext(list);
+		}
+		res = listCurrent(list);
+	}
+	return res;
+}
+
 int listSize(SList* list)
 {
 	int res = 0;

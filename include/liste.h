@@ -25,6 +25,8 @@ void* listRemove(SList* list, int index);
 
 void* listRemoveElement(SList* list, void* elem);
 
+void* listGetElement(SList* list, int index);
+
 int listSize(SList* list);
 
 void listDisplay(SList* list);
